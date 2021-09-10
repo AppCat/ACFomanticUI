@@ -1,0 +1,27 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACItemComponentBase
+
+<CascadingValue Value="this" IsFixed>
+    @if (Link)
+    {
+        <a class="@ClassMapper.Result"
+           style="@StyleMapper.Result"
+           id="@Id"
+           href="@Href"
+           @attributes="@Attributes"
+           @onclick="OnClickAsync">
+            @ChildContent
+        </a>
+    }
+    else
+    {
+        <div class="@ClassMapper.Result"
+             style="@StyleMapper.Result"
+             id="@Id"
+             @attributes="@Attributes"
+             @onclick="OnClickAsync">
+            @ChildContent
+        </div>
+    }
+
+</CascadingValue>

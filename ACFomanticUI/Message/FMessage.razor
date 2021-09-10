@@ -1,0 +1,39 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACComponentBase
+
+<div class="@ClassMapper.Result"
+     style="@StyleMapper.Result"
+     id="@Id"
+     @attributes="@Attributes">
+    @if (DismissableBlock)
+    {
+        <FIcon Icon="close" OnClick="HandleCloseClick" id="@($"{Id}_close")" />
+    }
+    @if (!string.IsNullOrEmpty(Icon))
+    {
+        <FIcon Icon="@Icon" Loading="@Loading" id="@($"{Id}_icon")" />
+    }
+    <div class="@ContentClassMapper.Result" style="@ContentStyleMapper.Result" id="@($"{Id}_content")" @attributes="@ContentConfig?.Attributes">
+        @if (!string.IsNullOrEmpty(Header))
+        {
+            <div class="@HeaderClassMapper.Result" style="@HeaderStyleMapper.Result" id="@($"{Id}_header")" @attributes="@HeaderConfig?.Attributes">
+                @Header
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(Message))
+        {
+            <p style="@MessageStyleMapper.Result" class="@MessageClassMapper.Result" id="@($"{Id}_message")" @attributes="@MessageConfig?.Attributes">@Message</p>
+        }
+        @if (MessageList != null && MessageList.Length > 0)
+        {
+            var i = 0;
+            <ul style="@MessageListStyleMapper.Result" class="@MessageListClassMapper.Result" id="@($"{Id}_messageList")" @attributes="@MessageListConfig?.Attributes">
+                @foreach (var message in MessageList)
+                {
+                    <li style="@MessageStyleMapper.Result" class="@MessageClassMapper.Result" id="@($"{Id}_message_{i}")" @attributes="@MessageConfig?.Attributes">@message</li>
+                    i++;
+                }
+            </ul>
+        }
+    </div>
+</div>

@@ -1,0 +1,29 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACComponentBase
+
+@if (!Link)
+{
+    if (Img)
+    {
+        <img class="@ClassMapper.Result" style="@StyleMapper.Result" id="@Id" src="@Src">
+    }
+    else
+    {
+        <div class="@ClassMapper.Result"
+             style="@StyleMapper.Result"
+             id="@Id"
+             @attributes="@Attributes">
+            <img src="@Src" />
+        </div>
+    }
+}
+else
+{
+    <a href="@Href"
+       class="@ClassMapper.Result"
+       style="@StyleMapper.Result"
+       id="@Id"
+       @attributes="@Attributes">
+        <img @Src>
+    </a>
+}

@@ -1,0 +1,30 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACListComponentBase
+
+@if (Parent != null)
+{
+    <div class="@ClassMapper.Result"
+         style="@StyleMapper.Result"
+         id="@Id"
+         tabindex="@Tabindex"
+         @attributes="@Attributes">
+            @ChildContent
+    </div>
+
+    return;
+}
+
+<CascadingValue Value="this" IsFixed>
+    <CascadingValue Name="LinkItem" Value="true" IsFixed>
+        <div class="@ClassMapper.Result"
+             style="@StyleMapper.Result"
+             id="@Id"
+             tabindex="@Tabindex"
+             @attributes="@Attributes">
+            <CascadingValue Value="@SelectedKeys" Name="SelectedKeys">
+                @ChildContent
+            </CascadingValue>
+        </div>
+    </CascadingValue>
+</CascadingValue>
+

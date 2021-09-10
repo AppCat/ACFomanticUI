@@ -1,0 +1,38 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACListComponentBase
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="@ClassMapper.Result"
+         style="@StyleMapper.Result"
+         id="@Id"
+         @attributes="@Attributes">
+        @if (SourceItems != null && SourceItems.Any())
+        {
+            <CascadingValue Name="AutoStep" Value="true" IsFixed>
+                @foreach (var item in SourceItems)
+                {
+                    var attributes = new Dictionary<string, object>
+                    {
+                        { "TitleContent", item.TitleContent},
+                        { "DescriptionContent", item.DescriptionContent}
+                    };
+                    <FStep @attributes="attributes"
+                           Key="@item.Key"
+                           Tag="@item.Tag"
+                           Disabled="@item.Disabled"
+                           Link="@item.Link"
+                           Completed="@item.Completed"
+                           Icon="@item.Icon"
+                           Title="@item.Title"
+                           TitleConfig="@item.TitleConfig"
+                           Description="@item.Description"
+                           DescriptionConfig="@item.DescriptionConfig" />
+                }
+            </CascadingValue>
+        }
+        else
+        {
+            @ChildContent
+        }
+    </div>
+</CascadingValue>

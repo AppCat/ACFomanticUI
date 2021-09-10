@@ -1,0 +1,51 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACListComponentBase
+
+<CascadingValue Value="this" IsFixed="true">
+    <CascadingValue Value="@Auto" Name="BreadcrumbAuto">
+        <div class="@ClassMapper.Result"
+             style="@StyleMapper.Result"
+             id="@Id"
+             @attributes="@Attributes">
+            @if (Auto)
+            {
+                if (Chips?.Any() ?? false)
+                {
+                    foreach (var chip in Chips)
+                    {
+                        if (chip.Type == FBChipType.Section)
+                        {
+                            <FBSection Link="@chip.Link" Href="@chip.Href" Key="@chip.Content">
+                                @if (chip.Template != null)
+                                {
+                                    @chip.Template
+                                }
+                                else
+                                {
+                                    @chip.Content
+                                }
+                            </FBSection>
+                        }
+                        else
+                        {
+                            <FBDivider Icon="@AutoDividerIcon">
+                                @if (chip.Template != null)
+                                {
+                                    @chip.Template
+                                }
+                                else
+                                {
+                                    @chip.Content
+                                }
+                            </FBDivider>
+                        }
+                    }
+                }
+            }
+            else
+            {
+                @ChildContent
+            }
+        </div>
+    </CascadingValue>
+</CascadingValue>

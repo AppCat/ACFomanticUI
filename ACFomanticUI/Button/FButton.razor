@@ -1,0 +1,44 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACContentComponentBase
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="@ClassMapper.Result"
+         style="@StyleMapper.Result"
+         id="@Id"
+         type="@HtmlType"
+         disabled="@Disabled"
+         tabindex="@($"{Tabindex ?? 0}")"
+         @attributes="@Attributes"
+         @onclick="HandleOnClickAsync"
+         @onclick:stopPropagation="@OnClickStopPropagation"
+         @onmouseover="@(async () => { if (Animated != null) await OnSwitchHiddenContent.InvokeAsync(); })"
+         @onmouseout="@(async () => { if (Animated != null) await OnSwitchVisibleContent.InvokeAsync(); })">
+        @if (Animated == null)
+        {
+            if (ChildContent != null)
+            {
+                @ChildContent
+            }
+            else
+            {
+                @Content
+            }
+        }
+        else
+        {
+            <div class="@VisibleClassMapper.Result" style="@VisibleStyleMapper.Result" id="@($"{Id}_visible")" @attributes="@VisibleConfig?.Attributes">
+                @if (VisibleContent == null)
+                {
+                    @ChildContent
+                }
+                else
+                {
+                    @VisibleContent
+                }
+            </div>
+            <div class="@HiddenClassMapper.Result" style="@HiddenStyleMapper.Result" id="@($"{Id}_hidden")" @attributes="@HiddenConfig?.Attributes">
+                @HiddenContent
+            </div>
+        }
+    </div>
+</CascadingValue>

@@ -1,0 +1,15 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACContentComponentBase
+
+<CascadingValue Value="this" IsFixed>
+    <CascadingValue Value="FItemParentType.List" IsFixed Name="ParentType">
+        <CascadingValue Value="true" IsFixed Name="IsSonList">
+            <div class="@ClassMapper.Result"
+                 style="@StyleMapper.Result"
+                 id="@Id"
+                 @attributes="@Attributes">
+                @ChildContent
+            </div>
+        </CascadingValue>
+    </CascadingValue>
+</CascadingValue>

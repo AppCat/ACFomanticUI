@@ -1,0 +1,12 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACComponentBase
+
+<i class="@ClassMapper.Result"
+   style="@StyleMapper.Result"
+   id="@Id"
+   disabled="@Disabled"
+   tabindex="@($"{Tabindex ?? 0}")"
+   @attributes="@Attributes"
+   @onclick:stopPropagation="@ClickStopPropagation"
+   @onclick="HandleOnClick">
+</i>

@@ -1,0 +1,45 @@
+﻿@namespace ACUI.FomanticUI
+@using Microsoft.AspNetCore.Components.Forms;
+@inherits ValidationSummary
+
+@if (Context != null && Context.GetValidationMessages().Any())
+{
+    <div class="ui message">
+        <div class="header">@(!string.IsNullOrEmpty(Title) ? Title : "We had some issues")</div>
+        <ul class="list">
+            @foreach (var message in Context.GetValidationMessages())
+            {
+                <li>@message</li>
+            }
+        </ul>
+    </div>
+}
+
+@code{
+    /// <summary>
+    /// 编辑上下文
+    /// </summary>
+    [CascadingParameter]
+    protected EditContext Context { get; set; }
+
+    /// <summary>
+    /// 标题
+    /// </summary>
+    [Parameter]
+    public string Title { get; set; }
+
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (Context != null)
+        {
+            Context.OnFieldChanged += (s, e) =>
+            {
+                StateHasChanged();
+            };
+        }
+    }
+}

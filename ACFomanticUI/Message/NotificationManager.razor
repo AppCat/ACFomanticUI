@@ -1,0 +1,31 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ComponentBase
+
+<div class="ui sticky" style="
+        position: fixed;
+        text-align: center;
+        top: 35px;
+        z-index: 100;
+        width: 100%;
+        margin-top: 10px;
+        pointer-events: none;">
+    @foreach (var options in _optionsList)
+    {
+        <div style="text-align: center; width: 100%;">
+            <FSegment Compact Basic Style="padding: 0px; margin: 5px; display:inline-table;">
+                <FMessage Header="@options.Header"
+                          Message="@options.Message"
+                          Type="@options.Type"
+                          Size="@options.Size"
+                          Colored="@options.Colored"
+                          Attached="FAttached.Top"
+                          Compact
+                          Style="@($"margin: 0px;  pointer-events: all; z-index: {options.Zindex};")" />
+                @*<CascadingValue Value="options.Expiration" IsFixed>
+                    <SProgress Attached="SAttached.Bottom" />
+                </CascadingValue>*@
+            </FSegment>
+        </div>
+    }
+</div>
+

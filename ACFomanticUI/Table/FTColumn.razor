@@ -1,0 +1,41 @@
+﻿@namespace ACUI.FomanticUI
+@inherits FColumnBase
+@typeparam TField
+
+@if (IsInitialize)
+{
+    return;
+}
+else if (UseType == FColumUseType.Header)
+{
+    <th class="@TitleClassMapper.Result" style="@TitleStyleMapper.Result" @attributes="@TitleConfig?.Attributes">
+        @if (TitleTemplate == null)
+        {
+            @(Title ?? FieldName ?? DisplayName ?? string.Empty)
+        }
+        else
+        {
+            @TitleTemplate
+        }
+    </th>
+}
+else
+{
+    <td class="@ClassMapper.Result" style="@StyleMapper.Result" @attributes="@Attributes">
+        @if (ChildContent == null)
+        {
+            if (string.IsNullOrEmpty(Format))
+            {
+                @(Field?.ToString() ?? string.Empty)
+            }
+            else
+            {
+                @(Formatter<TField>.Format(Field, Format))
+            }
+        }
+        else
+        {
+            @ChildContent
+        }
+    </td>
+}

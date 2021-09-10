@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+      <Version>0.0.5-alpha</Version>
+      <Authors>BanXian; AppCat</Authors>
+      <PackageTags>Semantic;Blazor;UI;Fomantic;ACUI</PackageTags>
+      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+      <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ACUI.Shared" Version="0.0.2.10-alpha" />
+  </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.9" />
+    </ItemGroup>
+
+</Project>

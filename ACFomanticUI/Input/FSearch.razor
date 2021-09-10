@@ -1,0 +1,88 @@
+﻿@namespace ACUI.FomanticUI
+@inherits FInput<string>
+
+@{
+    Dictionary<string, object> attributes = new Dictionary<string, object>
+{
+        { "ChildContent", ChildContent},
+        { "TopContent", TopContent},
+        { "BottomContent", BottomContent}
+    };
+}
+
+<CascadingValue Value="this" IsFixed>
+    <div class="@ClassMapper.Result"
+         style="@StyleMapper.Result"
+         id="@Id"
+         @onfocusin="@HandelFocusin"
+         @onfocusout="@HandelFocusout">
+        <FInput @ref="@_input"
+                @attributes="@attributes"
+                Attributes="@Attributes"
+                TValue="string"
+                Placeholder="@Placeholder"
+                Value="@Value"
+                ValueChanged="@ValueChanged"
+                OnFocus="@HandleInputFocusAsync"
+                OnEnter="@HandleInputEnterAsync"
+                Icon="@Icon"
+                Loading="@Loading"
+                LoadingChanged="@LoadingChanged"
+                Labeled="@Labeled"
+                LabeledRight="@LabeledRight"
+                IconLeft="@IconLeft"
+                Fluid="@Fluid"
+                Action="@Action"
+                Transparent="@Transparent"
+                Inverted="@Inverted"
+                Size="@Size"
+                QuickResponse="@QuickResponse"
+                OnValueChange="@HandleValueChangeAsync">
+        </FInput>
+        <CascadingValue Value="@VisibleResults" Name="VisibleResults">
+            <div class="results transition @(VisibleResults ? "visible" : "hidden")">
+                @if (ResultsSource != null && ResultsSource.Length > 0)
+                {
+                    foreach (var result in ResultsSource)
+                    {
+                        @if (ResultTemplate != null)
+                        {
+                            <a class="result" @onclick="@(async () => await SelectedResultAsync(result, true))">
+                                @ResultTemplate(result)
+                            </a>
+                        }
+                        else
+                        {
+                            var attributes = new Dictionary<string, object>
+{
+                                { "TitleTemplate", result.TitleTemplate},
+                            };
+                            <SResult @key="result.Key"
+                                     @attributes="attributes"
+                                     Key="@result.Key"
+                                     Title="@result.Title"
+                                     Description="@result.Description"
+                                     Price="@result.Price"
+                                     Url="@result.Url" />
+                        }
+
+                    }
+                }
+                else
+                {
+                    <div class="message empty">
+                        @if (MessageEmptyTemplate != null)
+                        {
+                            @MessageEmptyTemplate(Value)
+                        }
+                        else
+                        {
+                            <div class="header">没有结果</div>
+                            <div class="description">搜索没有返回结果</div>
+                        }
+                    </div>
+                }
+            </div>
+        </CascadingValue>
+    </div>
+</CascadingValue>

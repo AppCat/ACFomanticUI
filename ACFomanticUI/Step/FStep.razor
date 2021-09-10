@@ -1,0 +1,90 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACItemComponentBase
+
+<CascadingValue Value="this" IsFixed="true">
+    @if (Link)
+    {
+        <a class="@ClassMapper.Result"
+           style="@StyleMapper.Result"
+           id="@Id"
+           @attributes="@Attributes"
+           @onclick="@OnClickAsync"
+           @onmouseover="@OnMouseoverAsync">
+            @if (AutoStep)
+            {
+                <FIcon Set="@Icon" />
+                <FContent>
+                    @_content
+                </FContent>
+            }
+            else
+            {
+                @ChildContent
+            }
+        </a>
+    }
+    else
+    {
+        <div class="@ClassMapper.Result"
+             style="@StyleMapper.Result"
+             id="@Id"
+             @attributes="@Attributes">
+            @if (AutoStep)
+            {
+                <FIcon Set="@Icon" />
+                <FContent>
+                    @_content
+                </FContent>
+            }
+            else
+            {
+                @ChildContent
+            }
+        </div>
+    }
+</CascadingValue>
+
+@code{
+
+    /// <summary>
+    /// 内容
+    /// </summary>
+    private RenderFragment _content => CreateContent();
+
+    /// <summary>
+    /// 创建内容
+    /// </summary>
+    /// <returns></returns>
+    private RenderFragment CreateContent()
+    {
+        return
+        @<Template>
+            @if (TitleContent != null || !string.IsNullOrEmpty(Title))
+            {
+                <div class="@TitleClassMapper.Result" style="@TitleStyleMapper.Result" @attributes="@TitleConfig?.Attributes">
+                    @if (TitleContent != null)
+                    {
+                        @TitleContent
+                    }
+                    else
+                    {
+                        @Title
+                    }
+                </div>
+            }
+            @if (DescriptionContent != null || !string.IsNullOrEmpty(Description))
+            {
+                <FDescription Class="@DescriptionClassMapper.Result" Style="@DescriptionStyleMapper.Result" @attributes="@DescriptionConfig?.Attributes">
+                    @if (DescriptionContent != null)
+                    {
+                        @DescriptionContent
+                    }
+                    else
+                    {
+                        @Description
+                    }
+                </FDescription>
+            }
+        </Template>;
+    }
+}

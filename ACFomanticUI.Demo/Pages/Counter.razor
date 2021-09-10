@@ -1,0 +1,269 @@
+﻿@page "/counter"
+
+<h1 @attributes="@null">Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<FButton OnClick="IncrementCount">Click me</FButton>
+<FButton OnClick="IncrementCount" Emphasis="FEmphasisRank.Primary">Click me</FButton>
+<FButton OnClick="IncrementCount" Emphasis="FEmphasisRank.Secondary">Click me</FButton>
+
+<FButton OnClick="IncrementCount" Animated="FButtonAnimated.Animated">
+    <VisibleContent>
+        Next
+    </VisibleContent>
+    <HiddenContent>
+        <FIcon Set="right arrow" />
+    </HiddenContent>
+</FButton>
+<FButton OnClick="IncrementCount" Animated="FButtonAnimated.Vertical">
+    <HiddenContent>
+        Shop
+    </HiddenContent>
+    <VisibleContent>
+        <FIcon Set="shop" />
+    </VisibleContent>
+</FButton>
+<FButton OnClick="IncrementCount" Animated="FButtonAnimated.Fade">
+    <VisibleContent>
+        Sign-up for a Pro account
+    </VisibleContent>
+    <HiddenContent>
+        $12.99 a month
+    </HiddenContent>
+</FButton>
+
+<FButton Labeled>
+    <FButton>
+        <FIcon Set="heart" />
+    </FButton>
+    <a class="ui basic label">
+        2,048
+    </a>
+</FButton>
+
+<FButton Labeled>
+    <FButton>
+        <FIcon Set="heart" />
+    </FButton>
+    <a class="ui basic label">
+        2,048
+    </a>
+</FButton>
+
+
+<FButton Labeled>
+    <FButton Colored="FColored.Red">
+        <FIcon Set="heart" />
+    </FButton>
+    <a class="ui basic red left pointing label">
+        2,048
+    </a>
+</FButton>
+
+<FButton Icon OnClick="IncrementCount">
+    <FIcon Set="cloud" />
+</FButton>
+
+<FEmoji Set="relaxed" />
+<FEmoji Set="relaxed" Loading />
+<FEmoji Set="relaxed" Link />
+<FEmoji Set="relaxed" Size="FSize.Medium" />
+
+<FInput TValue="int" />
+
+<FDivider />
+
+<FSteps SelectedKeys="@(new[] { "2" })">
+    <FStep Key="1">
+        <FIcon Set="truck" />
+        <FContent>
+            <div class="title">Shipping</div>
+            <FDescription>Choose your shipping options</FDescription>
+        </FContent>
+    </FStep>
+    <FStep Key="2">
+        <FIcon Set="payment" />
+        <FContent>
+            <div class="title">Billing</div>
+            <FDescription>Enter billing information</FDescription>
+        </FContent>
+    </FStep>
+    <FStep Key="3" Disabled>
+        <FIcon Set="info" />
+        <FContent>
+            <div class="title">Confirm Order</div>
+        </FContent>
+    </FStep>
+</FSteps>
+
+<FDivider />
+
+<FSteps @bind-SelectedKeys="@_stepSelectedKeys" SourceItems="@_stepItems" />
+
+<FDivider />
+
+<FSegment>
+    This is
+    <FText Colored="FColored.Red" Size="5">red</FText>
+    inline text and this is
+    <FText Colored="FColored.Blue" Size="FSize.Big">blue</FText>
+    inline text and this is
+    <FText Colored="FColored.Purple">purple</FText>
+    inline text
+</FSegment>
+<FSegment Inverted>
+    This is <span class="ui inverted red text">red</span> inline text and this is <span class="ui inverted blue text">blue</span> inline text and this is <span class="ui inverted purple text">purple</span> inline text
+</FSegment>
+<FSegment>
+    This is <span class="ui info text">info</span> inline text and this is <span class="ui success text">success</span> inline text and this is <span class="ui warning text">warning</span> inline text and this is <span class="ui error text">error</span> inline text
+</FSegment>
+<FSegment Inverted>
+    This is <span class="ui info text">info</span> inline text and this is <span class="ui success text">success</span> inline text and this is <span class="ui warning text">warning</span> inline text and this is <span class="ui error text">error</span> inline text
+</FSegment>
+
+<FDivider />
+
+<FTextTemplate Content="hello ${dog}, I'm AppCat" VariableHandler="VariableHandler" />
+
+<FDivider />
+
+<FBreadcrumb Auto />
+
+<FDivider />
+
+<FMenu ItemCount="3" @bind-SelectedKeys="@_stepSelectedKeys" OnClickItem="@(e => Console.WriteLine($"{e.ItemId} > {e.Key}"))">
+    <FMenuItem Key="1" Link>Editorials</FMenuItem>
+    <FMenuItem Key="2" Link>Reviews</FMenuItem>
+    <FMenuItem Key="3" Link>Upcoming Events</FMenuItem>
+</FMenu>
+
+<FDivider />
+
+<FMenu Text @bind-SelectedKeys="@_stepSelectedKeys" OnClickItem="@(e => Console.WriteLine($"{e.ItemId} > {e.Key}"))">
+    <FMenuItem Key="1">
+        <FImage Src="images/new-school.jpg" />
+    </FMenuItem>
+    <FMenuItem Key="2" Link>
+        Browse Courses
+        <FIcon Set="dropdown" />
+    </FMenuItem>
+    <FMenuItem Key="3" Link>
+
+    </FMenuItem>
+</FMenu>
+
+<FDivider />
+
+<FMenu Secondary @bind-SelectedKeys="@_stepSelectedKeys" OnClickItem="@(e => Console.WriteLine($"{e.ItemId} > {e.Key}"))">
+    <FMenuItem Key="1" Link>Home</FMenuItem>
+    <FMenuItem Key="2" Link>Messages</FMenuItem>
+    <FMenuItem Key="3" Link>Friends</FMenuItem>
+    <FMenu Right>
+        <FMenuItem>
+            <FSearch Placeholder="Search..." Icon />
+        </FMenuItem>
+        <FMenuItem Key="4" Link>Logout</FMenuItem>
+    </FMenu>
+</FMenu>
+
+<FDivider />
+
+<FTable TModel="Student" DataSource="@_students">
+    <FTActionColumn Title="名称">
+        <FIcon Set="exclamation" />
+    </FTActionColumn>
+    <FTActionColumn Title="名称">
+        <FIcon Set="exclamation" />
+    </FTActionColumn>
+    <FTActionColumn Title="名称">
+        <FIcon Set="exclamation" />
+    </FTActionColumn>
+    <FTActionColumn Title="名称">
+        <FIcon Set="exclamation" />
+    </FTActionColumn>
+    <FTActionColumn Title="名称">
+        <FIcon Set="exclamation" />
+    </FTActionColumn>
+    <FTActionColumn Title="名称">
+        <FIcon Set="exclamation" />
+    </FTActionColumn>
+    <FTColumn @bind-Field="@context.Name"/>
+    <FTColumn @bind-Field="@context.Age"/>
+</FTable>
+
+@code {
+    private IEnumerable<Student> _students = new List<Student>
+{
+        new Student
+        {
+            Name = "狗蛋",
+            Age = 10
+        },
+        new Student
+        {
+            Name = "猫蛋",
+            Age = 8
+        },
+        new Student
+        {
+            Name = "鸭蛋",
+            Age = 6
+        },
+    };
+
+    protected EventCallbackFactory CallbackFactory = new EventCallbackFactory();
+    private FTextConfig VariableHandler(string variable)
+    {
+        if (variable == "dog")
+        {
+            return new FTextConfig
+            {
+                Content = "狗蛋",
+                Colored = FColored.Yellow,
+                Style = "cursor: pointer; text-decoration:underline;",
+                Attributes = new Dictionary<string, object>
+{
+                    { "onclick", CallbackFactory.Create<MouseEventArgs>(this, args => Console.WriteLine("点击")) }
+                }
+            };
+        }
+        return new FTextConfig { Content = "未知", Colored = FColored.Red };
+    }
+
+
+    private int currentCount = 0;
+    private string[] _stepSelectedKeys = new string[] { "2" };
+    private IList<FStepItem> _stepItems = new List<FStepItem>
+{
+        new FStepItem
+        {
+            Key = "1",
+            Icon = "truck",
+            Title = "Shipping",
+            Description = "Choose your shipping options",
+            Link = true
+        },
+        new FStepItem
+        {
+            Key = "2",
+            Icon = "payment",
+            Title = "Billing",
+            Description = "Enter billing information",
+            Link = true
+        },
+        new FStepItem
+        {
+            Key = "3",
+            Icon = "info",
+            Title = "Confirm Order",
+            Disabled = true,
+            Link = true
+        }
+    };
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}

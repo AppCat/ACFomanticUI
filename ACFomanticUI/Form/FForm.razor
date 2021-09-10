@@ -1,0 +1,35 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACContentComponentBase<TModel>
+@typeparam TModel
+@using Microsoft.AspNetCore.Components.Forms;
+@using System.ComponentModel.DataAnnotations;
+
+<EditForm class="@ClassMapper.Result"
+          style="@StyleMapper.Result"
+          id="@Id"
+          @attributes="@Attributes"
+          EditContext="@_editContext"
+          OnValidSubmit="OnValidSubmit"
+          OnInvalidSubmit="OnInvalidSubmit">
+    <DataAnnotationsValidator />
+    <CascadingValue Value="this" IsFixed="@true">
+        @if (Auto)
+        {
+            @*@_auotField(Model);*@
+        }
+        @if (ChildContent != null)
+        {
+            @ChildContent(Model);
+        }
+    </CascadingValue>
+    @if (!EnableFormMessage)
+        return;
+    @if (FormMessageTemplate != null)
+    {
+        @FormMessageTemplate(Model)
+    }
+    else
+    {
+        <FFormMessage Model="@Model" />
+    }
+</EditForm>

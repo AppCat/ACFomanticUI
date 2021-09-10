@@ -1,0 +1,78 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACSonContentComponentBase
+
+<CascadingValue Value="this" IsFixed="true">
+    @switch (HtmlType.Value)
+    {
+        case FHeaderHtmlType.Div:
+            {
+                <div class="@ClassMapper.Result"
+                    style="@StyleMapper.Result"
+                    id="@Id"
+                    @attributes="@Attributes">
+                    @ChildContent
+                </div>
+            }
+            break;
+        case FHeaderHtmlType.H1:
+            {
+                <h1 class="@ClassMapper.Result"
+                    style="@StyleMapper.Result"
+                    id="@Id"
+                    @attributes="@Attributes">
+                    @ChildContent
+                </h1>
+            }
+            break;
+        case FHeaderHtmlType.H2:
+            {
+                <h2 class="@ClassMapper.Result"
+                    style="@StyleMapper.Result"
+                    id="@Id"
+                    @attributes="@Attributes">
+                    @ChildContent
+                </h2>
+            }
+            break;
+        case FHeaderHtmlType.H3:
+            {
+                <h3 class="@ClassMapper.Result"
+                    style="@StyleMapper.Result"
+                    id="@Id"
+                    @attributes="@Attributes">
+                    @ChildContent
+                </h3>
+            }
+            break;
+        case FHeaderHtmlType.H4:
+            {
+                <h4 class="@ClassMapper.Result"
+                    style="@StyleMapper.Result"
+                    id="@Id"
+                    @attributes="@Attributes">
+                    @ChildContent
+                </h4>
+            }
+            break;
+        case FHeaderHtmlType.H5:
+            {
+                <h5 class="@ClassMapper.Result"
+                    style="@StyleMapper.Result"
+                    id="@Id"
+                    @attributes="@Attributes">
+                    @ChildContent
+                </h5>
+            }
+            break;
+        default:
+            {
+                <div class="@ClassMapper.Result"
+                     style="@StyleMapper.Result"
+                     id="@Id"
+                     @attributes="@Attributes">
+                    @ChildContent
+                </div>
+            }
+            break;
+    }
+</CascadingValue> 

@@ -1,0 +1,61 @@
+﻿@namespace ACUI.FomanticUI
+@typeparam TValue
+@inherits ACInuptComponentBase<TValue>
+
+<CascadingValue Value="this" IsFixed="true"> 
+    <div class="@ClassMapper.Result" 
+         style="@StyleMapper.Result" 
+         id="@Id" 
+         tabindex="@Tabindex">
+        @if (TopContent != null)
+        {
+            @TopContent(Value)
+        }
+        else if (Labeled && !LabeledRight && ChildContent != null)
+        {
+            @ChildContent(Value)
+        }
+        @{
+            var attributes = new Dictionary<string, object>();
+            if (ReadOnly)
+                attributes.Add("readonly", true);
+            if (Max != null)
+                attributes.Add("max", (int)Max);
+            if (Min != null)
+                attributes.Add("min", (int)Min);
+            if (!string.IsNullOrEmpty(_inputValue))
+                attributes.Add("value", _inputValue);
+
+            if (Attributes != null && Attributes.Count > 0)
+            {
+                foreach (var _attributes in Attributes)
+                {
+                    if (attributes.ContainsKey(_attributes.Key))
+                    {
+                        attributes[_attributes.Key] = _attributes.Value;
+                    }
+                    else
+                    {
+                        attributes.TryAdd(_attributes.Key, _attributes.Value);
+                    }
+                }
+            }
+        }
+        <input type="@(InputType.ToClass())"
+               placeholder="@(Placeholder ?? string.Empty)"
+               disabled="@Disabled"
+               @ref="@InputElement"
+               @attributes="@attributes"
+               @onchange="OnChangeAsync"
+               @onkeyup="OnkeyupAsync"
+               @onfocusin="OnFocus">
+        @if (BottomContent != null)
+        {
+            @BottomContent(Value)
+        }
+        else if (((Labeled && LabeledRight) || Icon || !Labeled) && ChildContent != null)
+        {
+            @ChildContent(Value)
+        }
+    </div>
+</CascadingValue>

@@ -1,0 +1,11 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACSonContentComponentBase
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="@ClassMapper.Result"
+         style="@StyleMapper.Result"
+         id="@Id"
+         @attributes="@Attributes">
+        @ChildContent
+    </div>
+</CascadingValue>

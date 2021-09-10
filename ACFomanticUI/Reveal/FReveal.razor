@@ -1,0 +1,16 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACComponentBase
+
+<div class="@ClassMapper.Result"
+     style="@StyleMapper.Result"
+     id="@Id"
+     @attributes="@Attributes"
+     @onmouseover="@(async () => await OnSwitchHiddenContent.InvokeAsync())"
+     @onmouseout="@(async () => await OnSwitchVisibleContent.InvokeAsync())">
+    <div class="@VisibleContentClassMapper.Result" style="@VisibleContentStyleMapper.Result" id="@($"{Id}_visible")" @attributes="@VisibleConfig?.Attributes">
+        @VisibleContent
+    </div>
+    <div class="@HiddenContentClassMapper.Result" style="@HiddenContentStyleMapper.Result" id="@($"{Id}_hidden")" @attributes="@HiddenConfig?.Attributes">
+        @HiddenContent
+    </div>
+</div>

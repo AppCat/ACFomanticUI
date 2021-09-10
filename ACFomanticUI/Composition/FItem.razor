@@ -1,0 +1,30 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACSonContentComponentBase
+
+<CascadingValue Value="this" IsFixed>
+    <CascadingValue Value="true" IsFixed Name="AsSon">
+        @if (Link)
+        {
+            <a class="@ClassMapper.Result"
+               style="@StyleMapper.Result"
+               id="@Id"
+               fref="@Href"
+               @attributes="@Attributes"
+               @onclick="HandleOnClickAsync"
+               @onclick:stopPropagation="@OnClickStopPropagation">
+                @ChildContent
+            </a>
+        }
+        else
+        {
+            <div class="@ClassMapper.Result"
+                 style="@StyleMapper.Result"
+                 id="@Id"
+                 @attributes="@Attributes"
+                 @onclick="HandleOnClickAsync"
+                 @onclick:stopPropagation="@OnClickStopPropagation">
+                @ChildContent
+            </div>
+        }
+    </CascadingValue>
+</CascadingValue>

@@ -1,0 +1,26 @@
+﻿@namespace ACUI.FomanticUI
+@inherits FColumnBase
+
+@if (IsInitialize)
+{
+    return;
+}
+else if (UseType == FColumUseType.Header)
+{
+    <th class="@TitleClassMapper.Result" style="@TitleStyleMapper.Result" @attributes="@TitleConfig?.Attributes">
+        @if (TitleTemplate == null)
+        {
+            @(Title ?? string.Empty)
+        }
+        else
+        {
+            @TitleTemplate
+        }
+    </th>
+}
+else
+{
+    <td class="@ClassMapper.Result" style="@StyleMapper.Result" @attributes="@Attributes">
+        @ChildContent
+    </td>
+}

@@ -1,0 +1,30 @@
+﻿@namespace ACUI.FomanticUI
+@inherits FResultBase
+
+<CascadingValue Value="this" IsFixed="true">
+    <a class="@ClassMapper.Result"
+       style="@StyleMapper.Result"
+       id="@Id"
+       @attributes="@Attributes"
+       @onclick="@HandleClickAsync"
+       @onclick:stopPropagation="@OnClickStopPropagation">
+        <FContent>
+            @if (TitleTemplate != null)
+            {
+                @TitleTemplate
+            }
+            else
+            {
+                <div class="title">@Title</div>
+            }
+            @if (!string.IsNullOrEmpty(Description))
+            {
+                <div class="description">@Description</div>
+            }
+            @if (!string.IsNullOrEmpty(Price))
+            {
+                <div class="price">@Price</div>
+            }
+        </FContent>
+    </a>
+</CascadingValue>
