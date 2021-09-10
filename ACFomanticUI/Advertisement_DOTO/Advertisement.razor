@@ -6,16 +6,6 @@
          style="@StyleMapper.Result"
          id="@Id"
          @attributes="@Attributes">
-        @if (string.IsNullOrEmpty(Icon))
-        {
-            @if (ChildContent != null)
-            {
-                @ChildContent
-            }
-            else
-            {
-                @Content
-            }
-        }
+        @ChildContent
     </div>
 </CascadingValue>

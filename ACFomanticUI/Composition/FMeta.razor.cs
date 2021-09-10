@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,9 +25,19 @@ namespace ACUI.FomanticUI
         {
             classMapper.Clear()
                 .Add(_fixed)
-                .If("disabled", () => Disabled)
+                .If(nameof(Disabled).ToLowerInvariant(), () => Disabled)
+                .GetIf(() => Floated.ToClass(), () => Floated != null)
                 ;
         }
 
+        #region Parameter
+
+        /// <summary>
+        /// 灰暗
+        /// </summary>
+        [Parameter]
+        public EnumMix<FFloated> Floated { get; set; }
+
+        #endregion
     }
 }

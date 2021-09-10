@@ -97,7 +97,7 @@ namespace ACUI.FomanticUI
             var segments = currentUri?.Segments;
             if (segments != null && (segments?.Any() ?? false) && segments.Length > 1)
             {
-                var chips = new List<FBChip>();
+                var chips = new List<IFBChip>();
                 for (int i = 0; i < segments.Length; i++)
                 {
                     if (i == 0)
@@ -108,17 +108,15 @@ namespace ACUI.FomanticUI
 
                     if (isLast)
                     {
-                        chips.Add(new FBChip
+                        chips.Add(new FBSectionConfig
                         {
-                            Type = FBChipType.Section,
                             Content = segment.Replace("/", string.Empty)
                         });
                     }
                     else
                     {
-                        chips.Add(new FBChip
+                        chips.Add(new FBSectionConfig
                         {
-                            Type = FBChipType.Section,
                             Content = segment.Replace("/", string.Empty),
                             Link = true,
                             Href = $"{ string.Join("", segments.Take(i + 1))}"
@@ -127,24 +125,25 @@ namespace ACUI.FomanticUI
 
                     if (segment.Contains("/") && !isLast)
                     {
-                        chips.Add(new FBChip
+                        chips.Add(new FBDividerConfig
                         {
-                            Type = FBChipType.Divider,
                             Content = " / ",
-                            Template = AutoDivider
+                            ContentTemplate = AutoDivider
                         });
                     }
                 }
-                Chips = chips.ToArray();
+                Chips = new FBChipCollection(chips.ToArray());
             }
         }
+
+
+        #region Parameter
 
         /// <summary>
         /// 屑
         /// </summary>
-        protected FBChip[] Chips { get; set; } = Array.Empty<FBChip>();
-
-        #region Parameter
+        [Parameter]
+        public FBChipCollection Chips { get; set; } = new FBChipCollection(Array.Empty<IFBChip>());
 
         /// <summary>
         /// 自动生成

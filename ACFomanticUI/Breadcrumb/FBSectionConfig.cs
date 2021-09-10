@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace ACUI.FomanticUI
     /// <summary>
     /// 截面配置
     /// </summary>
-    public class FBSectionConfig : ACComponentConfig, IFBSection
+    public class FBSectionConfig : FBChipBase, IFBSection
     {
         /// <summary>
         /// 链接
@@ -24,8 +25,8 @@ namespace ACUI.FomanticUI
         public string Href { get; set; }
 
         /// <summary>
-        /// 内容
+        /// 屑类型
         /// </summary>
-        public string Content { get; set; }
+        public override FBChipType Type => FBChipType.Section;
     }
 }

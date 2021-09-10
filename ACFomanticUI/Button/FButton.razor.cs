@@ -49,6 +49,7 @@ namespace ACUI.FomanticUI
                 .If(nameof(Circular).ToLowerInvariant(), () => Circular)
                 .If(nameof(Inverted).ToLowerInvariant(), () => Inverted)
                 .If(nameof(Basic).ToLowerInvariant(), () => Basic)
+                .If(nameof(Tertiary).ToLowerInvariant(), () => Tertiary)
                 .Add(_suffix)
                 ;
 
@@ -151,6 +152,14 @@ namespace ACUI.FomanticUI
         /// </summary>
         [Parameter]
         public bool Inverted { get; set; }
+
+        /// <summary>
+        /// 无关紧要的
+        /// 一个无关紧要的按钮
+        /// An none bordered less important button
+        /// </summary>
+        [Parameter]
+        public bool Tertiary { get; set; }
 
         /// <summary>
         /// 基础

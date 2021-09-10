@@ -7,38 +7,61 @@
              style="@StyleMapper.Result"
              id="@Id"
              @attributes="@Attributes">
-            @if (Auto)
+            @if (Chips?.Any() ?? false)
             {
-                if (Chips?.Any() ?? false)
+                foreach (var chip in Chips)
                 {
-                    foreach (var chip in Chips)
+                    if (chip.Type == FBChipType.Section && chip is IFBSection section)
                     {
-                        if (chip.Type == FBChipType.Section)
-                        {
-                            <FBSection Link="@chip.Link" Href="@chip.Href" Key="@chip.Content">
-                                @if (chip.Template != null)
-                                {
-                                    @chip.Template
-                                }
-                                else
-                                {
-                                    @chip.Content
-                                }
-                            </FBSection>
-                        }
-                        else
-                        {
-                            <FBDivider Icon="@AutoDividerIcon">
-                                @if (chip.Template != null)
-                                {
-                                    @chip.Template
-                                }
-                                else
-                                {
-                                    @chip.Content
-                                }
-                            </FBDivider>
-                        }
+                        <FBSection Link="@section.Link" Href="@section.Href" Key="@section.Content">
+                            @if (section.ContentTemplate != null)
+                            {
+                                @section.ContentTemplate
+                            }
+                            else
+                            {
+                                @section.Content
+                            }
+                        </FBSection>
+                    }
+                    else if (chip.Type == FBChipType.Section)
+                    {
+                        <FBSection>
+                            @if (chip.ContentTemplate != null)
+                            {
+                                @chip.ContentTemplate
+                            }
+                            else
+                            {
+                                @chip.Content
+                            }
+                        </FBSection>
+                    }
+                    else if (chip is IFBDivider divider)
+                    {
+                        <FBDivider Icon="@(divider.Icon ?? AutoDividerIcon)">
+                            @if (divider.ContentTemplate != null)
+                            {
+                                @divider.ContentTemplate
+                            }
+                            else
+                            {
+                                @divider.Content
+                            }
+                        </FBDivider>
+                    }
+                    else
+                    {
+                        <FBDivider Icon="@AutoDividerIcon">
+                            @if (chip.ContentTemplate != null)
+                            {
+                                @chip.ContentTemplate
+                            }
+                            else
+                            {
+                                @chip.Content
+                            }
+                        </FBDivider>
                     }
                 }
             }

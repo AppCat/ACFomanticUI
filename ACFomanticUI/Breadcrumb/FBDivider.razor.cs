@@ -12,7 +12,7 @@ namespace ACUI.FomanticUI
     /// 一个面包屑可以包含一个分隔符来显示部分之间的关系，它可以被格式化为一个图标或文本。
     /// A breadcrumb can contain a divider to show the relationship between sections, this can be formatted as an icon or text.
     /// </summary>
-    public partial class FBDivider : ACContentComponentBase
+    public partial class FBDivider : ACContentComponentBase, IFBDivider
     {
         /// <summary>
         /// 前缀
@@ -30,6 +30,16 @@ namespace ACUI.FomanticUI
                 ;
         }
 
+        /// <summary>
+        /// 屑类型
+        /// </summary>
+        public FBChipType Type => FBChipType.Divider;
+
+        /// <summary>
+        /// 模板
+        /// </summary>
+        public RenderFragment ContentTemplate { get => ChildContent; set => ChildContent = value; }
+
         #region Parameter
 
         /// <summary>
@@ -37,6 +47,12 @@ namespace ACUI.FomanticUI
         /// </summary>
         [Parameter]
         public string Icon { get; set; }
+
+        /// <summary>
+        /// 内容
+        /// </summary>
+        [Parameter]
+        public string Content { get; set; }
 
         #endregion
     }

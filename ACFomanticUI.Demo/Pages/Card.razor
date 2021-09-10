@@ -1,0 +1,206 @@
+﻿@page "/card"
+
+<FCard>
+    <FImage Img="false" Src="images/kristy.png" />
+    <FContent>
+        <a class="header">Kristy</a>
+        <FMeta>
+            <span class="date">Joined in 2013</span>
+        </FMeta>
+        <FDescription>
+            Kristy is an art director living in New York.
+        </FDescription>
+    </FContent>
+    <FContent Extra>
+        <a>
+            <FIcon Set="user" />
+            22 Friends
+        </a>
+    </FContent>
+</FCard>
+
+<FDivider />
+
+<FCard>
+    <FContent>
+        <FMeta Floated="FFloated.Right">
+            14h
+        </FMeta>
+        <FImage Avatar Src="images/elliot.jpg" />
+        Elliot
+    </FContent>
+    <FImage Img="false" Src="images/image.png" />
+    <FContent>
+        <span class="right floated">
+            <FIcon Set="heart outline like" />
+            17 likes
+        </span>
+        <FIcon Set="comment" />
+        3 comments
+    </FContent>
+    <FContent Extra>
+        <FInput TValue="string" Transparent IconLeft Size="FSize.Large" Placeholder="Add Comment...">
+            <FIcon Set="heart outline" />
+        </FInput>
+    </FContent>
+</FCard>
+
+<FDivider />
+
+<FCardGroup>
+    <FCard>
+        <FContent>
+            <FImage Floated="FFloated.Right" Size="FSize.Mini" Src="images/elliot.jpg" />
+            <FHeader Subheader>
+                Elliot Fu
+            </FHeader>
+            <FMeta>
+                Friends of Veronika
+            </FMeta>
+            <FDescription>
+                Elliot requested permission to view your contact details
+            </FDescription>
+        </FContent>
+        <FContent Extra>
+            <FButtonGroup ButtonCount="2">
+                <FButton Basic Colored="FColored.Green">Approve</FButton>
+                <FButton Basic Colored="FColored.Red">Decline</FButton>
+            </FButtonGroup>
+        </FContent>
+    </FCard>
+    <FCard>
+        <FContent>
+            <FImage Floated="FFloated.Right" Size="FSize.Mini" Src="images/jenny.jpg" />
+            <FHeader Subheader>
+                Jenny Hess
+            </FHeader>
+            <FMeta>
+                New Member
+            </FMeta>
+            <FDescription>
+                Jenny wants to add you to the group <b>best friends</b>
+            </FDescription>
+        </FContent>
+        <FContent Extra>
+            <FButtonGroup ButtonCount="2">
+                <FButton Basic Colored="FColored.Green">Approve</FButton>
+                <FButton Basic Colored="FColored.Red">Decline</FButton>
+            </FButtonGroup>
+        </FContent>
+    </FCard>
+</FCardGroup>
+
+<FDivider />
+
+<FCardGroup Link>
+    <FCard>
+        <FImage Img="false" Src="images/image.png" />
+        <FContent>
+            <FHeader Subheader>
+                Elliot Fu
+            </FHeader>
+            <FMeta>
+                <a>Friends</a>
+            </FMeta>
+            <FDescription>
+                Matthew is an interior designer living in New York.
+            </FDescription>
+        </FContent>
+        <FContent Extra>
+            <span class="right floated">
+                Joined in 2013
+            </span>
+            <span>
+                <FIcon Set="user" />
+                75 Friends
+            </span>
+        </FContent>
+    </FCard>
+    <FCard>
+        <FImage Img="false" Src="images/image.png" />
+        <FContent>
+            <FHeader Subheader>
+                Molly
+            </FHeader>
+            <FMeta>
+                <span class="date">Coworker</span>
+            </FMeta>
+            <FDescription>
+                Molly is a personal assistant living in Paris.
+            </FDescription>
+        </FContent>
+        <FContent Extra>
+            <span class="right floated">
+                Joined in 2011
+            </span>
+            <span>
+                <FIcon Set="user" />
+                35 Friends
+            </span>
+        </FContent>
+    </FCard>
+    <FCard>
+        <FImage Img="false" Src="images/image.png" />
+        <FContent>
+            <FHeader Subheader>
+                Elyse
+            </FHeader>
+            <FMeta>
+                <a>Coworker</a>
+            </FMeta>
+            <FDescription>
+                Elyse is a copywriter working in New York.
+            </FDescription>
+        </FContent>
+        <FContent Extra>
+            <span class="right floated">
+                Joined in 2014
+            </span>
+            <span>
+                <FIcon Set="user" />
+                151 Friends
+            </span>
+        </FContent>
+    </FCard>
+</FCardGroup>
+
+<FDivider />
+
+<FCard>
+    <FContent>
+        <FHeader Subheader>
+            Elyse
+        </FHeader>
+    </FContent>
+    <FContent>
+        <FHeader Sub>
+            Elyse
+        </FHeader>
+        <div class="ui small feed">
+            <div class="event">
+                <FContent>
+                    <div class="summary">
+                        <a>Elliot Fu</a> added <a>Jenny Hess</a> to the project
+                    </div>
+                </FContent>
+            </div>
+            <div class="event">
+                <FContent>
+                    <div class="summary">
+                        <a>Stevie Feliciano</a> was added as an <a>Administrator</a>
+                    </div>
+                </FContent>
+            </div>
+            <div class="event">
+                <FContent>
+                    <div class="summary">
+                        <a>Helen Troy</a> added two pictures
+                    </div>
+                </FContent>
+            </div>
+        </div>
+    </FContent>
+    <FContent Extra>
+        <FButton>Join Project</FButton>
+    </FContent>
+</FCard>

@@ -10,7 +10,7 @@ namespace ACUI.FomanticUI
     /// <summary>
     /// 按钮组
     /// </summary>
-    public partial class SButtonGroup : ACContentComponentBase
+    public partial class FButtonGroup : ACContentComponentBase
     {
         /// <summary>
         /// 前缀
@@ -33,10 +33,11 @@ namespace ACUI.FomanticUI
                 .GetIf(() => Colored.ToClass(), () => Colored != null)
                 .GetIf(() => Attached.ToClass(), () => Attached != null)
                 .GetIf(() => Size.ToClass(), () => Size != null)
-                .If("fluid", () => Fluid)
-                .If("disabled", () => Disabled)
-                .If("icon", () => Icon)
-                .If("compact", () => Compact)
+                .GetIf(() => ButtonCount.ToClass(), () => ButtonCount != null)
+                .If(nameof(Fluid).ToLowerInvariant(), () => Fluid)
+                .If(nameof(Disabled).ToLowerInvariant(), () => Disabled)
+                .If(nameof(Icon).ToLowerInvariant(), () => Icon)
+                .If(nameof(Compact).ToLowerInvariant(), () => Compact)
                 .Add(_suffix)
                 ;
         }
@@ -82,6 +83,12 @@ namespace ACUI.FomanticUI
         /// </summary>
         [Parameter]
         public EnumMix<FAttached>  Attached { get; set; }
+
+        /// <summary>
+        /// 按钮数量
+        /// </summary>
+        [Parameter]
+        public EnumMix<FNumber> ButtonCount { get; set; }
 
         #endregion
 

@@ -10,12 +10,12 @@ namespace ACUI.FomanticUI
     /// <summary>
     /// 屑
     /// </summary>
-    public class FBChip : ACComponentConfig
+    public abstract class FBChipBase : ACComponentConfig, IFBChip
     {
         /// <summary>
         /// 屑类型 About        
         /// </summary>
-        public FBChipType Type { get; set; }
+        public abstract FBChipType Type { get; }
 
         /// <summary>
         /// 内容
@@ -23,20 +23,8 @@ namespace ACUI.FomanticUI
         public string Content { get; set; }
 
         /// <summary>
-        /// 链接
-        /// A section may be linkable or contain a link
-        /// 一个节可以是可链接的，也可以包含一个链接
-        /// </summary>
-        public bool Link { get; set; }
-
-        /// <summary>
-        /// 超链接
-        /// </summary>
-        public string Href { get; set; }
-
-        /// <summary>
         /// 模板
         /// </summary>
-        public RenderFragment Template { get; set; }
+        public RenderFragment ContentTemplate { get; set; }
     }
 }

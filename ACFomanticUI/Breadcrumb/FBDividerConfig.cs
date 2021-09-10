@@ -7,19 +7,18 @@ using System.Threading.Tasks;
 namespace ACUI.FomanticUI
 {
     /// <summary>
-    /// 截面
-    /// 用于面包屑的子标签
+    /// 面包屑 分隔符
     /// </summary>
-    public interface IFBSection : IFBChip
+    public partial class FBDividerConfig : FBChipBase, IFBDivider
     {
         /// <summary>
-        /// 链接
+        /// 图标
         /// </summary>
-        bool Link { get; set; }
+        public string Icon { get; set; }
 
         /// <summary>
-        /// 超链接
+        /// 屑类型
         /// </summary>
-        string Href { get; set; }
+        public override FBChipType Type => FBChipType.Divider;
     }
 }

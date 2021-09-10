@@ -25,8 +25,8 @@ namespace ACUI.FomanticUI
         {
             classMapper.Clear()
                 .Add(_fixed)
-                .If("disabled", () => Disabled)
-                .If("extra", () => Extra)
+                .If(nameof(Disabled).ToLowerInvariant(), () => Disabled)
+                .If(nameof(Extra).ToLowerInvariant(), () => Extra)
                 .GetIf(() => TextAlignment.ToClass(), () => TextAlignment != null)
                 ;
         }

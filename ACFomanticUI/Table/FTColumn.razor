@@ -11,7 +11,7 @@ else if (UseType == FColumUseType.Header)
     <th class="@TitleClassMapper.Result" style="@TitleStyleMapper.Result" @attributes="@TitleConfig?.Attributes">
         @if (TitleTemplate == null)
         {
-            @(Title ?? FieldName ?? DisplayName ?? string.Empty)
+            @(Title ?? DisplayName ?? FieldName ?? string.Empty)
         }
         else
         {

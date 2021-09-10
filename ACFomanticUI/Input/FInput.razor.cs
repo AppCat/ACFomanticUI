@@ -39,7 +39,7 @@ namespace ACUI.FomanticUI
                 .If(nameof(Action).ToLowerInvariant(), () => Action)
                 .If(nameof(Transparent).ToLowerInvariant(), () => Transparent)
                 .If(nameof(Inverted).ToLowerInvariant(), () => Inverted)
-                .GetIf(() => $"{(IconLeft ? "left " : string.Empty)}icon", () => Icon)
+                .GetIf(() => $"{(IconLeft ? "left " : string.Empty)}icon", () => Icon || IconLeft)
                 .GetIf(() => $"{(LabeledRight ? "right " : string.Empty)}labeled", () => Labeled)
                 .GetIf(() => Size.ToClass(), () => Size != null)
                 .Add(_suffix)

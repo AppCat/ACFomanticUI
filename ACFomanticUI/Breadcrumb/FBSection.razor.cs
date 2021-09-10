@@ -17,6 +17,7 @@ namespace ACUI.FomanticUI
         /// 前缀
         /// </summary>
         private const string _fixed = "section";
+
         /// <summary>
         /// 设置类
         /// </summary>
@@ -42,6 +43,16 @@ namespace ACUI.FomanticUI
                 //.GetIf(() => Size.ToClass(), () => Size != null)
                 ;
         }
+
+        /// <summary>
+        /// 屑类型
+        /// </summary>
+        public FBChipType Type => FBChipType.Section;
+
+        /// <summary>
+        /// 模板
+        /// </summary>
+        public RenderFragment ContentTemplate { get => ChildContent; set => ChildContent = value; }
 
         #region CascadingParameter
 
