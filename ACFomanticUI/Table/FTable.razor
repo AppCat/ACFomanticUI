@@ -11,37 +11,37 @@
                     @ChildContent(_model)
                 }
             </CascadingValue>
-            <table class="@ClassMapper.Result"
-                   style="@StyleMapper.Result"
-                   id="@Id"
-                   @attributes="@Attributes">
-                <thead style="@THeadStyleMapper.Result" class="@THeadClassMapper.Result" @attributes="@THeadConfig?.Attributes">
-                    <tr>
-                        <CascadingValue Value="FColumUseType.Header" IsFixed>
-                            @if (ChildContent != null)
-                            {
-                                @ChildContent(_model)
-                            }
-                        </CascadingValue>
-                    </tr>
-                </thead>
-                <tbody style="@TBodyStyleMapper.Result" class="@TBodyClassMapper.Result" @attributes="@TBodyConfig?.Attributes">
-                    <CascadingValue Value="FColumUseType.Body" IsFixed>
-                        @if (DataSource != null && ChildContent != null)
+        </CascadingValue>
+        <table class="@ClassMapper.Result"
+               style="@StyleMapper.Result"
+               id="@Id"
+               @attributes="@Attributes">
+            <thead style="@THeadStyleMapper.Result" class="@THeadClassMapper.Result" @attributes="@THeadConfig?.Attributes">
+                <tr>
+                    <CascadingValue Value="FColumUseType.Header" IsFixed>
+                        @if (ChildContent != null)
                         {
-                            foreach (var data in DataSource)
-                            {
-                                <tr>
-                                    @ChildContent(data)
-                                </tr>
-                            }
+                            @ChildContent(_model)
                         }
                     </CascadingValue>
-                </tbody>
-                <tfoot style="@TFootStyleMapper.Result" class="@TFootClassMapper.Result" @attributes="@TFootConfig?.Attributes">
+                </tr>
+            </thead>
+            <tbody style="@TBodyStyleMapper.Result" class="@TBodyClassMapper.Result" @attributes="@TBodyConfig?.Attributes">
+                <CascadingValue Value="FColumUseType.Body" IsFixed>
+                    @if (DataSource != null && ChildContent != null)
+                    {
+                        foreach (var data in DataSource)
+                        {
+                            <tr>
+                                @ChildContent(data)
+                            </tr>
+                        }
+                    }
+                </CascadingValue>
+            </tbody>
+            <tfoot style="@TFootStyleMapper.Result" class="@TFootClassMapper.Result" @attributes="@TFootConfig?.Attributes">
 
-                </tfoot>
-            </table>
-        </CascadingValue>
+            </tfoot>
+        </table>
     </CascadingValue>
 </CascadingValue>

@@ -27,7 +27,23 @@ namespace ACUI.FomanticUI
             classMapper.Clear()
                 .Add(_fixed)
                 .If(nameof(Disabled).ToLowerInvariant(), () => Disabled)
+                .If("text", () => Type.Value == FPaginationType.Simple)
                 .GetIf(() => Size.ToClass(), () => Size != null)
+                .GetIf(() => Direction.ToClass(), () => Direction != null && Fluid)
+                .GetIf(() => Size.ToClass(), () => Size != null)
+                .GetIf(() => Colored.ToClass(), () => Colored != null)
+                .GetIf(() => Floated.ToClass(), () => Floated != null)
+                ;
+        }
+
+        /// <summary>
+        /// 设置样式
+        /// </summary>
+        /// <param name="styleMapper"></param>
+        protected override void OnSetStyle(Mapper styleMapper)
+        {
+            styleMapper.Clear()
+                .If("margin: 0px;", () => Type.Value == FPaginationType.Simple)
                 ;
         }
 
@@ -184,10 +200,44 @@ namespace ACUI.FomanticUI
         public bool Compact { get; set; }
 
         /// <summary>
+        /// 方向
+        /// </summary>
+        [Parameter]
+        public EnumMix<FDirection> Direction { get; set; }
+
+        /// <summary>
         /// 尺寸
         /// </summary>
         [Parameter]
         public EnumMix<FSize> Size { get; set; }
+
+        /// <summary>
+        /// 固定
+        /// A menu can be fixed to a side of its context
+        /// 菜单可以固定在其上下文的一侧
+        /// </summary>
+        [Parameter]
+        public EnumMix<FFixed> Fixed { get; set; }
+
+        /// <summary>
+        /// 颜色
+        /// 可以指定其他颜色。
+        /// Additional colors can be specified.
+        /// </summary>
+        [Parameter]
+        public EnumMix<FColored> Colored { get; set; }
+
+        /// <summary>
+        /// 浮动
+        /// </summary>
+        [Parameter]
+        public EnumMix<FFloated> Floated { get; set; }
+
+        /// <summary>
+        /// 页码类型
+        /// </summary>
+        [Parameter]
+        public EnumMix<FPaginationType> Type { get; set; } = FPaginationType.Normal;
 
         #endregion
 
@@ -199,11 +249,11 @@ namespace ACUI.FomanticUI
         [Parameter]
         public EventCallback<int> PageIndexChanged { get; set; }
 
-        /// <summary>
-        /// 叶总数
-        /// </summary>
-        [Parameter]
-        public EventCallback<int> PageTotalChanged { get; set; }
+        ///// <summary>
+        ///// 叶总数
+        ///// </summary>
+        //[Parameter]
+        //public EventCallback<int> PageTotalChanged { get; set; }
 
         /// <summary>
         /// 跳页

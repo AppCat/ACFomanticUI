@@ -45,11 +45,13 @@ namespace ACUI.FomanticUI
                 .If(nameof(Vertical).ToLowerInvariant(), () => Vertical)
                 .If(nameof(Right).ToLowerInvariant(), () => Right)
                 .If(nameof(Inverted).ToLowerInvariant(), () => Inverted)
+                .If(nameof(Pagination).ToLowerInvariant(), () => Pagination)
                 .GetIf(() => Attached.ToClass(), () => Attached != null && Tabular)
                 .GetIf(() => Direction.ToClass(), () => Direction != null && Fluid)
                 .GetIf(() => $"{ItemCount.ToClass()} item", () => ItemCount != null)
                 .GetIf(() => Size.ToClass(), () => Size != null)
                 .GetIf(() => Colored.ToClass(), () => Colored != null)
+                .GetIf(() => Floated.ToClass(), () => Floated != null)
                 //.GetIf(() => Variations.ToClass(), () => Variations != null)
                 .GetIf(() => Fixed.ToClass(), () => Fixed != null)
                 .GetIf(() => $"transition {Visibility.ToClass()}", () => Visibility != null && Visibility == FVisibility.Hidden)
@@ -80,6 +82,14 @@ namespace ACUI.FomanticUI
         /// </summary>
         [Parameter]
         public bool Right { get; set; }
+
+        /// <summary>
+        /// 页码
+        /// 分页菜单是经过特殊格式化的，用来显示到内容页的链接
+        /// A pagination menu is specially formatted to present links to pages of content
+        /// </summary>
+        [Parameter]
+        public bool Pagination { get; set; }
 
         /// <summary>
         /// 颜色翻转
@@ -212,6 +222,12 @@ namespace ACUI.FomanticUI
         /// </summary>
         [Parameter]
         public EnumMix<FColored> Colored { get; set; }
+
+        /// <summary>
+        /// 浮动
+        /// </summary>
+        [Parameter]
+        public EnumMix<FFloated> Floated { get; set; }
 
         #endregion
 

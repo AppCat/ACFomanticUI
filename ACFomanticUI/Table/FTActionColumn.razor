@@ -9,6 +9,7 @@ else if (UseType == FColumUseType.Header)
 {
     if (HideHeader)
         return;
+
     <th class="@TitleClassMapper.Result" style="@TitleStyleMapper.Result" @attributes="@TitleConfig?.Attributes">
         @if (TitleTemplate == null)
         {
@@ -26,3 +27,4 @@ else
         @ChildContent
     </td>
 }
+

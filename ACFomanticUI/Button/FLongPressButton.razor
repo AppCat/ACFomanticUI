@@ -9,10 +9,10 @@
             disabled="@Disabled"
             @attributes="@Attributes"
             @onclick="HandleOnClickAsync"
-            @onmouseout="HandleOnMouseup"
-            @onmousedown="HandleOnMousedown"
+            @onmouseout="HandleOnMouseupAsync"
+            @onmousedown="HandleOnMousedownAsync"
             @onmousedown:stopPropagation="@OnMousedownStopPropagation"
-            @onmouseup="HandleOnMouseup"
+            @onmouseup="HandleOnMouseupAsync"
             @onmouseup:stopPropagation="@OnMouseupStopPropagation"
             @onclick:stopPropagation="@OnClickStopPropagation">
         @if (Animated == null)
@@ -46,7 +46,7 @@
             var progressClass = $"ui bottom attached progress {ProgressClass ?? ""} {ProgressColored?.ToClass() ?? ""}";
             var progressStyle = $"position: absolute; bottom: 0px; left: 0px; width: 100%; {ProgressStyle ?? ""}";
         }
-        <div class="@progressClass" Id="@($"{Id}_progress")" style="@progressStyle">
+        <div class="@progressClass" Id="@($"{Id}_progress")" style="@progressStyle" data-percent="100">
             <div class="bar" style="min-width: 4px; @($"{(!IsMouseup ? $"transition: width {((double)Delay + (double)Delay / 30) / 1000}s;" : "")}") @($"{(TimeTask != null && !IsMouseup ? "width:100%;" : "")}")" id="@($"{Id}_progress_bar")" />
         </div>
         @*<SProgress Id="@($"{Id}_progress")" Colored="@ProgressColored" Attached="SAttached.Bottom" Style="@($"position: absolute; bottom: 0px; left: 0px; width: 100%; {ProgressStyle}")" MaxValue="@MaxValue" CurrentValue="@CurrentValue" />*@

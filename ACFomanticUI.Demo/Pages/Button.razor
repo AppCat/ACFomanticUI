@@ -1,0 +1,81 @@
+﻿@page "/button"
+
+<p>Current count: @currentCount</p>
+
+<FDivider />
+
+<FButton OnClick="IncrementCount">Click me</FButton>
+<FLongPressButton OnClick="IncrementCount">Click me</FLongPressButton>
+<FButton OnClick="IncrementCount" Emphasis="FEmphasisRank.Primary">Click me</FButton>
+<FButton OnClick="IncrementCount" Emphasis="FEmphasisRank.Secondary">Click me</FButton>
+
+<FButton OnClick="IncrementCount" Animated="FButtonAnimated.Animated">
+    <VisibleContent>
+        Next
+    </VisibleContent>
+    <HiddenContent>
+        <FIcon Set="right arrow" />
+    </HiddenContent>
+</FButton>
+<FButton OnClick="IncrementCount" Animated="FButtonAnimated.Vertical">
+    <HiddenContent>
+        Shop
+    </HiddenContent>
+    <VisibleContent>
+        <FIcon Set="shop" />
+    </VisibleContent>
+</FButton>
+<FButton OnClick="IncrementCount" Animated="FButtonAnimated.Fade">
+    <VisibleContent>
+        Sign-up for a Pro account
+    </VisibleContent>
+    <HiddenContent>
+        $12.99 a month
+    </HiddenContent>
+</FButton>
+
+<FButton Labeled>
+    <FButton>
+        <FIcon Set="heart" />
+    </FButton>
+    <a class="ui basic label">
+        2,048
+    </a>
+</FButton>
+
+<FButton Labeled>
+    <FButton>
+        <FIcon Set="heart" />
+    </FButton>
+    <a class="ui basic label">
+        2,048
+    </a>
+</FButton>
+
+
+<FButton Labeled>
+    <FButton Colored="FColored.Red">
+        <FIcon Set="heart" />
+    </FButton>
+    <a class="ui basic red left pointing label">
+        2,048
+    </a>
+</FButton>
+
+<FButton Icon OnClick="IncrementCount">
+    <FIcon Set="cloud" />
+</FButton>
+
+<FLongPressButton Icon OnClick="IncrementCount">
+    <FIcon Set="cloud" />
+</FLongPressButton>
+
+@code{
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
+

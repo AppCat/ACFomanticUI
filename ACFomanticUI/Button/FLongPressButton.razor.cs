@@ -106,7 +106,7 @@ namespace ACUI.FomanticUI
         /// 处理鼠标按钮被按下。
         /// </summary>
         /// <param name="args"></param>
-        private async Task HandleOnMousedown(MouseEventArgs args)
+        private async Task HandleOnMousedownAsync(MouseEventArgs args)
         {
             await Run(args);
         }
@@ -115,7 +115,7 @@ namespace ACUI.FomanticUI
         /// 处理鼠标按键被松开。
         /// </summary>
         /// <param name="args"></param>
-        private async Task HandleOnMouseup(MouseEventArgs args)
+        private async Task HandleOnMouseupAsync(MouseEventArgs args)
         {
             await Cancel();
         }
@@ -124,7 +124,7 @@ namespace ACUI.FomanticUI
         /// 处理鼠标移走
         /// </summary>
         /// <param name="args"></param>
-        protected async Task HandleOnMouseout(FocusEventArgs args)
+        protected async Task HandleOnMouseoutAsync(FocusEventArgs args)
         {
             await Cancel();
         }

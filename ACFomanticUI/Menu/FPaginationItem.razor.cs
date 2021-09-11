@@ -26,8 +26,8 @@ namespace ACUI.FomanticUI
         {
             classMapper.Clear()
                 .Add(_fixed)
-                .If("disabled", () => Disabled || Index == null)
-                .If("active ", () => Active)
+                .If(nameof(Active).ToLowerInvariant(), () => Active)
+                .If(nameof(Disabled).ToLowerInvariant(), () => Disabled || Index == null)
                 ;
         }
 
@@ -36,6 +36,13 @@ namespace ACUI.FomanticUI
         /// </summary>
         [CascadingParameter]
         protected FPagination Pagination { get; set; }
+
+        /// <summary>
+        /// 页码类型
+        /// </summary>
+
+        [CascadingParameter]
+        protected FPaginationType Type { get; set; }
 
         #region Parameter    
 
