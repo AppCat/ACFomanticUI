@@ -5,41 +5,43 @@
 <CascadingValue Value="this" IsFixed="true">
     <CascadingValue Value="@ColumnContext" IsFixed>
         <CascadingValue Name="IsInitialize" Value="true" IsFixed>
-            @if (ChildContent != null)
-            {
-                @ChildContent(_model)
-            }
-        </CascadingValue>
-        <table class="@ClassMapper.Result"
-               style="@StyleMapper.Result"
-               id="@Id"
-               @attributes="@Attributes">
-            <thead style="@THeadStyleMapper.Result" class="@THeadClassMapper.Result" @attributes="@THeadConfig?.Attributes">
-                <tr>
-                    <CascadingValue Value="FColumUseType.Header" IsFixed>
-                        @if (ChildContent != null)
+            <CascadingValue Name="HideHeader" Value="@HideHeader" IsFixed>
+                @if (ChildContent != null)
+                {
+                    @ChildContent(_model)
+                }
+            </CascadingValue>
+            <table class="@ClassMapper.Result"
+                   style="@StyleMapper.Result"
+                   id="@Id"
+                   @attributes="@Attributes">
+                <thead style="@THeadStyleMapper.Result" class="@THeadClassMapper.Result" @attributes="@THeadConfig?.Attributes">
+                    <tr>
+                        <CascadingValue Value="FColumUseType.Header" IsFixed>
+                            @if (ChildContent != null)
+                            {
+                                @ChildContent(_model)
+                            }
+                        </CascadingValue>
+                    </tr>
+                </thead>
+                <tbody style="@TBodyStyleMapper.Result" class="@TBodyClassMapper.Result" @attributes="@TBodyConfig?.Attributes">
+                    <CascadingValue Value="FColumUseType.Body" IsFixed>
+                        @if (DataSource != null && ChildContent != null)
                         {
-                            @ChildContent(_model)
+                            foreach (var data in DataSource)
+                            {
+                                <tr>
+                                    @ChildContent(data)
+                                </tr>
+                            }
                         }
                     </CascadingValue>
-                </tr>
-            </thead>
-            <tbody style="@TBodyStyleMapper.Result" class="@TBodyClassMapper.Result" @attributes="@TBodyConfig?.Attributes">
-                <CascadingValue Value="FColumUseType.Body" IsFixed>
-                    @if (DataSource != null && ChildContent != null)
-                    {
-                        foreach (var data in DataSource)
-                        {
-                            <tr>
-                                @ChildContent(data)
-                            </tr>
-                        }
-                    }
-                </CascadingValue>
-            </tbody>
-            <tfoot style="@TFootStyleMapper.Result" class="@TFootClassMapper.Result" @attributes="@TFootConfig?.Attributes">
+                </tbody>
+                <tfoot style="@TFootStyleMapper.Result" class="@TFootClassMapper.Result" @attributes="@TFootConfig?.Attributes">
 
-            </tfoot>
-        </table>
+                </tfoot>
+            </table>
+        </CascadingValue>
     </CascadingValue>
 </CascadingValue>

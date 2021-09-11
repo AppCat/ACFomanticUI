@@ -2,12 +2,39 @@
 @inherits ACComponentBase
 
 <CascadingValue Value="this" IsFixed>
-        <div class="@ClassMapper.Result"
-             style="@StyleMapper.Result"
-             id="@Id"
-             tabindex="@Tabindex"
-             @attributes="@Attributes">
-            DOTO
-        </div>
+    <div class="@ClassMapper.Result"
+         style="@StyleMapper.Result"
+         id="@Id"
+         tabindex="@Tabindex"
+         @attributes="@Attributes"
+         @onkeypress="HandleOnKeyPress"
+         @onkeypress:stopPropagation>
+        @if (CanNext)
+        {
+            <a class="icon item @(Disabled ? "disabled" : string.Empty)" @onclick="(async e => await HandleOnClickItemAsync(PageIndex - 1))">
+                <i class="left chevron icon"></i>
+            </a>
+        }
+        @foreach (var item in _itemParams)
+        {
+            <FPaginationItem Active="@item.active" Index="@item.index" Style="@ItemStyle" OnClickItem="HandleOnClickItemAsync" Id="@($"{Id}_item")" />
+        }
+        @if (CanNext)
+        {
+            <a class="icon item @(Disabled ? "disabled" : string.Empty)" @onclick="(async e => await HandleOnClickItemAsync(PageIndex + 1))">
+                <i class="right chevron icon"></i>
+            </a>
+        }
+        @if (CanJump)
+        {
+            <div class="right menu" style="@MenuStyle" id="@($"{Id}_menu")">
+                <div class="item">
+                    <FInput Style="width: 100px" Icon Transparent TValue="int" @bind-Value="@_jumpPage" InputType="FInputType.Number" OnEnter="HandleJumpClick">
+                        <FIcon Link Icon="forward" OnClick="HandleJumpClick" />
+                    </FInput>
+                </div>
+            </div>
+        }
+    </div>
 </CascadingValue>
 

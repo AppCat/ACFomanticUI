@@ -64,6 +64,12 @@ namespace ACUI.FomanticUI
         [CascadingParameter]
         public FColumUseType UseType { get; set; }
 
+        /// <summary>
+        /// 隐藏表头
+        /// </summary>
+        [CascadingParameter(Name = "HideHeader")]
+        public bool HideHeader { get; set; }
+
         #endregion
 
         #region Parameter

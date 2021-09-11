@@ -159,6 +159,12 @@ namespace ACUI.FomanticUI
         public IEnumerable<TModel> DataSource { get; set; }
 
         /// <summary>
+        /// 隐藏表头
+        /// </summary>
+        [Parameter]
+        public bool HideHeader { get; set; }
+
+        /// <summary>
         /// 填充
         /// A table may sometimes need to be more padded for legibility
         /// </summary>

@@ -56,17 +56,21 @@ namespace ACUI.FomanticUI
 
         #region Event
 
+
+        #endregion
+
         /// <summary>
         /// 点击
         /// </summary>
         /// <returns></returns>
         protected async Task OnClickAsync(MouseEventArgs args)
         {
+            if (Disabled)
+                return;
+
             await OnClick.InvokeAsync(args);
             await ItemList?.SelectedItemAsync(this, true);
         }
-
-        #endregion
 
         #region SDLC
 

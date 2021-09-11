@@ -9,11 +9,9 @@ using System.Threading.Tasks;
 namespace ACUI.FomanticUI
 {
     /// <summary>
-    /// 项目
-    /// 项视图表示要显示的大量站点内容集合
-    /// An item view presents large collections of site content for display
+    /// 页码项
     /// </summary>
-    public partial class FItem : ACSonContentComponentBase
+    public partial class FPaginationItem : ACComponentBase
     {
         /// <summary>
         /// 固定类名
@@ -28,58 +26,60 @@ namespace ACUI.FomanticUI
         {
             classMapper.Clear()
                 .Add(_fixed)
-                .If(nameof(Disabled).ToLowerInvariant(), () => Disabled)
+                .If("disabled", () => Disabled || Index == null)
+                .If("active ", () => Active)
                 ;
         }
 
-        #region CascadingParameter
-
         /// <summary>
-        /// 显示结果
+        /// 页码
         /// </summary>
-        [CascadingParameter(Name = "ParentType")]
-        internal FItemParentType ParentType { get; set; }
+        [CascadingParameter]
+        protected FPagination Pagination { get; set; }
 
-        #endregion
-
-        #region Parameter
+        #region Parameter    
 
         /// <summary>
-        /// 超链接
+        /// 是否禁用
         /// </summary>
-        [Parameter]
-        public string Href { get; set; }
+        public new bool Disabled => Pagination?.Disabled ?? false;
 
         /// <summary>
-        /// 链接
+        /// 选中
         /// </summary>
         [Parameter]
-        public bool Link { get; set; }
+        public bool Active { get; set; }
 
         /// <summary>
-        /// 点击停止传播
+        /// 表示 页码项号
         /// </summary>
         [Parameter]
-        public bool OnClickStopPropagation { get; set; } = true;
+        public int? Index { get; set; }
 
         #endregion
 
         #region Event
 
         /// <summary>
-        /// 点击事件
+        /// 点击项事件
         /// </summary>
         [Parameter]
-        public EventCallback<MouseEventArgs> OnClick { get; set; }
+        public EventCallback<int> OnClickItem { get; set; }
 
         /// <summary>
         /// 处理 OnClick
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        private async Task HandleOnClickAsync(MouseEventArgs args)
+        private async Task OnClickAsync(MouseEventArgs args)
         {
-            await OnClick.InvokeAsync(args);         
+            if (Disabled)
+                return;
+
+            if (OnClickItem.HasDelegate)
+            {
+                await OnClickItem.InvokeAsync(Index ?? 0);
+            }
         }
 
         #endregion

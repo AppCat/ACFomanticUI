@@ -1,0 +1,19 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACComponentBase
+
+<CascadingValue Value="this" IsFixed="@true">
+    <a class="@ClassMapper.Result"
+       style="@StyleMapper.Result"
+       id="@Id"
+       @attributes="@Attributes"
+       @onclick="OnClickAsync">
+        @if (Index == null)
+        {
+            @("...")
+        }
+        else
+        {
+            @Index
+        }
+    </a>
+</CascadingValue>

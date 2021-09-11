@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,70 @@ namespace ACUI.FomanticUI
                 .GetIf(() => Size.ToClass(), () => Size != null)
                 ;
         }
+
+        /// <summary>
+        /// 页码项参数
+        /// </summary>
+        private IEnumerable<(int? index, bool active)> _itemParams => GenerateItems();
+
+        /// <summary>
+        /// 生成页码项
+        /// </summary>
+        private IEnumerable<(int? index, bool active)> GenerateItems()
+        {
+            int show = BothShow * 2 + 1;
+            int start;
+            int end;
+            if (PageTotal < PageIndex)
+            {
+                PageTotal = PageIndex;
+            }
+            var items = new List<(int?, bool)>();
+            if (PageIndex < BothShow * 2)
+            {
+                start = 1;
+                end = 1 + BothShow * 2;
+            }
+            else if (PageIndex + BothShow >= PageTotal)
+            {
+                start = PageTotal - BothShow * 2;
+                end = PageTotal;
+            }
+            else
+            {
+                start = PageIndex - BothShow;
+                end = PageIndex + BothShow; ;
+            }
+            if (end > PageTotal)
+                end = PageTotal;
+            if (start <= 0)
+                start = 1;
+            if (PageIndex > (BothShow + 1) && PageTotal > BothShow * 2 && start != 1)
+            {
+                items.Add((1, false));
+                //items.Add((null, false));
+            }
+            for (int i = start; i <= end; i++)
+            {
+                var index = i;
+                items.Add((index, index == PageIndex));
+            }
+            if (PageIndex < (PageTotal - BothShow) && PageTotal > BothShow * 2 && end != PageTotal)
+            {
+                //items.Add((null, false));
+                items.Add((PageTotal, false));
+            }
+            if (PageIndex > end)
+            {
+                HandleOnClickItemAsync(end).Wait();
+            }
+            return items;
+        }
+
+        /// <summary>
+        /// 跳的页
+        /// </summary>
+        private int _jumpPage { get; set; } = 1;
 
         #region Parameter        
 
@@ -125,6 +190,85 @@ namespace ACUI.FomanticUI
         public EnumMix<FSize> Size { get; set; }
 
         #endregion
+
+        #region Event
+
+        /// <summary>
+        /// 页码变化
+        /// </summary>
+        [Parameter]
+        public EventCallback<int> PageIndexChanged { get; set; }
+
+        /// <summary>
+        /// 叶总数
+        /// </summary>
+        [Parameter]
+        public EventCallback<int> PageTotalChanged { get; set; }
+
+        /// <summary>
+        /// 跳页
+        /// </summary>
+        [Parameter]
+        public EventCallback<int> OnJumpPage { get; set; }
+
+        /// <summary>
+        /// 页码变化事件
+        /// </summary>
+        [Parameter]
+        public EventCallback<FPaginationEventArgs> OnPageIndexChange { get; set; }
+
+        #endregion
+
+        /// <summary>
+        /// 点击页码项
+        /// </summary>
+        /// <returns></returns>
+        private async Task HandleOnClickItemAsync(int index)
+        {
+            if (Disabled)
+                return;
+            if (index < 1)
+                PageIndex = 1;
+            else if (index > PageTotal)
+                PageIndex = PageTotal;
+            else
+                PageIndex = index;
+            //PageIndex = index < 1 || index > PageTotal ? PageIndex : index;
+            if (PageIndexChanged.HasDelegate)
+            {
+                await PageIndexChanged.InvokeAsync(PageIndex);
+            }
+            if (OnPageIndexChange.HasDelegate)
+            {
+                await OnPageIndexChange.InvokeAsync(new FPaginationEventArgs(PageIndex, PageTotal));
+            }
+        }
+
+        /// <summary>
+        /// 键盘按下
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        private async Task HandleOnKeyPress(KeyboardEventArgs args)
+        {
+            if (Disabled)
+                return;
+            await Task.CompletedTask;
+
+        }
+
+        /// <summary>
+        /// 处理跳点击
+        /// </summary>
+        /// <returns></returns>
+        private async Task HandleJumpClick()
+        {
+            if (!CanJump || Disabled)
+                return;
+            await HandleOnClickItemAsync(_jumpPage);
+            _jumpPage = PageIndex;
+            await OnJumpPage.InvokeAsync(_jumpPage);
+        }
     }
 
 }

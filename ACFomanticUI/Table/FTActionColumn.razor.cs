@@ -11,6 +11,8 @@ namespace ACUI.FomanticUI
     /// </summary>
     public partial class FTActionColumn : FColumnBase
     {
+
+
         #region SDLC
 
         /// <summary>

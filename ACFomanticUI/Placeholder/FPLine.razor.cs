@@ -37,7 +37,7 @@ namespace ACUI.FomanticUI
         /// A line can specify how long its contents should appear
         /// </summary>
         [Parameter]
-        public FPLineLength? Length { get; set; }
+        public EnumMix<FPLineLength> Length { get; set; }
 
         #endregion
     }
