@@ -1,0 +1,87 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACContentComponentBase
+
+
+@if (TemplateSettings != null)
+{
+    var attribute = new Dictionary<string, object>
+    {
+        { "OnDeny", TemplateSettings.OnDeny },
+        { "OnHide", TemplateSettings.OnHide },
+        { "OnApprove", TemplateSettings.OnApprove }
+    };
+
+    <FModal @ref="@_template"
+            Class="@TemplateSettings.Class"
+            Style="@TemplateSettings.Style"
+            Inverted="@TemplateSettings.Inverted"
+            Size="@TemplateSettings.Size"
+            @attributes="attribute">
+        @if (TemplateSettings.CloseIcon)
+        {
+            <FIcon Set="close" />
+        }
+        @if (!string.IsNullOrEmpty(TemplateSettings.Title) || TemplateSettings.TitleTemplate != null)
+        {
+            <FHeader Style="@TemplateSettings.TitleStyle" Class="@TemplateSettings.TitleClass">
+                @if (TemplateSettings.TitleTemplate != null)
+                {
+                    @TemplateSettings.TitleTemplate(TemplateSettings.Tag)
+                }
+                else
+                {
+                    @TemplateSettings.Title
+                }
+            </FHeader>
+        }
+        @if (!string.IsNullOrEmpty(TemplateSettings.Content) || TemplateSettings.ContentTemplate != null)
+        {
+            <FContent Style="@TemplateSettings.ContentStyle" Class="@TemplateSettings.ContentClass">
+                @if (TemplateSettings.ContentTemplate != null)
+                {
+                    @TemplateSettings.ContentTemplate(TemplateSettings.Tag)
+                }
+                else
+                {
+                    @TemplateSettings.Content
+                }
+            </FContent>
+        }
+        @if (TemplateSettings.Actions?.Any() ?? false || TemplateSettings.ActionsTemplate != null)
+        {
+            <FMActions Style="@TemplateSettings.ActionsStyle" Class="@TemplateSettings.ActionsClass">
+                @if (TemplateSettings.ActionsTemplate != null)
+                {
+                    @TemplateSettings.ActionsTemplate(TemplateSettings.Tag)
+                }
+                else
+                {
+                    @foreach (var action in TemplateSettings.Actions)
+                    {
+                        <FButton Colored="action.Colored" Class="@action.Class" Style="@action.Style" OnClick="action.OnClick" Icon="!string.IsNullOrEmpty(action.Icon)">
+                            @if (!string.IsNullOrEmpty(action.Icon))
+                            {
+                                <FIcon Set="@action.Icon" />
+                            }
+                            @action.Text
+                        </FButton>
+                    }
+                }
+            </FMActions>
+        }
+    </FModal>
+}
+else
+{
+
+    <CascadingValue Value="this" IsFixed="true">
+        <CascadingValue Name="AsSon" Value="true" IsFixed>
+            <div class="@ClassMapper.Result"
+                 style="@StyleMapper.Result"
+                 id="@Id"
+                 @attributes="@Attributes">
+                @ChildContent
+            </div>
+        </CascadingValue>
+    </CascadingValue>
+}

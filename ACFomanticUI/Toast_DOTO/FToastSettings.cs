@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace ACFomanticUI.Demo.Pages
+namespace ACUI.FomanticUI
 {
     /// <summary>
-    /// 学生
+    /// 土司 模板设置
     /// </summary>
-    public class Student
+    public class FToastSettings
     {
         /// <summary>
-        /// 名称
+        /// 标题
         /// </summary>
-        public string Name { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
-        /// 年龄
+        /// 消息
         /// </summary>
-        public int Age { get; set; }
+        public string Message { get; set; }
     }
 }

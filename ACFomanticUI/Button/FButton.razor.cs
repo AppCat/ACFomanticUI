@@ -111,6 +111,12 @@ namespace ACUI.FomanticUI
         public string HtmlType { get; set; } = "button";
 
         /// <summary>
+        /// 内容
+        /// </summary>
+        [Parameter]
+        public string Content { get; set; }
+
+        /// <summary>
         /// 隐藏内容
         /// </summary>
         [Parameter]
@@ -139,11 +145,6 @@ namespace ACUI.FomanticUI
         /// </summary>
         [Parameter]
         public bool OnClickStopPropagation { get; set; } = true;
-
-        /// <summary>
-        /// 内容
-        /// </summary>
-        public string Content { get; set; }
 
         /// <summary>
         /// 翻转

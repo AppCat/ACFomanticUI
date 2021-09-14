@@ -27,6 +27,8 @@ namespace ACUI.FomanticUI
                 .Add(_fixed)
                 .If(nameof(Disabled).ToLowerInvariant(), () => Disabled)
                 .If(nameof(Extra).ToLowerInvariant(), () => Extra)
+                .If(nameof(Image).ToLowerInvariant(), () => Image)
+                .If(nameof(Scrolling).ToLowerInvariant(), () => Scrolling)
                 .GetIf(() => TextAlignment.ToClass(), () => TextAlignment != null)
                 ;
         }
@@ -40,6 +42,22 @@ namespace ACUI.FomanticUI
         /// </summary>
         [Parameter]
         public bool Extra { get; set; }
+
+        /// <summary>
+        /// 图像
+        /// 模态可以包含图像内容
+        /// A modal can contain image content
+        /// </summary>
+        [Parameter]
+        public bool Image { get; set; }
+
+        /// <summary>
+        /// 滚动
+        /// 一个模态可以使用整个屏幕的大小
+        /// A modal can use the entire size of the screen
+        /// </summary>
+        [Parameter]
+        public bool Scrolling { get; set; }
 
         /// <summary>
         /// 对齐

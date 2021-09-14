@@ -1,0 +1,89 @@
+﻿@page "/modal"
+
+@*<FModal Class="close icon loading" @ref="@_modal1">
+        <FHeader>
+            Header
+        </FHeader>
+        <FContent>
+            <p></p>
+            <p></p>
+            <p></p>
+        </FContent>
+    </FModal>*@
+
+@*<FModal @ref="@_modal2" Inverted OnDeny="() => false" Settings="new FModalSettings { Centered = false }" TemplateSettings="@_templateSettings">
+        <FIcon Set="close" />
+        <FHeader>
+            Modal Title
+        </FHeader>
+        <FContent Image>
+            <FDescription>
+                A description can appear on the right
+            </FDescription>
+        </FContent>
+        <FMActions>
+            <FButton Colored="FColored.Red" Class="deny" Content="Not now" />
+            <FButton Colored="FColored.Green" Class="approve" Content="Redeem now" />
+        </FMActions>
+    </FModal>
+
+    <FDivider />*@
+
+<FButton OnClick="HandleOnClick" Content="显示" />
+
+@code{
+
+    private FModal _modal1;
+    private FModal _modal2;
+    [Inject]
+    private ACFModalService _modalService { get; set; }
+
+    private static RenderFragment<object> _contentTemplate = tag => __builder  =>
+    {
+        var student = tag as Student;
+        <p>名称: <FText Colored="FColored.Red">@student.Name</FText></p>
+        <p>年龄: <FText>@student.Age</FText></p>
+    };
+
+    private FMTemplateSettings _templateSettings = new FMTemplateSettings
+    {
+        Title = "Title",
+        ContentTemplate = _contentTemplate,
+        CloseIcon = true,
+        Actions = new[]
+        {
+            new FMATemplateSettings
+            {
+                Text = "deny",
+                Icon = "circle outline",
+                Colored = FColored.Red,
+                Class = "deny",
+
+            },
+            new FMATemplateSettings
+            {
+                Text = "approve",
+                Icon = "circle outline",
+                Colored = FColored.Green,
+                Class = "approve"
+            }
+        },
+        Inverted = true,
+        Size = FSize.Mini,
+        OnDeny = () => { Console.WriteLine("OnDeny"); return true; },
+        OnHide = () => { Console.WriteLine("OnHide"); return true; },
+        OnApprove = () => { Console.WriteLine("OnApprove"); return true; },
+        Tag = new Student
+        {
+            Name = "张四",
+            Age = 20
+        }
+    };
+
+    public async Task HandleOnClick()
+    {
+        //await _modal1?.ShowAsync();
+        //await _modal2?.ShowAsync();
+        await _modalService.ShowModalAsync(_templateSettings);
+    }
+}

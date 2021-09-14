@@ -1,0 +1,23 @@
+﻿@page "/toast"
+
+<FToast @ref="@_toast" Colored="FColored.Blue" Style="display: block;">
+    <FContent>
+        <FHeader>Notice</FHeader>
+        A Toast can be generated out of existing DOM Nodes
+    </FContent>
+</FToast>
+
+<FButton OnClick="HandleOnClick" Content="显示" />
+
+@code{
+    private FToast _toast;
+
+    public async Task HandleOnClick()
+    {
+        await _toast.ShotAsync(new FToastSettings
+        {
+            Title = "Title",
+            Message = "Message"
+        });
+    }
+}
