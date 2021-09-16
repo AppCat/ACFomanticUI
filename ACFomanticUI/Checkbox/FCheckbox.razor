@@ -1,0 +1,13 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACInuptComponentBase<bool?>
+
+<CascadingValue Value="this" IsFixed="@true">
+    <div class="@ClassMapper.Result"
+         style="@StyleMapper.Result"
+         id="@Id"
+         @onclick="HandleClick"
+         @attributes="@Attributes">
+        <input type="checkbox" tabindex="0" class="hidden" checked="@Checked" id="@($"input_{Id}")" @onclick="HandleClick">
+        <label>@Label</label>
+    </div>
+</CascadingValue>

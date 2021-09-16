@@ -1,0 +1,42 @@
+﻿@page "/input"
+
+<FTypeInput ValueType="typeof(int?)" Value="@Int" ValueChanged="@(input => Int = (int?)input)" Transparent Icon>
+    <ChildContent>
+        <FIcon Set="x" />
+    </ChildContent>
+</FTypeInput>
+
+<FInput InputType="FInputType.Number" TValue="int?" Value="@Int" ValueChanged="@(input => Int = input)" />
+
+<FInput InputType="FInputType.Number" @bind-Value="@Int" />
+
+<FDivider />
+
+<FTypeInput ValueType="typeof(DateTime?)" Value="@DateTime" ValueChanged="@(input => DateTime = (DateTime?)input)" Transparent Icon Format="yyyy-MM-ddThh:mm">
+    <ChildContent>
+        <FIcon Set="x" />
+    </ChildContent>
+</FTypeInput>
+
+<FInput InputType="FInputType.Datetime" TValue="DateTime?" Value="@DateTime" ValueChanged="@(input => DateTime = input)" Format="yyyy-MM-ddThh:mm" />
+
+<FInput InputType="FInputType.Datetime" @bind-Value="@DateTime" Format="yyyy-MM-ddThh:mm" />
+
+<FDivider />
+
+<FTypeInput ValueType="typeof(bool)" Value="@Bool" ValueChanged="@(input => Bool = (bool)input)" Transparent Icon>
+    <ChildContent>
+        <FIcon Set="x" />
+    </ChildContent>
+</FTypeInput>
+
+<FCheckbox Checked="@Bool" CheckedChanged="@(input => Bool = (bool)input)" />
+
+@*<FCheckbox @bind-Checked="@Bool" />*@
+
+@code{
+
+    protected int? Int { get; set; }
+    protected DateTime? DateTime { get; set; }
+    protected bool Bool { get; set; }
+}

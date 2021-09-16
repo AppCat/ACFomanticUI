@@ -233,7 +233,7 @@ namespace ACUI.FomanticUI
                 }
             }
             //await JsInvokeAsync("ac.setInputValue", InputElement, _inputValue);
-            await InputElement.Val(_inputValue);
+            //await InputElement.Val<TValue>(parsedValue);
         }
 
         /// <summary>
@@ -248,8 +248,9 @@ namespace ACUI.FomanticUI
                 await OnChangeAsync(new ChangeEventArgs
                 {
                     //Value = await JsInvokeAsync<string>("ac.getInputValue", InputElement, _inputValue)
-                    Value = await InputElement.Val()
-            });
+                    //Value = await InputElement.Val<TValue>()
+                    Value = Value
+                });
             }
             if (args != null && args.Key == "Enter")
             {
@@ -273,7 +274,7 @@ namespace ACUI.FomanticUI
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            if (typeof(TValue) == typeof(DateTime))
+            if (typeof(TValue) == typeof(DateTime) && string.IsNullOrEmpty(Format))
             {
                 Format = "yyyy-MM-ddThh:mm:ss";
             }

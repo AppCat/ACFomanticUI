@@ -11,7 +11,7 @@ namespace ACUI.FomanticUI
     /// <summary>
     /// 菜单项
     /// </summary>
-    public partial class FMenuItem : ACItemComponentBase
+    public partial class FMenuItem : ACOverlayItemComponentBase
     {
         /// <summary>
         /// 固定

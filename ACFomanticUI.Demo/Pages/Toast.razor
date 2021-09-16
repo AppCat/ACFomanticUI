@@ -1,6 +1,6 @@
 ﻿@page "/toast"
 
-<FToast @ref="@_toast" Colored="FColored.Blue" Style="display: block;">
+<FToast Colored="FColored.Blue" Style="display: block;">
     <FContent>
         <FHeader>Notice</FHeader>
         A Toast can be generated out of existing DOM Nodes
@@ -10,11 +10,12 @@
 <FButton OnClick="HandleOnClick" Content="显示" />
 
 @code{
-    private FToast _toast;
+    [Inject]
+    private ACFToastService _toastService { get; set; }
 
     public async Task HandleOnClick()
     {
-        await _toast.ShotAsync(new FToastSettings
+        await _toastService.ShotAsync(new FToastSettings
         {
             Title = "Title",
             Message = "Message"

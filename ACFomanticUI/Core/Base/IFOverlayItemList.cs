@@ -8,28 +8,30 @@ using System.Threading.Tasks;
 namespace ACUI.FomanticUI
 {
     /// <summary>
-    /// 项目
+    /// 项目列表
     /// </summary>
-    public interface IFItem : IExternalNotifyStateHasChanged
+    public interface IFOverlayItemList : IFItemList<IFOverlayItem>
     {
         /// <summary>
-        /// 项Id
+        /// 可见度
         /// </summary>
-        string ItemId { get; set; }
+        EnumMix<FVisibility> Visibility { get; set; }
 
         /// <summary>
-        /// 键
+        /// 能见度变化
         /// </summary>
-        string Key { get; set; }
+        EventCallback<EnumMix<FVisibility>> VisibilityChanged { get; set; }
 
         /// <summary>
-        /// 附加
+        /// 显示
         /// </summary>
-        object Tag { get; set; }
+        /// <returns></returns>
+        Task Show();
 
         /// <summary>
-        /// 禁用
+        /// 隐藏
         /// </summary>
-        bool Disabled { get; }
+        /// <returns></returns>
+        Task Hide();
     }
 }

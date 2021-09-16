@@ -16,16 +16,20 @@
                style="@StyleMapper.Result"
                id="@Id"
                @attributes="@Attributes">
-            <thead style="@THeadStyleMapper.Result" class="@THeadClassMapper.Result" @attributes="@THeadConfig?.Attributes">
-                <tr>
-                    <CascadingValue Value="FColumUseType.Header" IsFixed>
-                        @if (ChildContent != null)
-                        {
-                            @ChildContent(_model)
-                        }
-                    </CascadingValue>
-                </tr>
-            </thead>
+
+            @if (!HideHeader)
+            {
+                <thead style="@THeadStyleMapper.Result" class="@THeadClassMapper.Result" @attributes="@THeadConfig?.Attributes">
+                    <tr>
+                        <CascadingValue Value="FColumUseType.Header" IsFixed>
+                            @if (ChildContent != null)
+                            {
+                                @ChildContent(_model)
+                            }
+                        </CascadingValue>
+                    </tr>
+                </thead>
+            }
             <tbody style="@TBodyStyleMapper.Result" class="@TBodyClassMapper.Result" @attributes="@TBodyConfig?.Attributes">
                 <CascadingValue Value="FColumUseType.Body" IsFixed>
                     @if (DataSource != null && ChildContent != null)

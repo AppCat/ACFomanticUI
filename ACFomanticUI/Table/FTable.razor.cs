@@ -61,7 +61,6 @@ namespace ACUI.FomanticUI
             ;
 
             TBodyClassMapper.Clear()
-            .Add("hidden content")
             .Get(() => TBodyConfig?.Class)
             ;
 
@@ -70,7 +69,6 @@ namespace ACUI.FomanticUI
             ;
 
             TFootClassMapper.Clear()
-            .Add("visible content")
             .Get(() => TFootConfig?.Class)
             ;
 
@@ -79,7 +77,6 @@ namespace ACUI.FomanticUI
             ;
 
             THeadClassMapper.Clear()
-            .Add("hidden content")
             .Get(() => THeadConfig?.Class)
             ;
 

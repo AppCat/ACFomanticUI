@@ -82,7 +82,7 @@ namespace ACUI.FomanticUI
         /// <returns></returns>
         public async Task ShotAsync(FToastSettings settings)
         {
-            await ToastJS.ShotAsync(Id, settings);
+            await ToastJS.ShotAsync(settings);
         }
     }
 }

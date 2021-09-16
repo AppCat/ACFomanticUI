@@ -1,0 +1,26 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACOverlayItemComponentBase
+
+<CascadingValue Value="this" IsFixed>
+    <div class="@ClassMapper.Result"
+         style="@StyleMapper.Result"
+         id="@Id"
+         @attributes="@Attributes"
+         @onclick="@OnClickAsync"
+         @onmouseover="@OnMouseoverAsync"
+         @onclick:stopPropagation>
+        @if (ValueTemplate == null)
+        {
+            @Value
+            @if (Active)
+            {
+                <FIcon Colored="FColored.Black" Size="FSize.Mini" Icon="check circle" Floated="FFloated.Right" />
+            }
+        }
+        else
+        {
+            @ValueTemplate(this)
+        }
+        @ChildContent
+    </div>
+</CascadingValue>

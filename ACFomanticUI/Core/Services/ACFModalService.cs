@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ACUI.FomanticUI
 {
     /// <summary>
-    /// 模态服务
+    /// 模态 服务
     /// </summary>
     public class ACFModalService
     {

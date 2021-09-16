@@ -32,14 +32,23 @@ namespace ACUI.FomanticUI.JS
         }
 
         /// <summary>
-        /// 设置
+        /// 弹
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-        public async Task ShotAsync(string id , FToastSettings settings)
+        public async Task ShotAsync(FToastSettings settings)
         {
-            await VoidMethodAsync("shot", args: new object[] { id, settings });
+            await VoidMethodAsync("shot", settings);
+        }
+
+        /// <summary>
+        /// 弹
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        public async Task ShotAsync(object settings)
+        {
+            await VoidMethodAsync("shot", settings);
         }
 
         /// <summary>

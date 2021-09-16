@@ -12,7 +12,7 @@ namespace ACUI.FomanticUI
     /// 菜单显示分组导航操作
     /// A menu displays grouped navigation actions
     /// </summary>
-    public partial class FMenu : ACListComponentBase
+    public partial class FMenu : ACListOverlayComponentBase
     {
         /// <summary>
         /// 前缀
@@ -54,7 +54,7 @@ namespace ACUI.FomanticUI
                 .GetIf(() => Floated.ToClass(), () => Floated != null)
                 //.GetIf(() => Variations.ToClass(), () => Variations != null)
                 .GetIf(() => Fixed.ToClass(), () => Fixed != null)
-                .GetIf(() => $"transition {Visibility.ToClass()}", () => Visibility != null && Visibility == FVisibility.Hidden)
+                .GetIf(() => $"transition {Visibility.ToClass()}", () => Visibility != null && Visibility?.Value == FVisibility.Hidden)
                 .Add(_suffix)
                 ;
         }
@@ -66,12 +66,6 @@ namespace ACUI.FomanticUI
         /// </summary>
         [CascadingParameter]
         protected FMenu Parent { get; set; }
-
-        /// <summary>
-        /// 可见度
-        /// </summary>
-        [CascadingParameter]
-        public FVisibility? Visibility { get; set; }
 
         #endregion
 
@@ -233,11 +227,7 @@ namespace ACUI.FomanticUI
 
         #region Event
 
-        /// <summary>
-        /// 能见度变化
-        /// </summary>
-        [Parameter]
-        public EventCallback<FVisibility> VisibilityChanged { get; set; }
+
 
         #endregion
 
@@ -255,39 +245,12 @@ namespace ACUI.FomanticUI
         #endregion
 
         /// <summary>
-        /// 显示
-        /// </summary>
-        /// <returns></returns>
-        public virtual async Task Show()
-        {
-            if (Visibility != FVisibility.Hidden)
-                return;
-            Visibility = FVisibility.Visible;
-            await VisibilityChanged.InvokeAsync((FVisibility)Visibility);
-            SelectClear();
-            StateHasChanged();
-        }
-
-        /// <summary>
-        /// 隐藏
-        /// </summary>
-        /// <returns></returns>
-        public virtual async Task Hide()
-        {
-            if (Visibility != FVisibility.Visible)
-                return;
-            Visibility = FVisibility.Hidden;
-            await VisibilityChanged.InvokeAsync((FVisibility)Visibility);
-            StateHasChanged();
-        }
-
-        /// <summary>
         /// 选择选项异步
         /// </summary>
         /// <param name="item"></param>
         /// <param name="isClick"></param>
         /// <returns></returns>
-        public override Task SelectedItemAsync(IFItem item, bool isClick = false)
+        public override Task SelectedItemAsync(IFOverlayItem item, bool isClick = false)
         {
             var key = item?.Key ?? string.Empty;
             if (SelectedKeys?.Contains(key) ?? false && SelectedKeys.Length <= 1)

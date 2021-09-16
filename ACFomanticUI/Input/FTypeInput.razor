@@ -1,0 +1,118 @@
+﻿@namespace ACUI.FomanticUI
+@inherits FInput<object>
+
+@TypeToInput(ValueType)
+
+@code{
+
+    private RenderFragment<T> ToChildContent<T>()
+    {
+        return (p =>@<Template>
+        @if (ChildContent != null)
+        {@ChildContent(Value)}
+        </Template>);
+    }
+
+private RenderFragment Input<T>(EnumMix<FInputType> mix = null)
+{
+    return @<FInput InputType="@(mix ?? FInputType.Text)" TValue="T" Value="@(Value is T value ? value : default(T))" ValueChanged="SetValue" @attributes="@InputAttributes" ChildContent="@(ToChildContent<T>())" />;
+}
+
+private RenderFragment TypeToInput(Type type)
+{
+var underlyingType = Nullable.GetUnderlyingType(type) ?? type;
+return
+@<Template>
+    @switch (Type.GetTypeCode(underlyingType))
+    {
+        case TypeCode.Boolean:
+            if (underlyingType != type)
+            {
+                var @checked = (bool?)Value;
+                <FCheckbox Checked="@(@checked)" CheckedChanged="SetValue" @attributes="@InputAttributes" ChildContent="@(ToChildContent<bool?>())"/>
+            }
+            else
+            {
+                var @checked = Value is bool value ? value : default(bool);
+                <FCheckbox Checked="@((bool?)@checked)" CheckedChanged="SetValue" @attributes="@InputAttributes" ChildContent="@(ToChildContent<bool?>())"/>
+            }
+            break;
+        case TypeCode.SByte:
+            if (underlyingType != type)
+            {
+                @(Input<sbyte?>(FInputType.Number))
+                return;
+            }
+            @(Input<sbyte>(FInputType.Number))
+            break;
+        case TypeCode.Byte:
+            if (underlyingType != type)
+            {
+                @(Input<byte?>(FInputType.Number))
+                return;
+            }
+            @(Input<byte>(FInputType.Number))
+            break;
+        case TypeCode.Int16:
+            if (underlyingType != type)
+            {
+                @(Input<Int16?>(FInputType.Number))
+                return;
+            }
+            @(Input<Int16>(FInputType.Number))
+            break;
+        case TypeCode.UInt16:
+            if (underlyingType != type)
+            {
+                @(Input<UInt16?>(FInputType.Number))
+                return;
+            }
+            @(Input<UInt16>(FInputType.Number))
+            break;
+        case TypeCode.Int32:
+            if (underlyingType != type)
+            {
+                @(Input<int?>(FInputType.Number))
+                return;
+            }
+            @(Input<int>(FInputType.Number))
+            break;
+        case TypeCode.UInt32:
+            if (underlyingType != type)
+            {
+                @(Input<uint?>(FInputType.Number))
+                return;
+            }
+            @(Input<uint>(FInputType.Number))
+            break;
+        case TypeCode.Double:
+            if (underlyingType != type)
+            {
+                @(Input<double?>(FInputType.Number))
+                return;
+            }
+            @(Input<double>(FInputType.Number))
+            break;
+        case TypeCode.Decimal:
+            if (underlyingType != type)
+            {
+                @(Input<decimal?>(FInputType.Number))
+                return;
+            }
+            @(Input<decimal>(FInputType.Number))
+            break;
+        case TypeCode.DateTime:
+            if (underlyingType != type)
+            {
+                @(Input<DateTime?>(FInputType.Datetime))
+                return;
+            }
+            @(Input<DateTime>(FInputType.Datetime))
+            break;
+        case TypeCode.String:
+            @(Input<string>(FInputType.Text))
+            break;
+    }
+</Template>;
+}
+}

@@ -27,6 +27,7 @@ namespace ACUI.FomanticUI.Extensions
 
             // Toast
             services.AddSingleton<ToastJS>();
+            services.AddSingleton<ACFToastService>();
 
             return services;
         }

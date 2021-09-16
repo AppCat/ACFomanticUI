@@ -1,5 +1,5 @@
 ﻿@namespace ACUI.FomanticUI
-@inherits ACItemComponentBase
+@inherits ACOverlayItemComponentBase
 
 <CascadingValue Value="this" IsFixed>
     @if (Link)
@@ -10,7 +10,18 @@
            href="@Href"
            @attributes="@Attributes"
            @onclick="OnClickAsync">
-            @ChildContent
+            @if(ChildContent != null)
+            {
+                @ChildContent
+            }
+            else if(ValueTemplate != null)
+            {
+                @ValueTemplate
+            }
+            else
+            {
+                @Value
+            }
         </a>
     }
     else
@@ -20,7 +31,18 @@
              id="@Id"
              @attributes="@Attributes"
              @onclick="OnClickAsync">
-            @ChildContent
+            @if(ChildContent != null)
+            {
+                @ChildContent
+            }
+            else if(ValueTemplate != null)
+            {
+                @ValueTemplate
+            }
+            else
+            {
+                @Value
+            }
         </div>
     }
 </CascadingValue>

@@ -75,6 +75,30 @@ namespace ACUI.FomanticUI
         #region Parameter
 
         /// <summary>
+        /// Th Rowspan
+        /// </summary>
+        [Parameter]
+        public int? ThRowspan { get; set; }
+
+        /// <summary>
+        /// Td Rowspan
+        /// </summary>
+        [Parameter]
+        public int? TdRowspan { get; set; }
+
+        /// <summary>
+        /// Th Colspan
+        /// </summary>
+        [Parameter]
+        public int? ThColspan { get; set; }
+
+        /// <summary>
+        /// Td Colspan
+        /// </summary>
+        [Parameter]
+        public int? TdColspan { get; set; }
+
+        /// <summary>
         /// 列序号
         /// </summary>
         [Parameter]

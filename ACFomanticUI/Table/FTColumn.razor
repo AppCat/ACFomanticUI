@@ -11,7 +11,7 @@ else if (UseType == FColumUseType.Header)
     if (HideHeader)
         return;
 
-    <th class="@TitleClassMapper.Result" style="@TitleStyleMapper.Result" @attributes="@TitleConfig?.Attributes">
+    <th class="@TitleClassMapper.Result" style="@TitleStyleMapper.Result" @attributes="@TitleConfig?.Attributes" colspan="@ThColspan" rowspan="@ThRowspan">
         @if (TitleTemplate == null)
         {
             @(Title ?? DisplayName ?? FieldName ?? string.Empty)
@@ -24,7 +24,7 @@ else if (UseType == FColumUseType.Header)
 }
 else
 {
-    <td class="@ClassMapper.Result" style="@StyleMapper.Result" @attributes="@Attributes">
+    <td class="@ClassMapper.Result" style="@StyleMapper.Result" @attributes="@Attributes" colspan="@TdColspan" rowspan="@TdRowspan">
         @if (ChildContent == null)
         {
             if (string.IsNullOrEmpty(Format))

@@ -26,11 +26,11 @@ namespace ACUI.FomanticUI
             classMapper.Clear()
                 .Add(_prefixName)
                 .GetIf(() => Direction.ToClass(), () => Direction != null)
-                .If("inverted", () => Inverted)
-                .If("fitted", () => Fitted)
-                .If("hidden", () => Hidden)
-                .If("section", () => Section)
-                .If("clearing", () => Clearing)
+                .If(nameof(Inverted).ToLowerInvariant(), () => Inverted)
+                .If(nameof(Fitted).ToLowerInvariant(), () => Fitted)
+                .If(nameof(Hidden).ToLowerInvariant(), () => Hidden)
+                .If(nameof(Section).ToLowerInvariant(), () => Section)
+                .If(nameof(Clearing).ToLowerInvariant(), () => Clearing)
                 ;
         }
 
