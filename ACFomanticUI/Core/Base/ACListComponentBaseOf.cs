@@ -285,47 +285,46 @@ namespace ACUI.FomanticUI
             if (item == null || item.Key == null || item.Disabled)
                 return;
 
-            SelectedKeys ??= Array.Empty<string>();
+            var selectedKeys = SelectedKeys ?? Array.Empty<string>();
             var key = item.Key;
-            if (SelectedKeys?.Contains(key) ?? false)
+            if (selectedKeys?.Contains(key) ?? false)
             {
-                var _aks = SelectedKeys.ToList();
+                var _aks = selectedKeys.ToList();
                 _aks.Remove(key);
-                SelectedKeys = _aks.ToArray();
+                selectedKeys = _aks.ToArray();
             }
             else
             {
                 if (Multiple)
                 {
-                    if ((MaxMultiple ?? int.MaxValue) <= SelectedKeys.Length)
+                    if ((MaxMultiple ?? int.MaxValue) <= selectedKeys.Length)
                     {
-                        var _aks = new string[SelectedKeys.Length];
+                        var _aks = new string[selectedKeys.Length];
                         for (int i = 0; i < _aks.Length - 1; i++)
                         {
-                            _aks[i] = SelectedKeys[i + 1];
+                            _aks[i] = selectedKeys[i + 1];
                         }
                         _aks[^1] = key;
-                        SelectedKeys = _aks;
+                        selectedKeys = _aks;
                     }
                     else
                     {
-                        var _aks = new string[SelectedKeys.Length + 1];
-                        for (int i = 0; i < SelectedKeys.Length; i++)
+                        var _aks = new string[selectedKeys.Length + 1];
+                        for (int i = 0; i < selectedKeys.Length; i++)
                         {
-                            _aks[i] = SelectedKeys[i];
+                            _aks[i] = selectedKeys[i];
                         }
                         _aks[^1] = key;
-                        SelectedKeys = _aks;
+                        selectedKeys = _aks;
                     }
                 }
                 else
                 {
-                    SelectedKeys = new string[] { key };
+                    selectedKeys = new string[] { key };
                 }
             }
-            StateHasChanged();
-            await SelectedKeysChanged.InvokeAsync(SelectedKeys);
-            await OnSelectedKeysChange.InvokeAsync(SelectedKeys);
+
+            await SetSelectedKeys(selectedKeys);
             await OnSelectedItem.InvokeAsync(item);
             if (isClick)
                 await OnClickItem.InvokeAsync(item);
@@ -382,7 +381,17 @@ namespace ACUI.FomanticUI
             if (SelectedKeys == null || SelectedKeys.Length <= 0)
                 return;
             var notifyItemKeys = SelectedKeys;
-            SelectedKeys = Array.Empty<string>();
+            await SetSelectedKeys(Array.Empty<string>());
+        }
+
+        /// <summary>
+        /// 设置 SelectedKeys
+        /// </summary>
+        /// <param name="selectedKeys"></param>
+        /// <returns></returns>
+        protected virtual async Task SetSelectedKeys(string[] selectedKeys)
+        {
+            SelectedKeys = selectedKeys ?? Array.Empty<string>();
             StateHasChanged();
             await SelectedKeysChanged.InvokeAsync(SelectedKeys);
             await OnSelectedKeysChange.InvokeAsync(SelectedKeys);

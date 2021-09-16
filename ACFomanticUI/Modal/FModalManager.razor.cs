@@ -53,6 +53,7 @@ namespace ACUI.FomanticUI
             await InvokeStateHasChangedAsync();
             //StateHasChanged();
             await Modal.ShowAsync();
+            StateHasChanged();
         }
 
         ///// <summary>

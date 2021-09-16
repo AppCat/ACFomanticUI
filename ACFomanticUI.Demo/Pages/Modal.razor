@@ -70,9 +70,9 @@
         },
         Inverted = true,
         Size = FSize.Mini,
-        OnDeny = () => { Console.WriteLine("OnDeny"); return true; },
-        OnHide = () => { Console.WriteLine("OnHide"); return true; },
-        OnApprove = () => { Console.WriteLine("OnApprove"); return true; },
+        OnDeny = async () => { Console.WriteLine("OnDeny"); return await Task.FromResult(true); },
+        OnHide = () => { Console.WriteLine("OnHide"); return Task.FromResult(true); },
+        OnApprove = () => { Console.WriteLine("OnApprove"); return Task.FromResult(true); },
         Tag = new Student
         {
             Name = "张四",

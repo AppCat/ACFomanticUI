@@ -13,7 +13,7 @@ namespace ACUI.FomanticUI
     /// A set of fields can appear grouped together
     /// Field groups automatically receive responsive styling, swapping to one field per row on mobile devices.
     /// </summary>
-    public partial class SFieldGroup : ACContentComponentBase, IFFieldGroup
+    public partial class FFieldGroup : ACContentComponentBase, IFFieldGroup
     {
         /// <summary>
         /// 前缀

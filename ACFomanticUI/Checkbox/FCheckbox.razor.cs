@@ -81,12 +81,42 @@ namespace ACUI.FomanticUI
         /// <returns></returns>
         private async Task HandleClick()
         {
-            Checked = Checked == null ? true : !Checked;
+            //Checked = Checked == null ? true : !Checked;
+            await SetChecked(Checked == null ? true : !Checked);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 重置
+        /// </summary>
+        public override void Reset()
+        {
+            Checked = FirstValue;
+            SetChecked(Checked).ConfigureAwait(false);
+            base.Reset();
+        }
+
+        /// <summary>
+        /// 初始化后
+        /// </summary>
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            FirstValue = Checked;
+        }
+
+        /// <summary>
+        /// 设置 Checked
+        /// </summary>
+        /// <param name="checked"></param>
+        /// <returns></returns>
+        protected virtual async Task SetChecked(bool? @checked)
+        {
+            Checked = @checked;
             await CheckedChanged.InvokeAsync(Checked);
             await OnCheckedChange.InvokeAsync(Checked);
             Value = Checked;
         }
-
-        #endregion
     }
 }

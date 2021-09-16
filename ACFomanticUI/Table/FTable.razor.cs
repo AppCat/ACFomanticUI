@@ -50,7 +50,7 @@ namespace ACUI.FomanticUI
                 .If(nameof(Collapsing).ToLowerInvariant(), () => Collapsing)
                 .If(nameof(Inverted).ToLowerInvariant(), () => Inverted)
                 .GetIf(() => Basic.ToClass(), () => Basic != null)
-                .GetIf(() => ColumnCount.ToClass(), () => ColumnCount != null)
+                .GetIf(() => $"{ColumnCount.ToClass()} column", () => ColumnCount != null)
                 .GetIf(() => Colored.ToClass(), () => Colored != null)
                 .GetIf(() => Size.ToClass(), () => Size != null)
                 .Add(_suffix)

@@ -74,7 +74,11 @@ namespace ACUI.FomanticUI
             }
         }
         private TValue _value;
-        private TValue _firstValue;
+
+        /// <summary>
+        /// 第一次值
+        /// </summary>
+        protected TValue FirstValue { get; set; }
 
         /// <summary>
         /// Gets or sets a callback that updates the bound value.
@@ -99,9 +103,9 @@ namespace ACUI.FomanticUI
         /// <summary>
         /// 重置
         /// </summary>
-        void IControlValueAccessor.Reset()
+        public virtual void Reset()
         {
-            Value = _firstValue;
+            Value = FirstValue;
             ValueChanged.InvokeAsync(Value).Wait();
             StateHasChanged();
         }
@@ -112,7 +116,7 @@ namespace ACUI.FomanticUI
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            _firstValue = Value;
+            FirstValue = Value;
             FieldGroup?.AddControl(this);
             if (EditContext != null)
             {

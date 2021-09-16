@@ -3,6 +3,8 @@
 @typeparam TModel
 @using Microsoft.AspNetCore.Components.Forms;
 @using System.ComponentModel.DataAnnotations;
+@using System.Reflection;
+@using System.ComponentModel;
 
 <EditForm class="@ClassMapper.Result"
           style="@StyleMapper.Result"
@@ -15,7 +17,7 @@
     <CascadingValue Value="this" IsFixed="@true">
         @if (Auto)
         {
-            @*@_auotField(Model);*@
+            @_auotField(Model);
         }
         @if (ChildContent != null)
         {
@@ -33,3 +35,58 @@
         <FFormMessage Model="@Model" />
     }
 </EditForm>
+
+
+@code{
+    private RenderFragment<TModel> _auotField => model => AutoControl<TModel>(model);
+
+    /// <summary>
+    /// 控件
+    /// </summary>
+    /// <typeparam name="TControl"></typeparam>
+    /// <param name="control"></param>
+    /// <returns></returns>
+    private RenderFragment AutoControl<TControl>(TControl control)
+    {
+        var type = control.GetType();
+        var properties = type.GetProperties();
+        return
+    @<Template>
+        @foreach (var propertie in properties)
+        {
+            if (!propertie.CanRead || !propertie.CanWrite)
+                continue;
+            //var not = propertie.GetCustomAttributes(typeof(FieldNotAutoAttribute), true).Any();
+            //if (not)
+            //    continue;
+            var value = propertie.GetValue(control);
+            var name = propertie.GetCustomAttribute<DisplayAttribute>()?.Name ?? propertie.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? propertie.Name;
+            var required = propertie.GetCustomAttributes(typeof(RequiredAttribute), true).Any();
+            var readOnly = propertie.GetCustomAttribute<ReadOnlyAttribute>()?.IsReadOnly ?? false;
+            <CascadingValue Value="@name" IsFixed="@true" Name="FieldName">
+                <FField Label="@name" Required="@required">
+                    @if (propertie.PropertyType.BaseType == typeof(Enum))
+                    {
+                        var names = propertie.PropertyType.GetEnumDisplayNames();
+                        Action<ACUI.FomanticUI.IFOverlayItem> setEnum = v => propertie.SetValue(control, Enum.Parse(propertie.PropertyType, v.Key));
+                        <FDropdown Selection
+                                   ReadOnly="@readOnly"
+                                   DefaultSelectedKey="@(value.ToString())"
+                                   OnSelectedItem="setEnum">
+                            @foreach (var kv in names)
+                            {
+                                <FDropdownOption Key="@kv.Key" Value="@kv.Value" />
+                            }
+                        </FDropdown>
+                        return;
+                    }
+                    @{
+                        Action<object> setValue = v => propertie.SetValue(control, v);
+                    }
+                    <FTypeInput ReadOnly="@readOnly" ValueType="@propertie.PropertyType" Value="@value" ValueChanged="setValue"/>
+                </FField>
+            </CascadingValue>
+        }
+    </Template>;
+}
+}

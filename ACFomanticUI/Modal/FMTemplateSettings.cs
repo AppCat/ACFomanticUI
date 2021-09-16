@@ -127,18 +127,18 @@ namespace ACUI.FomanticUI
         /// 在按下否定、拒绝或取消按钮后调用。如果函数返回false，则不会隐藏模态。
         /// Is called after a negative, deny or cancel button is pressed. If the function returns false the modal will not hide.
         /// </summary>
-        public Func<bool> OnDeny { get; set; }
+        public Func<Task<bool>> OnDeny { get; set; }
 
         /// <summary>
         /// 在模态开始隐藏后调用。如果函数返回false，则不会隐藏模态。
         /// Is called after a modal starts to hide. If the function returns false, the modal will not hide.
         /// </summary>
-        public Func<bool> OnHide { get; set; }
+        public Func<Task<bool>> OnHide { get; set; }
 
         /// <summary>
         /// 在按下肯定、批准或ok按钮后调用。如果函数返回false，则不会隐藏模态。
         /// Is called after a positive, approve or ok button is pressed. If the function returns false, the modal will not hide.
         /// </summary>
-        public Func<bool> OnApprove { get; set; }
+        public Func<Task<bool>> OnApprove { get; set; }
     }
 }

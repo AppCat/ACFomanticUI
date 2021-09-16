@@ -11,6 +11,9 @@ namespace ACUI.FomanticUI
     /// </summary>
     public interface IControlValueAccessor
     {
-        internal void Reset();
+        /// <summary>
+        /// 重置
+        /// </summary>
+        public void Reset();
     }
 }

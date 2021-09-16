@@ -47,11 +47,38 @@ namespace ACUI.FomanticUI
                 .If(nameof(Inline).ToLowerInvariant(), () => Inline)
                 .If(nameof(Floating).ToLowerInvariant(), () => Floating)
                 .If(nameof(Loading).ToLowerInvariant(), () => Loading)
+                .If("read-only", () => ReadOnly)
                 .GetIf(() => $"active visible", () => Visibility?.Value == FVisibility.Visible)
                 .GetIf(() => Pointing.ToClass(), () => Pointing != null)
                 //.GetIf(() => Direction.ToClass(), () => Direction != null)
                 ;
+
+            TextStyleMapper.Clear()
+            .Get(() => TextConfig?.Style)
+            ;
+
+            TextClassMapper.Clear()
+            .Add("text")
+            .GetIf(() => $"default{(string.IsNullOrEmpty(Filtrate) ? "" : " filtered")}", () => (Selection && !IsSelected() && !Inherent))
+            .Get(() => TextConfig?.Class)
+            ;
+
+            FrameStyleMapper.Clear()
+            .Add("min-width: 100px;")
+            .Get(() => FrameConfig?.Style)
+            ;
+
+            FrameClassMapper.Clear()
+            .Add("menu transition")
+            .GetIf(() => Visibility.Value.ToString().ToLower(), () => Visibility != null)
+            .Get(() => FrameConfig?.Class)
+            ;
         }
+
+        /// <summary>
+        /// 第一次值
+        /// </summary>
+        protected string[] FirstSelectedKeys { get; set; }
 
         /// <summary>
         /// 没结果
@@ -67,6 +94,26 @@ namespace ACUI.FomanticUI
         /// 搜索输入框
         /// </summary>
         private ElementReference _searchInput;
+
+        /// <summary>
+        /// 文本样式 映射
+        /// </summary>
+        protected Mapper TextStyleMapper { get; set; } = new Mapper();
+
+        /// <summary>
+        /// 文本类 映射
+        /// </summary>
+        protected Mapper TextClassMapper { get; set; } = new Mapper();
+
+        /// <summary>
+        /// 框样式 映射
+        /// </summary>
+        protected Mapper FrameStyleMapper { get; set; } = new Mapper();
+
+        /// <summary>
+        /// 框类 映射
+        /// </summary>
+        protected Mapper FrameClassMapper { get; set; } = new Mapper();
 
         #region CascadingParameter
 
@@ -87,10 +134,16 @@ namespace ACUI.FomanticUI
         #region Parameter        
 
         /// <summary>
-        /// 框样式
+        /// 文本配置
         /// </summary>
         [Parameter]
-        public string FrameStyle { get; set; }
+        public ACComponentConfig TextConfig { get; set; }
+
+        /// <summary>
+        /// 框配置
+        /// </summary>
+        [Parameter]
+        public ACComponentConfig FrameConfig { get; set; }
 
         /// <summary>
         /// 图标
@@ -102,7 +155,15 @@ namespace ACUI.FomanticUI
         /// 内容固有 (选取无法改变内容)
         /// </summary>
         [Parameter]
-        public bool Inherent { get; set; }     
+        public bool Inherent { get; set; }
+
+        /// <summary>
+        /// 只读
+        /// A dropdown can be read-only and does not allow user interaction
+        /// 下拉菜单可以是只读的，并且不允许用户交互
+        /// </summary>
+        [Parameter]
+        public bool ReadOnly { get; set; }
 
         /// <summary>
         /// 选择框默认文字
@@ -226,6 +287,9 @@ namespace ACUI.FomanticUI
         /// <returns></returns>
         private async Task HandleIconOnClickAsync()
         {
+            if (ReadOnly || Disabled)
+                return;
+
             if (CanClear && (SelectedKeys?.Length ?? 0) > 0)
             {
                 await Clear();
@@ -332,6 +396,14 @@ namespace ACUI.FomanticUI
         {
             base.OnInitialized();
             FieldGroup?.AddControl(this);
+            if (SelectedKeys != null)
+            {
+                FirstSelectedKeys = SelectedKeys;
+            }
+            else if (!string.IsNullOrEmpty(DefaultSelectedKey))
+            {
+
+            }
         }
 
         /// <summary>
@@ -408,9 +480,16 @@ namespace ACUI.FomanticUI
         /// <summary>
         /// 重置
         /// </summary>
-        void IControlValueAccessor.Reset()
+        public virtual void Reset()
         {
-            Clear().Wait();
+            if(FirstSelectedKeys != null)
+            {
+                SetSelectedKeys(FirstSelectedKeys).ConfigureAwait(false);
+            }
+            else
+            {
+                Clear().Wait();
+            }
         }
     }
 }

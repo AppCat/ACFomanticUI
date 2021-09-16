@@ -43,13 +43,15 @@
                     {
                         @item.ValueTemplate(item)
                     }
-                    <SIcon @key="key" Icon="@("delete")" OnClick="(async () => await SelectedItemAsync(item))" ClickStopPropagation />
+                    <FIcon @key="key" Set="@("delete")" OnClick="@(async () => await SelectedItemAsync(item))" ClickStopPropagation />
                 </a>
             }
         }
         else
         {
-            <div class="@((Selection && !IsSelected() && !Inherent) ? $"default{(string.IsNullOrEmpty(Filtrate) ? "" : " filtered")}" : "") text">
+            <div class="@TextClassMapper.Result" 
+                 style="@TextStyleMapper.Result"
+                 id="@($"{Id}_text")">
                 @if (IsSelected() && !Inherent)
                 {
                     var key = SelectedKeys[^1];
@@ -82,9 +84,9 @@
         <CascadingValue Value="@SelectedKeys" Name="SelectedKeys">
             <CascadingValue Value="@FilteredKeys" Name="FilteredKeys">
                 <CascadingValue Value="@FocusItem" Name="FocusItem">
-                    <div class="menu transition @(Visibility?.Value.ToString().ToLower() ?? string.Empty)"
-                         style="min-width: 100px; @(FrameStyle ?? "")"
-                         id="@($"{Id}_menu")"
+                    <div class="@FrameClassMapper.Result"
+                         style="@FrameStyleMapper.Result"
+                         id="@($"{Id}_frame")"
                          @onclick:stopPropagation>
                         @if (_selectLimit)
                         {

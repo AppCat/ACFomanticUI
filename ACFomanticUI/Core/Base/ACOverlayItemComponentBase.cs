@@ -13,6 +13,19 @@ namespace ACUI.FomanticUI
     /// </summary>
     public abstract class ACOverlayItemComponentBase : ACItemComponentBase<IFOverlayItemList, IFOverlayItem>, IFOverlayItem
     {
+        #region SDLC
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            Value ??= Key;
+        }
+
+        #endregion
+
         /// <summary>
         /// 内容
         /// </summary>

@@ -118,7 +118,7 @@ namespace ACUI.FomanticUI
         /// 动画的持续时间。当通过转换设置提供单独的隐藏/显示持续时间值时，该值将被忽略
         /// Duration of animation. The value will be ignored when individual hide/show duration values are provided via the transition setting
         /// </summary>
-        public int Duration { get; set; } = 400;
+        public int Duration { get; set; } = 200;
 
         /// <summary>
         /// 动画排队

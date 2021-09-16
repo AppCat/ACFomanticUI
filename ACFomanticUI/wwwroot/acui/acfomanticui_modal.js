@@ -16,14 +16,14 @@ export function set(id, settings, templateSettings) {
 export function show(id) {
     var element = $('#' + id);
 
-    element.modal({       
-        onDeny: function (e) {
+    element.modal({
+        onDenyAsync: function (e) {
             return callback(id, 'onDeny', e);
         },
-        onApprove: function (e) {
+        onApproveAsync: function (e) {
             return callback(id, 'onApprove', e);
         },
-        onHide: function (e) {
+        onHideAsync: function (e) {
             return callback(id, 'onHide', e);
         },
         onShow: function (e) {
@@ -40,8 +40,8 @@ export function show(id) {
     element.modal('show');
 }
 
-export function callback(id, name, e) {
-    var r = DotNet.invokeMethod("ACFomanticUI", "HandleModalCallback", {
+export async function callback(id, name, e) {
+    var r = await DotNet.invokeMethodAsync("ACFomanticUI", "HandleModalCallbackAsync", {
         id: id,
         name: name
     });

@@ -97,7 +97,7 @@ namespace ACUI.FomanticUI
         /// 模态 设置
         /// </summary>
         [Parameter]
-        public FModalSettings Settings { get; set; }
+        public FModalSettings Settings { get; set; } = new FModalSettings();
 
         /// <summary>
         /// 模板设置
@@ -114,21 +114,21 @@ namespace ACUI.FomanticUI
         /// Is called after a negative, deny or cancel button is pressed. If the function returns false the modal will not hide.
         /// </summary>
         [Parameter]
-        public Func<bool> OnDeny { get; set; }
+        public Func<Task<bool>> OnDeny { get; set; }
 
         /// <summary>
         /// 在模态开始隐藏后调用。如果函数返回false，则不会隐藏模态。
         /// Is called after a modal starts to hide. If the function returns false, the modal will not hide.
         /// </summary>
         [Parameter]
-        public Func<bool> OnHide { get; set; }
+        public Func<Task<bool>> OnHide { get; set; }
 
         /// <summary>
         /// 在按下肯定、批准或ok按钮后调用。如果函数返回false，则不会隐藏模态。
         /// Is called after a positive, approve or ok button is pressed. If the function returns false, the modal will not hide.
         /// </summary>
         [Parameter]
-        public Func<bool> OnApprove { get; set; }
+        public Func<Task<bool>> OnApprove { get; set; }
 
         /// <summary>
         /// 在模态开始显示时调用。
@@ -176,6 +176,9 @@ namespace ACUI.FomanticUI
         #region SDLC
 
         private FModalSettings _settings;
+        private Func<Task<bool>> _onDeny;
+        private Func<Task<bool>> _onHide;
+        private Func<Task<bool>> _onApprove;
         //private FMTemplateSettings _templateSettings;
 
         /// <summary>
@@ -195,18 +198,30 @@ namespace ACUI.FomanticUI
             //    await ModalJS.Set(this);
             //}
 
-            if (OnDeny != null && !OnDenyDic.ContainsKey(Id))
+            //if (OnDeny != null && !OnDenyDic.ContainsKey(Id))
+            //{
+            //    OnDenyDic.TryAdd(Id, OnDeny);
+            //}
+
+            if(OnDeny != _onDeny)
             {
+                OnDenyDic.Remove(Id);
+                _onDeny = OnDeny;
                 OnDenyDic.TryAdd(Id, OnDeny);
             }
-            if (OnHide != null && !OnHideDic.ContainsKey(Id))
+            if (OnHide != _onHide)
             {
+                OnHideDic.Remove(Id);
+                _onDeny = _onHide;
                 OnHideDic.TryAdd(Id, OnHide);
             }
-            if (OnApprove != null && !OnApproveDic.ContainsKey(Id))
+            if (OnApprove != _onApprove)
             {
+                OnApproveDic.Remove(Id);
+                _onDeny = _onApprove;
                 OnApproveDic.TryAdd(Id, OnApprove);
             }
+
             if (OnShow.HasDelegate || OnVisible.HasDelegate || OnHidden.HasDelegate)
             {
                 ModalCallback += HandleCallback;
@@ -249,17 +264,17 @@ namespace ACUI.FomanticUI
         /// <summary>
         /// 
         /// </summary>
-        protected static IDictionary<string, Func<bool>> OnDenyDic { get; } = new Dictionary<string, Func<bool>>();
+        protected static IDictionary<string, Func<Task<bool>>> OnDenyDic { get; } = new Dictionary<string, Func<Task<bool>>>();
 
         /// <summary>
         /// 
         /// </summary>
-        protected static IDictionary<string, Func<bool>> OnHideDic { get; } = new Dictionary<string, Func<bool>>();
+        protected static IDictionary<string, Func<Task<bool>>> OnHideDic { get; } = new Dictionary<string, Func<Task<bool>>>();
 
         /// <summary>
         /// 
         /// </summary>
-        protected static IDictionary<string, Func<bool>> OnApproveDic { get; } = new Dictionary<string, Func<bool>>();
+        protected static IDictionary<string, Func<Task<bool>>> OnApproveDic { get; } = new Dictionary<string, Func<Task<bool>>>();
 
 
         /// <summary>
@@ -271,7 +286,7 @@ namespace ACUI.FomanticUI
         /// 处理 模态回调
         /// </summary>
         [JSInvokable]
-        public static bool? HandleModalCallback(CallbackEventArgs args)
+        public static async Task<bool?> HandleModalCallbackAsync(CallbackEventArgs args)
         {
             try
             {
@@ -279,25 +294,25 @@ namespace ACUI.FomanticUI
                 {
                     case "onHide":
                         {
-                            if (OnHideDic.TryGetValue(args.Id, out Func<bool> handler))
+                            if (OnHideDic.TryGetValue(args.Id, out Func<Task<bool>> handler))
                             {
-                                return handler?.Invoke();
+                                return await handler?.Invoke();
                             }
                         }
                         break;
                     case "onDeny":
                         {
-                            if (OnDenyDic.TryGetValue(args.Id, out Func<bool> handler))
+                            if (OnDenyDic.TryGetValue(args.Id, out Func<Task<bool>> handler))
                             {
-                                return handler?.Invoke();
+                                return await handler?.Invoke();
                             }
                         }
                         break;
                     case "onApprove":
                         {
-                            if (OnApproveDic.TryGetValue(args.Id, out Func<bool> handler))
+                            if (OnApproveDic.TryGetValue(args.Id, out Func<Task<bool>> handler))
                             {
-                                return handler?.Invoke();
+                                return await handler?.Invoke();
                             }
                         }
                         break;
