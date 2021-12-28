@@ -11,7 +11,7 @@ namespace ACUI.FomanticUI
     /// <summary>
     /// 项目基础
     /// </summary>
-    public abstract class ACOverlayItemComponentBase : ACItemComponentBase<IFOverlayItemList, IFOverlayItem>, IFOverlayItem
+    public abstract class ACOverlayItemComponentBase : ACItemComponentBase<IFOverlayItemList<string>, IFOverlayItem<string>, string>, IFOverlayItem
     {
         #region SDLC
 
@@ -36,6 +36,6 @@ namespace ACUI.FomanticUI
         /// 内容模板
         /// </summary>
         [Parameter]
-        public RenderFragment<IFOverlayItem> ValueTemplate { get; set; }
+        public RenderFragment<IFOverlayItem<string>> ValueTemplate { get; set; }
     }
 }

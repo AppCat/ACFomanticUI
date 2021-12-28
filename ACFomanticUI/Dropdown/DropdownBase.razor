@@ -1,0 +1,39 @@
+﻿@namespace ACUI.FomanticUI
+@typeparam TKey
+@inherits ACOverlayListComponentBase<TKey>
+
+@code{
+    /// <summary>
+    /// 图标
+    /// </summary>
+    protected RenderFragment IconRF =>
+    @<Template>
+        @if (!string.IsNullOrEmpty(Icon))
+        {
+            <FIcon Set="@Icon" OnClick="HandleIconOnClickAsync" ClickStopPropagation />
+        }
+    </Template>
+    ;
+
+    /// <summary>
+    /// 搜索框
+    /// </summary>
+    protected RenderFragment SearchRF =>
+    @<Template>
+        @{
+            var attributes = new Dictionary<string, object>
+            {
+                { "onblur", CallbackFactory.Create(this, HandleOnblurAsync)},
+                { "onclick", CallbackFactory.Create(this, HandleSearchOnClickAsync)},
+                { "oninput", CallbackFactory.Create(this, HandleSearchOnInputAsync)}
+            };
+        }
+        <input class="search"
+               autocomplete="off"
+               tabindex="0"
+               @attributes="@attributes"
+               @ref="@SearchInput"
+               @bind-value="@Filtrate"
+               @onclick:stopPropagation />
+    </Template>;
+}

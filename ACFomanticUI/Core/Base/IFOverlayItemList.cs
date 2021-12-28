@@ -10,28 +10,8 @@ namespace ACUI.FomanticUI
     /// <summary>
     /// 项目列表
     /// </summary>
-    public interface IFOverlayItemList : IFItemList<IFOverlayItem>
+    public interface IFOverlayItemList : IFOverlayItemList<string>
     {
-        /// <summary>
-        /// 可见度
-        /// </summary>
-        EnumMix<FVisibility> Visibility { get; set; }
 
-        /// <summary>
-        /// 能见度变化
-        /// </summary>
-        EventCallback<EnumMix<FVisibility>> VisibilityChanged { get; set; }
-
-        /// <summary>
-        /// 显示
-        /// </summary>
-        /// <returns></returns>
-        Task Show();
-
-        /// <summary>
-        /// 隐藏
-        /// </summary>
-        /// <returns></returns>
-        Task Hide();
     }
 }

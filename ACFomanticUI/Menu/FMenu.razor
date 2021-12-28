@@ -1,5 +1,5 @@
 ﻿@namespace ACUI.FomanticUI
-@inherits ACListOverlayComponentBase
+@inherits ACOverlayListComponentBase
 
 @if (Parent != null)
 {
@@ -8,14 +8,14 @@
          id="@Id"
          tabindex="@Tabindex"
          @attributes="@Attributes">
-            @ChildContent
+        @ChildContent
     </div>
 
     return;
 }
 
 <CascadingValue Value="this" IsFixed>
-    <CascadingValue Name="LinkItem" Value="true" IsFixed>
+    <CascadingValue Value="this" Name="ItemList" IsFixed>
         <div class="@ClassMapper.Result"
              style="@StyleMapper.Result"
              id="@Id"

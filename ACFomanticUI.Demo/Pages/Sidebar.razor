@@ -1,0 +1,42 @@
+﻿@page "/sidebar"
+@*<FSidebar @ref="@_sidebar" Inverted>
+        <FForm TModel="Student" Model="@(new Student())" Auto Inverted Style="padding: 10px;"/>
+    </FSidebar>*@
+
+<div class="pusher">
+    <FButton OnClick="HandleOnClick" Content="显示" />
+</div>
+
+@code{
+    protected FSidebar _sidebar;
+    [Inject]
+    private ACFSidebarService _sidebarService { get; set; }
+
+    public async Task HandleOnClick()
+    {
+        var settings = new FSidebarSettings
+        {
+            ContextId = "content",
+            Transition = "overlay",
+            DimPage = false
+        };
+
+        //await _sidebar.SettingsAsync(settings);
+        //await _sidebar.ToggleAsync();
+
+        await _sidebarService.ShowSidebarAsync(new FSidebarTemplateSettings
+        {
+            ContentTemplate = tag => _builder =>
+            {
+                _builder.OpenComponent<FForm<Student>>(0);
+                _builder.AddAttribute(1, "Auto", true);
+                _builder.AddAttribute(2, "Inverted", true);
+                _builder.AddAttribute(3, "Style", "padding: 10px;");
+                _builder.AddAttribute(4, "Model", new Student());
+                _builder.CloseComponent();
+            },
+            Inverted = true,
+            Direction = FSidebarDirection.Right
+        }, settings);
+    }
+}

@@ -10,16 +10,8 @@ namespace ACUI.FomanticUI
     /// <summary>
     /// 项目
     /// </summary>
-    public interface IFOverlayItem : IFItem
+    public interface IFOverlayItem : IFOverlayItem<string>
     {
-        /// <summary>
-        /// 值
-        /// </summary>
-        string Value { get; set; }
 
-        /// <summary>
-        /// 值模板
-        /// </summary>
-        RenderFragment<IFOverlayItem> ValueTemplate { get; set; }
     }
 }

@@ -7,18 +7,15 @@ using System.Threading.Tasks;
 namespace ACUI.FomanticUI
 {
     /// <summary>
-    /// 土司 模板设置
+    /// 边栏
+    /// 侧边栏隐藏了页面旁边的附加内容。
+    /// A sidebar hides additional content beside a page.
     /// </summary>
-    public class FToastSettings
+    public interface IFSidebar : ISidebarConfig
     {
         /// <summary>
-        /// 标题
+        /// Id
         /// </summary>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// 消息
-        /// </summary>
-        public string Message { get; set; }
+        public string Id { get;}
     }
 }

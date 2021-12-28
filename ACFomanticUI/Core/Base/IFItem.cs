@@ -10,26 +10,8 @@ namespace ACUI.FomanticUI
     /// <summary>
     /// 项目
     /// </summary>
-    public interface IFItem : IExternalNotifyStateHasChanged
+    public interface IFItem : IFItem<string>
     {
-        /// <summary>
-        /// 项Id
-        /// </summary>
-        string ItemId { get; set; }
 
-        /// <summary>
-        /// 键
-        /// </summary>
-        string Key { get; set; }
-
-        /// <summary>
-        /// 附加
-        /// </summary>
-        object Tag { get; set; }
-
-        /// <summary>
-        /// 禁用
-        /// </summary>
-        bool Disabled { get; }
     }
 }

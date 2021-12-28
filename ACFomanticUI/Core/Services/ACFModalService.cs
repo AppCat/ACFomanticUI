@@ -14,18 +14,21 @@ namespace ACUI.FomanticUI
         /// <summary>
         /// 显示消息事件
         /// </summary>
-        internal Func<FMTemplateSettings, Task> OnShowModal { get; set; }
+        internal Func<(FModalSettings settings, FMTemplateSettings templateSettings), Task> OnShowModal { get; set; }
 
         /// <summary>
         /// 显示模态
         /// </summary>
+        /// <param name="templateSettings"></param>
+        /// <param name="settings"></param>
         /// <returns></returns>
-        public async Task ShowModalAsync(FMTemplateSettings templateSettings)
+        public async Task ShowModalAsync(FMTemplateSettings templateSettings, FModalSettings settings = null)
         {
-            if (templateSettings != null)
+            if (templateSettings == null)
             {
-                await OnShowModal?.Invoke(templateSettings);
+                throw new ArgumentNullException(nameof(templateSettings));
             }
+            await OnShowModal?.Invoke((settings, templateSettings));
         }
     }
 }

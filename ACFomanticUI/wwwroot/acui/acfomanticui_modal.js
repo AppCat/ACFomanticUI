@@ -3,7 +3,7 @@ import '/_content/ACFomanticUI/dist/components/transition.js';
 import '/_content/ACFomanticUI/dist/components/dimmer.js';
 import '/_content/ACFomanticUI/dist/components/modal.js';
 
-export function set(id, settings, templateSettings) {
+export function settings(id, settings, templateSettings) {
     var element = $('#' + id);
     if (settings != undefined) {
         element.modal(settings);

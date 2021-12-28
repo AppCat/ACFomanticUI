@@ -1,62 +1,46 @@
 ﻿@namespace ACUI.FomanticUI
-@inherits ACListOverlayComponentBase
+@inherits DropdownBase<string>
 
 <CascadingValue Value="this" IsFixed>
-    <div class="@ClassMapper.Result"
-         style="@StyleMapper.Result"
-         id="@Id"
-         tabindex="@Tabindex"
-         @attributes="@Attributes"
-         @onclick="@HandleDropdownOnClickAsync"
-         @onkeyup="@HandleDropdownOnKeyupAsync"
-         @onblur="@HandleOnblurAsync"
-         @onkeyup:stopPropagation
-         @onkeydown:stopPropagation
-         @onkeypress:stopPropagation>
+    <CascadingValue Value="this" Name="ItemList" IsFixed>
+        <div class="@ClassMapper.Result"
+             style="@StyleMapper.Result"
+             id="@Id"
+             tabindex="@Tabindex"
+             @attributes="@Attributes"
+             @onclick="@HandleDropdownOnClickAsync"
+             @onkeyup="@HandleDropdownOnKeyupAsync"
+             @onblur="@HandleOnblurAsync"
+             @onkeyup:stopPropagation
+             @onkeydown:stopPropagation
+             @onkeypress:stopPropagation>
 
-        @if (Selection)
-        {
-            <input type="hidden"
-                   @onkeyup:stopPropagation
-                   @onkeydown:stopPropagation
-                   @onkeypress:stopPropagation>
-        }
-        @if (!Inline)
-        {
-            @_iconRF
-        }
-        @if (Search && !Multiple)
-        {
-            @_searchRF
-        }
-        @if (Multiple && IsSelected() && !Inherent)
-        {
-            foreach (var key in SelectedKeys)
+            @if (Selection)
             {
-                var item = Items[key];
-                <a class="ui label transition visible" style="-webkit-user-select: none; -moz-user-select: none;" @onclick:stopPropagation>
-                    @if (item.ValueTemplate == null)
-                    {
-                        @item.Value
-                    }
-                    else
-                    {
-                        @item.ValueTemplate(item)
-                    }
-                    <FIcon @key="key" Set="@("delete")" OnClick="@(async () => await SelectedItemAsync(item))" ClickStopPropagation />
-                </a>
+                <input type="hidden"
+                       @onkeyup:stopPropagation
+                       @onkeydown:stopPropagation
+                       @onkeypress:stopPropagation
+                       value="@(IsSelected() ? SelectedKeys[0] : string.Empty)">
             }
-        }
-        else
-        {
-            <div class="@TextClassMapper.Result" 
-                 style="@TextStyleMapper.Result"
-                 id="@($"{Id}_text")">
-                @if (IsSelected() && !Inherent)
+            @if (!Inline)
+            {
+                @IconRF
+                if (Clearable && !Button && IsSelected())
+                {   
+                    <FIcon Set="remove" OnClick="HandleClearableAsync" ClickStopPropagation />
+                }
+            }
+            @if (Search && !Multiple)
+            {
+                @SearchRF
+            }
+            @if (Multiple && IsSelected() && !Inherent)
+            {
+                foreach (var key in SelectedKeys)
                 {
-                    var key = SelectedKeys[^1];
-                    if (Items.TryGetValue(key, out IFOverlayItem item))
-                    {
+                    var item = Items[key];
+                    <a class="ui label transition visible" style="-webkit-user-select: none; -moz-user-select: none;" @onclick:stopPropagation>
                         @if (item.ValueTemplate == null)
                         {
                             @item.Value
@@ -65,76 +49,69 @@
                         {
                             @item.ValueTemplate(item)
                         }
+                        <FIcon @key="key" Set="@("delete")" OnClick="@(async () => await SelectedItemAsync(item))" ClickStopPropagation />
+                    </a>
+                }
+            }
+            else
+            {
+                <div class="@TextClassMapper.Result"
+                     style="@TextStyleMapper.Result"
+                     id="@($"{Id}_text")">
+                    @if (IsSelected() && !Inherent)
+                    {
+                        var key = SelectedKeys[^1] ?? string.Empty;
+                        if (Items.TryGetValue(key, out IFOverlayItem<string> item))
+                        {
+                            @if (item.ValueTemplate == null)
+                            {
+                                @item.Value
+                            }
+                            else
+                            {
+                                @item.ValueTemplate(item)
+                            }
+                        }
                     }
-                }
-                else if (!string.IsNullOrEmpty(Placeholder))
-                {
-                    @Placeholder
-                }
-            </div>
-        }
-        @if (Inline)
-        {
-            @_iconRF
-        }
-        @if (Search && Multiple)
-        {
-            @_searchRF
-        }
-        <CascadingValue Value="@SelectedKeys" Name="SelectedKeys">
-            <CascadingValue Value="@FilteredKeys" Name="FilteredKeys">
-                <CascadingValue Value="@FocusItem" Name="FocusItem">
-                    <div class="@FrameClassMapper.Result"
-                         style="@FrameStyleMapper.Result"
-                         id="@($"{Id}_frame")"
-                         @onclick:stopPropagation>
-                        @if (_selectLimit)
-                        {
-                            <div class="message">@($"Max {MaxMultiple} selections.")</div>
-                        }
-                        //else if (!string.IsNullOrEmpty(Filtrate) && !Items.Values.Any(item => item.Value.Contains(Filtrate)))
-                        else if (_noResults)
-                        {
-                            <div class="message">@($"No results found.")</div>
-                        }
-                        else
-                        {
-                            @ChildContent
-                        }
-                    </div>
+                    else if (!string.IsNullOrEmpty(Placeholder))
+                    {
+                        @Placeholder
+                    }
+                </div>
+            }
+            @if (Inline)
+            {
+                @IconRF
+            }
+            @if (Search && Multiple)
+            {
+                @SearchRF
+            }
+            <CascadingValue Value="@SelectedKeys" Name="SelectedKeys">
+                <CascadingValue Value="@FilteredKeys" Name="FilteredKeys">
+                    <CascadingValue Value="@FocusItem" Name="FocusItem">
+                        <div class="@FrameClassMapper.Result"
+                             style="@FrameStyleMapper.Result"
+                             id="@($"{Id}_frame")"
+                             @onclick:stopPropagation>
+                            @if (SelectLimit)
+                            {
+                                <div class="message">@($"Max {MaxMultiple} selections.")</div>
+                            }
+                            //else if (!string.IsNullOrEmpty(Filtrate) && !Items.Values.Any(item => item.Value.Contains(Filtrate)))
+                            else if (NoResults)
+                            {
+                                <div class="message">@($"No results found.")</div>
+                            }
+                            else
+                            {
+                                @ChildContent
+                            }
+                        </div>
+                    </CascadingValue>
                 </CascadingValue>
             </CascadingValue>
-        </CascadingValue>
-    </div>
+        </div>
+    </CascadingValue>
 </CascadingValue>
 
-@code{
-    /// <summary>
-    /// 图标
-    /// </summary>
-    private RenderFragment _iconRF =>
-    @<FIcon Set="@(CanClear && IsSelected() && !Button ? $"{Icon} clear" : Icon)" OnClick="HandleIconOnClickAsync" ClickStopPropagation />;
-
-/// <summary>
-/// 搜索框
-/// </summary>
-private RenderFragment _searchRF =>
-@<Template>
-    @{
-        var attributes = new Dictionary<string, object>
-{
-                    { "onblur", CallbackFactory.Create(this, HandleOnblurAsync)},
-                    { "onclick", CallbackFactory.Create(this, HandleSearchOnClickAsync)},
-                    { "oninput", CallbackFactory.Create(this, HandleSearchOnInputAsync)}
-            };
-    }
-    <input class="search"
-           autocomplete="off"
-           tabindex="0"
-           @attributes="@attributes"
-           @ref="@_searchInput"
-           @bind-value="@Filtrate"
-           @onclick:stopPropagation />
-</Template>;
-
-}

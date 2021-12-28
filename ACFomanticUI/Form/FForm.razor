@@ -50,29 +50,47 @@
     {
         var type = control.GetType();
         var properties = type.GetProperties();
+        properties = properties.OrderByDescending(propertie =>
+        {
+            var order = propertie.GetCustomAttribute<DisplayAttribute>()?.GetOrder() ?? 0;
+            return order;
+        }).ToArray();
         return
     @<Template>
         @foreach (var propertie in properties)
         {
             if (!propertie.CanRead || !propertie.CanWrite)
                 continue;
-            //var not = propertie.GetCustomAttributes(typeof(FieldNotAutoAttribute), true).Any();
-            //if (not)
-            //    continue;
+            var autoGenerateField = propertie.GetCustomAttribute<DisplayAttribute>()?.GetAutoGenerateField() ?? true;
+            if (!autoGenerateField)
+                continue;
             var value = propertie.GetValue(control);
-            var name = propertie.GetCustomAttribute<DisplayAttribute>()?.Name ?? propertie.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? propertie.Name;
+            var name = propertie.GetCustomAttribute<DisplayAttribute>()?.GetName() ?? propertie.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName ?? propertie.Name;
             var required = propertie.GetCustomAttributes(typeof(RequiredAttribute), true).Any();
             var readOnly = propertie.GetCustomAttribute<ReadOnlyAttribute>()?.IsReadOnly ?? false;
+            var underlyingType = Nullable.GetUnderlyingType(propertie.PropertyType) ?? propertie.PropertyType;
             <CascadingValue Value="@name" IsFixed="@true" Name="FieldName">
                 <FField Label="@name" Required="@required">
-                    @if (propertie.PropertyType.BaseType == typeof(Enum))
+                    @if (underlyingType.IsEnum)
                     {
-                        var names = propertie.PropertyType.GetEnumDisplayNames();
-                        Action<ACUI.FomanticUI.IFOverlayItem> setEnum = v => propertie.SetValue(control, Enum.Parse(propertie.PropertyType, v.Key));
+                        var names = underlyingType.GetEnumDisplayNames();
+                        //Action<ACUI.FomanticUI.IFOverlayItem> setEnum = v => { propertie.SetValue(control, Enum.Parse(underlyingType, v?.Key)); };
+                        Action<string[]> setEnum = keys =>
+                        {
+                            if(keys?.Any() ?? false)
+                            {
+                                propertie.SetValue(control, Enum.Parse(underlyingType, keys[0]));
+                            }
+                            else if(underlyingType != propertie.PropertyType)
+                            {
+                                propertie.SetValue(control, null);
+                            }
+                        };
                         <FDropdown Selection
+                                   Clearable="@(underlyingType != propertie.PropertyType)"
                                    ReadOnly="@readOnly"
-                                   DefaultSelectedKey="@(value.ToString())"
-                                   OnSelectedItem="setEnum">
+                                   SelectedKeys="@(new[] { value?.ToString() })"
+                                   OnSelectedKeysChange="setEnum">
                             @foreach (var kv in names)
                             {
                                 <FDropdownOption Key="@kv.Key" Value="@kv.Value" />
@@ -83,7 +101,7 @@
                     @{
                         Action<object> setValue = v => propertie.SetValue(control, v);
                     }
-                    <FTypeInput ReadOnly="@readOnly" ValueType="@propertie.PropertyType" Value="@value" ValueChanged="setValue"/>
+                    <FTypeInput ReadOnly="@readOnly" ValueType="@propertie.PropertyType" Value="@value" ValueChanged="setValue" />
                 </FField>
             </CascadingValue>
         }

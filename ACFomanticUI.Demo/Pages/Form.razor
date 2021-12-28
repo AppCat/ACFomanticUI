@@ -1,0 +1,35 @@
+﻿@page "/form"
+@*<FForm Auto TModel="Student" Model="new Student()"/>
+
+    <FDivider/>*@
+
+<FForm TModel="EmptyModel" Model="EmptyModel.Empty">
+    <FField>
+        <FSearch Placeholder="搜索" OnSelectedResult="@(result => Console.WriteLine(result.Key))" OnResponse="@(text => Task.FromResult(Enumerable.Range(0, 100).Select(i => i.ToString()).Select(i => FResult.Create(i , i)).ToArray()))" />
+    </FField>
+</FForm>
+
+<FSearch Placeholder="搜索" OnSelectedResult="@(result => Console.WriteLine(result.Key))" OnResponse="@(text => Task.FromResult(Enumerable.Range(0, 100).Select(i => i.ToString()).Select(i => FResult.Create(i , i)).ToArray()))" />
+
+@if (showButtonThatDisappearsWhenClicked)
+{
+    <button @onfocusout="HandleFocusOut" @onclick="HandleClick">Click me</button>
+}
+
+@code {
+    bool showButtonThatDisappearsWhenClicked = true;
+
+    async Task HandleClick()
+    {
+        showButtonThatDisappearsWhenClicked = false;
+    }
+
+    void HandleFocusOut()
+    {
+        Console.WriteLine("focusout");
+    }
+}
+
+@code{
+    private string text { get; set; }
+}

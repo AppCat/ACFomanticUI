@@ -34,11 +34,11 @@ namespace ACUI.FomanticUI
                 ;
 
             LabelStyleMapper.Clear()
-            .Get(() => LabelConfig?.Style)
+            .Get(() => LabelConfig?.AsStyle)
             ;
 
             LabelClassMapper.Clear()
-            .Get(() => LabelConfig?.Class)
+            .Get(() => LabelConfig?.AsClass)
             ;
         }
 

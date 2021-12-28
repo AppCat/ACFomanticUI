@@ -6,7 +6,7 @@
     </ChildContent>
 </FTypeInput>
 
-<FInput InputType="FInputType.Number" TValue="int?" Value="@Int" ValueChanged="@(input => Int = input)" />
+<FInput InputType="FInputType.Number" TValue="int?" Value="@Int" ValueChanged="@(input => Int = input)" QuickResponse OnValueChange="@(value => Console.WriteLine(value))"/>
 
 <FInput InputType="FInputType.Number" @bind-Value="@Int" />
 
@@ -32,6 +32,37 @@
 
 <FCheckbox Checked="@Bool" CheckedChanged="@(input => Bool = (bool)input)" />
 
+<FInput TValue="string" />
+
+<FSearch OnResponse="HandleSearchResponseAsync">
+
+</FSearch>
+
+<FList Horizontal>
+    <FItem><FInput TValue="string" /></FItem>
+    <FItem><FInput TValue="string" /></FItem>
+    <FItem><FInput TValue="string" /></FItem>
+</FList>
+
+<FDivider />
+
+@{
+    var attributes = new Dictionary<String, Object>
+    {
+        { "style", "display: none" },
+        { "id", "fileInput" },
+        { "accept", ".csv" }
+    };
+}
+<InputFile AdditionalAttributes="attributes" />
+<FInput TValue="string" Style="display: none" ReadOnly Fluid Context="_" />
+<FInput TValue="string" LabeledRight ReadOnly Placeholder=".csv" Context="_">
+    <FLabel Link OnClick="@(async () => await JQueryHelp.ClickById("fileInput"))">
+        <FIcon Set="file" />
+        点击上传
+    </FLabel>
+</FInput>
+
 @*<FCheckbox @bind-Checked="@Bool" />*@
 
 @code{
@@ -39,4 +70,15 @@
     protected int? Int { get; set; }
     protected DateTime? DateTime { get; set; }
     protected bool Bool { get; set; }
+
+
+    /// <summary>
+    /// 处理搜索响应
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    private async Task<IFResult[]> HandleSearchResponseAsync(string value)
+    {
+        return Enumerable.Range(0, 20).Select(i => FResult.Create(i.ToString(), Guid.NewGuid().ToString("N"))).ToArray();
+    }
 }

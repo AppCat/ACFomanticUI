@@ -140,5 +140,23 @@ namespace ACUI.FomanticUI
         /// Is called after a positive, approve or ok button is pressed. If the function returns false, the modal will not hide.
         /// </summary>
         public Func<Task<bool>> OnApprove { get; set; }
+
+        /// <summary>
+        /// 在模态开始显示时调用。
+        /// Is called when a modal starts to show.
+        /// </summary>
+        public EventCallback OnShow { get; set; }
+
+        /// <summary>
+        /// 在模态完成动画显示后调用。
+        /// Is called after a modal has finished showing animating.
+        /// </summary>
+        public EventCallback OnVisible { get; set; }
+
+        /// <summary>
+        /// 在模态完成隐藏动画后调用。
+        /// Is called after a modal has finished hiding animation.
+        /// </summary>
+        public EventCallback OnHidden { get; set; }
     }
 }

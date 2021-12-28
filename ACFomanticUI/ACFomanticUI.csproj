@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-      <Version>0.0.30-alpha</Version>
+      <Version>0.39-alpha</Version>
       <Authors>BanXian; AppCat</Authors>
       <PackageTags>Semantic;Blazor;UI;Fomantic;ACUI</PackageTags>
       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -10,15 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ACUI.Shared" Version="0.0.2.12-alpha" />
+    <PackageReference Include="ACUI.Shared" Version="0.3.6-alpha" />
   </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.9" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Core\JS\" />
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using ACUI.FomanticUI;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 namespace ACUI.FomanticUI
 {
     /// <summary>
-    /// 下拉框
+    /// 下拉框基础
     /// </summary>
-    public partial class FDropdown : ACListOverlayComponentBase, IControlValueAccessor
+    public abstract partial class DropdownBase<TKey> : ACOverlayListComponentBase<TKey>, IControlValueAccessor
     {
         /// <summary>
         /// 前缀
@@ -47,53 +48,55 @@ namespace ACUI.FomanticUI
                 .If(nameof(Inline).ToLowerInvariant(), () => Inline)
                 .If(nameof(Floating).ToLowerInvariant(), () => Floating)
                 .If(nameof(Loading).ToLowerInvariant(), () => Loading)
+                .If(nameof(Clearable).ToLowerInvariant(), () => Clearable)
                 .If("read-only", () => ReadOnly)
                 .GetIf(() => $"active visible", () => Visibility?.Value == FVisibility.Visible)
                 .GetIf(() => Pointing.ToClass(), () => Pointing != null)
+                .GetIf(() => $"{ColumnarMenu.ToClass()} column", () => ColumnarMenu != null)
                 //.GetIf(() => Direction.ToClass(), () => Direction != null)
                 ;
 
             TextStyleMapper.Clear()
-            .Get(() => TextConfig?.Style)
+            .Get(() => TextConfig?.AsStyle)
             ;
 
             TextClassMapper.Clear()
             .Add("text")
             .GetIf(() => $"default{(string.IsNullOrEmpty(Filtrate) ? "" : " filtered")}", () => (Selection && !IsSelected() && !Inherent))
-            .Get(() => TextConfig?.Class)
+            .Get(() => TextConfig?.AsClass)
             ;
 
             FrameStyleMapper.Clear()
             .Add("min-width: 100px;")
-            .Get(() => FrameConfig?.Style)
+            .Get(() => FrameConfig?.AsStyle)
             ;
 
             FrameClassMapper.Clear()
             .Add("menu transition")
             .GetIf(() => Visibility.Value.ToString().ToLower(), () => Visibility != null)
-            .Get(() => FrameConfig?.Class)
+            .Get(() => FrameConfig?.AsClass)
             ;
         }
 
         /// <summary>
         /// 第一次值
         /// </summary>
-        protected string[] FirstSelectedKeys { get; set; }
+        protected TKey[] FirstSelectedKeys { get; set; }
 
         /// <summary>
         /// 没结果
         /// </summary>
-        private bool _noResults { get; set; }
+        protected bool NoResults { get; set; }
 
         /// <summary>
         /// 选择限制
         /// </summary>
-        private bool _selectLimit => Multiple && (SelectedKeys?.Length ?? 0) >= MaxMultiple;
+        protected bool SelectLimit => Multiple && (SelectedKeys?.Length ?? 0) >= MaxMultiple;
 
         /// <summary>
         /// 搜索输入框
         /// </summary>
-        private ElementReference _searchInput;
+        protected ElementReference SearchInput;
 
         /// <summary>
         /// 文本样式 映射
@@ -118,12 +121,6 @@ namespace ACUI.FomanticUI
         #region CascadingParameter
 
         /// <summary>
-        /// 作为Menu子组件的存在
-        /// </summary>
-        [CascadingParameter(Name = "LinkItem")]
-        protected bool LinkItem { get; set; }
-
-        /// <summary>
         /// 表单项组
         /// </summary>
         [CascadingParameter]
@@ -144,6 +141,12 @@ namespace ACUI.FomanticUI
         /// </summary>
         [Parameter]
         public ACComponentConfig FrameConfig { get; set; }
+
+        /// <summary>
+        /// 作为Menu子组件的存在
+        /// </summary>
+        [Parameter]
+        public bool LinkItem { get; set; }
 
         /// <summary>
         /// 图标
@@ -248,10 +251,12 @@ namespace ACUI.FomanticUI
         public bool Loading { get; set; }
 
         /// <summary>
-        /// 能清除
+        /// 可清除
+        /// 一个可清除的选择下拉菜单允许用户取消或取消先前的选择
+        /// A clearable selection dropdown can allow a user to cancel to cancel a previous selection
         /// </summary>
         [Parameter]
-        public bool CanClear { get; set; } = true;
+        public bool Clearable { get; set; }
 
         /// <summary>
         /// 直指
@@ -265,6 +270,13 @@ namespace ACUI.FomanticUI
         /// </summary>
         [Parameter]
         public EnumMix<FSize> Size { get; set; }
+
+        /// <summary>
+        /// 一个选择下拉菜单可以让菜单被平均分配，这样就可以浏览更多的项目。
+        /// A selection dropdown can allow menu to be equally divided so that more items can be glanced.
+        /// </summary>
+        [Parameter]
+        public EnumMix<FNumber> ColumnarMenu { get; set; }
 
         #endregion
 
@@ -285,15 +297,10 @@ namespace ACUI.FomanticUI
         /// 图标点击
         /// </summary>
         /// <returns></returns>
-        private async Task HandleIconOnClickAsync()
+        protected async Task HandleIconOnClickAsync()
         {
             if (ReadOnly || Disabled)
                 return;
-
-            if (CanClear && (SelectedKeys?.Length ?? 0) > 0)
-            {
-                await Clear();
-            }
             else if (Visibility?.Value == FVisibility.Hidden)
             {
                 await Show();
@@ -305,10 +312,23 @@ namespace ACUI.FomanticUI
         }
 
         /// <summary>
+        /// 处理清除异步
+        /// </summary>
+        /// <returns></returns>
+        protected async Task HandleClearableAsync()
+        {
+            if (Clearable && (SelectedKeys?.Length ?? 0) > 0)
+            {
+                await Clear();
+
+            }
+        }
+
+        /// <summary>
         /// 处理 Onblur 失去焦点
         /// </summary>
         /// <returns></returns>
-        private async Task HandleOnblurAsync(FocusEventArgs args)
+        protected async Task HandleOnblurAsync(FocusEventArgs args)
         {
             await Hide();
         }
@@ -318,7 +338,7 @@ namespace ACUI.FomanticUI
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        private async Task HandleDropdownOnKeyupAsync(KeyboardEventArgs args)
+        protected async Task HandleDropdownOnKeyupAsync(KeyboardEventArgs args)
         {
             if (Items.Count > 0)
             {
@@ -350,11 +370,11 @@ namespace ACUI.FomanticUI
         /// 处理下拉框 OnClick
         /// </summary>
         /// <returns></returns>
-        private async Task HandleDropdownOnClickAsync()
+        protected async Task HandleDropdownOnClickAsync()
         {
             if (Search)
             {
-                await _searchInput.FocusAsync();
+                await SearchInput.FocusAsync();
             }
             if (Visibility?.Value != FVisibility.Visible)
                 await Show();
@@ -367,7 +387,7 @@ namespace ACUI.FomanticUI
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        private async Task HandleSearchOnInputAsync(ChangeEventArgs args)
+        protected async Task HandleSearchOnInputAsync(ChangeEventArgs args)
         {
             if (!Multiple)
                 await Clear();
@@ -380,7 +400,7 @@ namespace ACUI.FomanticUI
         /// 处理搜索栏 OnClick
         /// </summary>
         /// <returns></returns>
-        private async Task HandleSearchOnClickAsync()
+        protected async Task HandleSearchOnClickAsync()
         {
             await Show();
         }
@@ -400,10 +420,10 @@ namespace ACUI.FomanticUI
             {
                 FirstSelectedKeys = SelectedKeys;
             }
-            else if (!string.IsNullOrEmpty(DefaultSelectedKey))
-            {
-
-            }
+            //else if (!string.IsNullOrEmpty(DefaultSelectedKey))
+            //{
+                
+            //}
         }
 
         /// <summary>
@@ -426,7 +446,7 @@ namespace ACUI.FomanticUI
             await base.Show();
             if (Inherent)
             {
-                SelectedKeys = Array.Empty<string>();
+                SelectedKeys = Array.Empty<TKey>();
             }
         }
 
@@ -438,14 +458,14 @@ namespace ACUI.FomanticUI
         {
             if (string.IsNullOrEmpty(Filtrate))
             {
-                FilteredKeys = Array.Empty<string>();
-                _noResults = false;
+                FilteredKeys = Array.Empty<TKey>();
+                NoResults = false;
                 return;
             }
 
             var keys = Items.Values.Where(item => !item.Value.Contains(Filtrate)).Select(item => item.Key);
             FilteredKeys = keys.ToArray();
-            _noResults = (FilteredKeys?.Length ?? 0) > 0 && FilteredKeys.Length == Items.Count;
+            NoResults = (FilteredKeys?.Length ?? 0) > 0 && FilteredKeys.Length == Items.Count;
 
             if (Visibility?.Value == FVisibility.Hidden)
             {
@@ -454,17 +474,17 @@ namespace ACUI.FomanticUI
         }
 
         /// <summary>
-        /// 活跃的项目
+        /// 选择选项异步
         /// </summary>
         /// <param name="item"></param>
         /// <param name="isClick"></param>
         /// <returns></returns>
-        public override async Task SelectedItemAsync(IFOverlayItem item, bool isClick = false)
+        public override async Task SelectedItemAsync(IFOverlayItem<TKey> item, bool isClick = false)
         {
             await base.SelectedItemAsync(item, isClick);
             if (Inherent)
             {
-                SelectedKeys = Array.Empty<string>();
+                SelectedKeys = Array.Empty<TKey>();
             }
             if (!Multiple)
             {
@@ -482,7 +502,7 @@ namespace ACUI.FomanticUI
         /// </summary>
         public virtual void Reset()
         {
-            if(FirstSelectedKeys != null)
+            if (FirstSelectedKeys != null)
             {
                 SetSelectedKeys(FirstSelectedKeys).ConfigureAwait(false);
             }

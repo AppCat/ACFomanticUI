@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,13 +12,13 @@ namespace ACUI.FomanticUI
     /// <summary>
     /// 
     /// </summary>
-    public class ACListComponentBase<TItem> : ACContentComponentBase, IFItemList<TItem>
-        where TItem : class, IFItem
+    public class ACListComponentBase<TItem, TKey> : ACContentComponentBase, IFItemList<TItem, TKey>
+        where TItem : class, IFItem<TKey>
     {
         /// <summary>
         /// 项目
         /// </summary>
-        protected virtual Dictionary<string, TItem> Items { get; set; } = new();
+        protected virtual Dictionary<TKey, TItem> Items { get; set; } = new();
 
         /// <summary>
         /// 当前聚焦项目
@@ -35,13 +36,13 @@ namespace ACUI.FomanticUI
         /// 默认选择key
         /// </summary>
         [Parameter]
-        public string DefaultSelectedKey { get; set; }
+        public TKey DefaultSelectedKey { get; set; }
 
         /// <summary>
         /// 选中的项目键
         /// </summary>
         [Parameter]
-        public string[] SelectedKeys
+        public TKey[] SelectedKeys
         {
             get => _selectedKeys; set
             {
@@ -52,13 +53,13 @@ namespace ACUI.FomanticUI
                 NotifyItemStateHasChanged(value, old);
             }
         }
-        private string[] _selectedKeys;
+        private TKey[] _selectedKeys;
 
         /// <summary>
         /// 过滤的项目键
         /// </summary>
         [Parameter]
-        public string[] FilteredKeys
+        public TKey[] FilteredKeys
         {
             get => _filteredKeys; set
             {
@@ -69,7 +70,7 @@ namespace ACUI.FomanticUI
                 NotifyItemStateHasChanged(value, old);
             }
         }
-        private string[] _filteredKeys;
+        private TKey[] _filteredKeys;
 
         /// <summary>
         /// 筛选
@@ -112,13 +113,19 @@ namespace ACUI.FomanticUI
         /// 选中的标签页键变化
         /// </summary>
         [Parameter]
-        public EventCallback<string[]> SelectedKeysChanged { get; set; }
+        public EventCallback<TKey[]> SelectedKeysChanged { get; set; }
+
+        /// <summary>
+        /// Gets or sets an expression that identifies the bound value.
+        /// </summary>
+        [Parameter]
+        public Expression<Func<TKey[]>> SelectedKeysExpression { get; set; }
 
         /// <summary>
         /// 选中的标签页键变化
         /// </summary>
         [Parameter]
-        public EventCallback<string[]> OnSelectedKeysChange { get; set; }
+        public EventCallback<TKey[]> OnSelectedKeysChange { get; set; }
 
         ///// <summary>
         ///// 能见度变化
@@ -154,9 +161,6 @@ namespace ACUI.FomanticUI
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            SelectedKeys ??= Array.Empty<string>();
-            FilteredKeys ??= Array.Empty<string>();
-
         }
 
         /// <summary>
@@ -164,7 +168,13 @@ namespace ACUI.FomanticUI
         /// </summary>
         protected override void OnParametersSet()
         {
+            //if(!(SelectedKeys?.Any() ?? true) && DefaultSelectedKey != null)
+            //{
+            //    SelectedKeys = new TKey[] { DefaultSelectedKey };
+            //}
             base.OnParametersSet();
+            SelectedKeys ??= (DefaultSelectedKey != null) ? new TKey[] { DefaultSelectedKey } : Array.Empty<TKey>();
+            FilteredKeys ??= Array.Empty<TKey>();
         }
 
         #endregion
@@ -182,16 +192,16 @@ namespace ACUI.FomanticUI
         /// </summary>
         /// <param name="newKeys"></param>
         /// <param name="oldKeys"></param>
-        protected virtual void NotifyItemStateHasChanged(string[] newKeys = null,
-            string[] oldKeys = null)
+        protected virtual void NotifyItemStateHasChanged(TKey[] newKeys = null,
+            TKey[] oldKeys = null)
         {
             if (Items == null && Items.Count <= 0)
                 return;
-            var notifyKeys = (newKeys == null && oldKeys == null) ? Items.Select(kv => kv.Key).ToArray() : Array.Empty<string>();
-            newKeys ??= Array.Empty<string>();
-            oldKeys ??= Array.Empty<string>();
+            var notifyKeys = (newKeys == null && oldKeys == null) ? Items.Select(kv => kv.Key).ToArray() : Array.Empty<TKey>();
+            newKeys ??= Array.Empty<TKey>();
+            oldKeys ??= Array.Empty<TKey>();
             notifyKeys = newKeys.Except(oldKeys).Concat(oldKeys.Except(newKeys)).ToArray();
-            notifyKeys.Where(nk => !string.IsNullOrEmpty(nk))
+            notifyKeys.Where(nk => nk != null)
                 .Where(nk => Items.ContainsKey(nk))
                 .Select(nk => Items[nk])
                 .ForEach(item => item.NotifyStateHasChanged());
@@ -251,11 +261,6 @@ namespace ACUI.FomanticUI
                 StateHasChanged();
             }
 
-            if (Items.Any() && (!SelectedKeys?.Any() ?? true) && !string.IsNullOrEmpty(DefaultSelectedKey))
-            {
-                SelectedKeys = new string[] { Items.First().Key };
-            }
-
             return addResult || Items[key] == item;
         }
 
@@ -269,7 +274,7 @@ namespace ACUI.FomanticUI
             if (item == null || item.Key == null || item.Disabled)
                 return;
 
-            var oldKey = FocusItem?.Key;
+            var oldKey = FocusItem  == null ? default : FocusItem.Key;
             FocusItem = item;
             NotifyItemStateHasChanged(new[] { oldKey, item.Key });
             await OnFocusItem.InvokeAsync(item);
@@ -285,7 +290,7 @@ namespace ACUI.FomanticUI
             if (item == null || item.Key == null || item.Disabled)
                 return;
 
-            var selectedKeys = SelectedKeys ?? Array.Empty<string>();
+            var selectedKeys = SelectedKeys ?? Array.Empty<TKey>();
             var key = item.Key;
             if (selectedKeys?.Contains(key) ?? false)
             {
@@ -299,7 +304,7 @@ namespace ACUI.FomanticUI
                 {
                     if ((MaxMultiple ?? int.MaxValue) <= selectedKeys.Length)
                     {
-                        var _aks = new string[selectedKeys.Length];
+                        var _aks = new TKey[selectedKeys.Length];
                         for (int i = 0; i < _aks.Length - 1; i++)
                         {
                             _aks[i] = selectedKeys[i + 1];
@@ -309,7 +314,7 @@ namespace ACUI.FomanticUI
                     }
                     else
                     {
-                        var _aks = new string[selectedKeys.Length + 1];
+                        var _aks = new TKey[selectedKeys.Length + 1];
                         for (int i = 0; i < selectedKeys.Length; i++)
                         {
                             _aks[i] = selectedKeys[i];
@@ -320,7 +325,7 @@ namespace ACUI.FomanticUI
                 }
                 else
                 {
-                    selectedKeys = new string[] { key };
+                    selectedKeys = new TKey[] { key };
                 }
             }
 
@@ -355,8 +360,9 @@ namespace ACUI.FomanticUI
             if (item == null || item.Key == null)
                 return false;
 
-            var key = item.Key;
-            return (FocusItem?.Key ?? string.Empty) == key;
+            var itemId = item.ItemId;
+            //return FocusItem.Key == key;
+            return FocusItem?.ItemId == itemId;
         }
 
         /// <summary>
@@ -381,7 +387,7 @@ namespace ACUI.FomanticUI
             if (SelectedKeys == null || SelectedKeys.Length <= 0)
                 return;
             var notifyItemKeys = SelectedKeys;
-            await SetSelectedKeys(Array.Empty<string>());
+            await SetSelectedKeys(Array.Empty<TKey>());
         }
 
         /// <summary>
@@ -389,9 +395,9 @@ namespace ACUI.FomanticUI
         /// </summary>
         /// <param name="selectedKeys"></param>
         /// <returns></returns>
-        protected virtual async Task SetSelectedKeys(string[] selectedKeys)
+        protected virtual async Task SetSelectedKeys(TKey[] selectedKeys)
         {
-            SelectedKeys = selectedKeys ?? Array.Empty<string>();
+            SelectedKeys = selectedKeys ?? Array.Empty<TKey>();
             StateHasChanged();
             await SelectedKeysChanged.InvokeAsync(SelectedKeys);
             await OnSelectedKeysChange.InvokeAsync(SelectedKeys);

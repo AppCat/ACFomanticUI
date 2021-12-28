@@ -55,8 +55,8 @@ namespace ACUI.FomanticUI
         /// <returns></returns>
         private async Task HandleClickAsync(MouseEventArgs args)
         {
-            await ResultContainer?.SelectedResultAsync(this, true);
             await OnClick.InvokeAsync(args);
+            await ResultContainer?.SelectedResultAsync(this, true);
         }
 
         #endregion

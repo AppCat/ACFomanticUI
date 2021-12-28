@@ -1,0 +1,83 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACComponentBase
+
+<CascadingValue Value="this" IsFixed>
+    <div class="@ClassMapper.Result"
+         style="@StyleMapper.Result"
+         id="@Id"
+         @attributes="Attributes">
+        @if (AvatarContent != null)
+        {
+            <a style="@AvatarStyleMapper.Result" class="@AvatarClassMapper.Result" @onclick="@(async () => await OnClickAvatar.InvokeAsync())" Id="@($"{Id}_avatar")" @attributes="@AvatarConfig?.Attributes">
+                @AvatarContent
+            </a>
+        }
+        <FContent Style="@ContentStyleMapper.Result" Class="@ContentClassMapper.Result" Id="@($"{Id}_content")">
+            @if (AuthorContent != null || !string.IsNullOrEmpty(Author))
+            {
+                <a style="@AuthorStyleMapper.Result" class="@AuthorClassMapper.Result" @onclick="@(async () => await OnClickAuthor.InvokeAsync(Author))" @attributes="@AuthorConfig?.Attributes">
+                    @if (AuthorContent != null)
+                    {
+                        @AuthorContent
+                    }
+                    else
+                    {
+                        @Author
+                    }
+                </a>
+            }
+            @if (MetadataContent != null || (Metadata != null && Metadata.Length > 0))
+            {
+                <div style="@MetadataStyleMapper.Result" class="@MetadataClassMapper.Result" id="@($"{Id}_metadata")" @attributes="@MetadataConfig?.Attributes">
+                    @if (MetadataContent != null)
+                    {
+                        @MetadataContent
+                    }
+                    else if (Metadata != null && Metadata.Length > 0 && MetadataContent == null)
+                    {
+                        foreach (var item in Metadata)
+                        {
+                            <div>@item</div>
+                        }
+                    }
+                </div>
+            }
+            @if (TextContent != null || !string.IsNullOrEmpty(Text))
+            {
+                <div style="@TextStyleMapper.Result" class="@TextClassMapper.Result" id="@($"{Id}_text")" @attributes="@TextConfig?.Attributes">
+                    @if (TextContent != null)
+                    {
+                        @TextContent
+                    }
+                    else
+                    {
+                        @Text
+                    }
+                </div>
+            }
+            @if (ActionsContent != null || (Actions != null && Actions.Length > 0))
+            {
+                <div style="@ActionsStyleMapper.Result" class="@ActionsClassMapper.Result" id="@($"{Id}_actions")" @attributes="@ActionsConfig?.Attributes">
+                    @if (ActionsContent != null)
+                    {
+                        @TextContent
+                    }
+                    else if (Actions != null && Actions.Length > 0 && ActionsContent == null)
+                    {
+                        foreach (var item in Actions)
+                        {
+                            <a @onclick="@(async () => await OnClickAction.InvokeAsync(item))">@item</a>
+                        }
+                    }
+                </div>
+            }
+        </FContent>
+        @if (ChildCommentsContent != null)
+        {
+            <FComments Style="@ChildCommentsStyleMapper.Result" Class="@ChildCommentsClassMapper.Result" Attributes="@ChildCommentsConfig?.Attributes">
+                @ChildCommentsContent
+            </FComments>
+        }
+
+    </div>
+</CascadingValue>

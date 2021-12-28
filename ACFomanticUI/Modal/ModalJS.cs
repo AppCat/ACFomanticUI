@@ -12,33 +12,27 @@ namespace ACUI.FomanticUI.JS
     /// <summary>
     /// modal JS 模块
     /// </summary>
-    public sealed class ModalJS
+    public sealed class ModalJS : JSModuleBase
     {
-        /// <summary>
-        /// 模块
-        /// </summary>
-        public Lazy<Task<IJSObjectReference>> ModuleTask { get; set; }
 
         /// <summary>
         /// modal JS 模块
         /// </summary>
         /// <param name="runtime"></param>
-        public ModalJS(IJSRuntime runtime)
+        public ModalJS(IJSRuntime runtime) : base(runtime, "./_content/ACFomanticUI/acui/acfomanticui_modal.js")
         {
-            if (ModuleTask == null)
-            {
-                ModuleTask = new(() => runtime.InvokeAsync<IJSObjectReference>("import", "./_content/ACFomanticUI/acui/acfomanticui_modal.js").AsTask());
-            }
+            
         }
 
         /// <summary>
         /// 设置
         /// </summary>
         /// <param name="modal"></param>
+        /// <param name="settings"></param>
         /// <returns></returns>
-        public async Task Set(IFModal modal)
+        public async Task Settings(IFModal modal, FModalSettings settings = null)
         {
-            await VoidMethodAsync("set", args: new object[] { modal.Id, modal.Settings?.ToTrimObject() });
+            await VoidMethodAsync("settings", args: new object[] { modal.Id, (settings ?? new FModalSettings()).ToTrimObject() });
         }
 
         /// <summary>
@@ -48,30 +42,6 @@ namespace ACUI.FomanticUI.JS
         public async Task ShowAsync(IFModal modal)
         {
             await VoidMethodAsync("show", args: new object[] { modal.Id });
-        }
-
-        /// <summary>
-        /// 方法
-        /// </summary>
-        /// <param name="method"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        private async Task<object> MethodAsync([CallerMemberName] string method = null, params object[] args)
-        {
-            var module = await ModuleTask.Value;
-            return await module.InvokeAsync<object>(method.ToInitialLower(), args);
-        }
-
-        /// <summary>
-        /// 方法
-        /// </summary>
-        /// <param name="method"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        private async Task VoidMethodAsync([CallerMemberName] string method = null, params object[] args)
-        {
-            var module = await ModuleTask.Value;
-            await module.InvokeVoidAsync(method.ToInitialLower(), args);
         }
     }
 }

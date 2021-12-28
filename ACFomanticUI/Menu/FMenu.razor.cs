@@ -12,7 +12,7 @@ namespace ACUI.FomanticUI
     /// 菜单显示分组导航操作
     /// A menu displays grouped navigation actions
     /// </summary>
-    public partial class FMenu : ACListOverlayComponentBase
+    public partial class FMenu : ACOverlayListComponentBase
     {
         /// <summary>
         /// 前缀
@@ -46,7 +46,7 @@ namespace ACUI.FomanticUI
                 .If(nameof(Right).ToLowerInvariant(), () => Right)
                 .If(nameof(Inverted).ToLowerInvariant(), () => Inverted)
                 .If(nameof(Pagination).ToLowerInvariant(), () => Pagination)
-                .GetIf(() => Attached.ToClass(), () => Attached != null && Tabular)
+                .GetIf(() => Attached.ToClass(), () => Attached != null)
                 .GetIf(() => Direction.ToClass(), () => Direction != null && Fluid)
                 .GetIf(() => $"{ItemCount.ToClass()} item", () => ItemCount != null)
                 .GetIf(() => Size.ToClass(), () => Size != null)
@@ -250,7 +250,7 @@ namespace ACUI.FomanticUI
         /// <param name="item"></param>
         /// <param name="isClick"></param>
         /// <returns></returns>
-        public override Task SelectedItemAsync(IFOverlayItem item, bool isClick = false)
+        public override Task SelectedItemAsync(IFOverlayItem<string> item, bool isClick = false)
         {
             var key = item?.Key ?? string.Empty;
             if (SelectedKeys?.Contains(key) ?? false && SelectedKeys.Length <= 1)

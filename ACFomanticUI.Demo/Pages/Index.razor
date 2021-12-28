@@ -1,7 +1,173 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<FGrid TextAlignment="FTextAlignment.CenterAligned">
+    <FGColumn Wide="5">
+        <FLabel>
+            选择变量
+        </FLabel>
+    </FGColumn>
+    <FGColumn Wide="5">
+        <FDropdown Floating Button Icon="@(null)" DefaultSelectedKey="=">
+            <FDropdownOption Key="=" Value="=" />
+            <FDropdownOption Key=">" Value=">" />
+            <FDropdownOption Key="<" Value="<" />
+            <FDropdownOption Key="<=" Value="<=" />
+            <FDropdownOption Key=">=" Value=">=" />
+        </FDropdown>
+    </FGColumn>
+    <FGColumn Wide="5">
+        <FLabel>
+            选择变量
+        </FLabel>
+    </FGColumn>
+    <FGColumn Wide="1">
+        <FLabel Icon><FIcon Set="x" /></FLabel>
+    </FGColumn>
+</FGrid>
 
-Welcome to your new app.
+<FDivider />
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<FList Middle>
+    <FItem Link>
+        <FContent>
+            <FGrid TextAlignment="FTextAlignment.CenterAligned">
+                <FGColumn Wide="5">
+                    <FInput Fluid TValue="string" LabeledRight>
+                        <FLabel Link OnClick="HandleSelectedVariable">
+                            选择变量
+                        </FLabel>
+                    </FInput>
+                </FGColumn>
+                <FGColumn Wide="5">
+                    <FDropdown Selection Fluid DefaultSelectedKey="=">
+                        <FDropdownOption Key="=" Value="=" />
+                        <FDropdownOption Key=">" Value=">" />
+                        <FDropdownOption Key="<" Value="<" />
+                        <FDropdownOption Key="<=" Value="<=" />
+                        <FDropdownOption Key=">=" Value=">=" />
+                    </FDropdown>
+                </FGColumn>
+                <FGColumn Wide="5">
+                    <FInput Fluid TValue="string" LabeledRight>
+                        <FLabel Link OnClick="HandleSelectedVariable">
+                            选择变量
+                        </FLabel>
+                    </FInput>
+                </FGColumn>
+                <FGColumn Wide="1">
+                    <FButton Icon><FIcon Set="x" /></FButton>
+                </FGColumn>
+            </FGrid>
+        </FContent>
+    </FItem>
+    <FItem Link>
+        <FContent>
+            <FGrid TextAlignment="FTextAlignment.CenterAligned">
+                <FGColumn Wide="5">
+                    <FInput Fluid TValue="string" LabeledRight>
+                        <FLabel Link OnClick="HandleSelectedVariable">
+                            选择变量
+                        </FLabel>
+                    </FInput>
+                </FGColumn>
+                <FGColumn Wide="5">
+                    <FDropdown Selection Fluid DefaultSelectedKey="=">
+                        <FDropdownOption Key="=" Value="=" />
+                        <FDropdownOption Key=">" Value=">" />
+                        <FDropdownOption Key="<" Value="<" />
+                        <FDropdownOption Key="<=" Value="<=" />
+                        <FDropdownOption Key=">=" Value=">=" />
+                    </FDropdown>
+                </FGColumn>
+                <FGColumn Wide="5">
+                    <FInput Fluid TValue="string" LabeledRight>
+                        <FLabel Link OnClick="HandleSelectedVariable">
+                            选择变量
+                        </FLabel>
+                    </FInput>
+                </FGColumn>
+                <FGColumn Wide="1">
+                    <FButton Icon><FIcon Set="x" /></FButton>
+                </FGColumn>
+            </FGrid>
+        </FContent>
+    </FItem>
+    <FItem Link>
+        <FContent>
+            <FGrid TextAlignment="FTextAlignment.CenterAligned">
+                <FGColumn Wide="5">
+                    <FInput Fluid TValue="string" LabeledRight>
+                        <FLabel Link OnClick="HandleSelectedVariable">
+                            选择变量
+                        </FLabel>
+                    </FInput>
+                </FGColumn>
+                <FGColumn Wide="5">
+                    <FDropdown Selection Fluid DefaultSelectedKey="=">
+                        <FDropdownOption Key="=" Value="=" />
+                        <FDropdownOption Key=">" Value=">" />
+                        <FDropdownOption Key="<" Value="<" />
+                        <FDropdownOption Key="<=" Value="<=" />
+                        <FDropdownOption Key=">=" Value=">=" />
+                    </FDropdown>
+                </FGColumn>
+                <FGColumn Wide="5">
+                    <FInput Fluid TValue="string" LabeledRight>
+                        <FLabel Link OnClick="HandleSelectedVariable">
+                            选择变量
+                        </FLabel>
+                    </FInput>
+                </FGColumn>
+                <FGColumn Wide="1">
+                    <FButton Icon><FIcon Set="x" /></FButton>
+                </FGColumn>
+            </FGrid>
+        </FContent>
+    </FItem>
+</FList>
+
+<FModal @ref="selectedVariableModal">
+    <FHeader>选择变量</FHeader>
+    <FContent Style="height: 800px;">
+        <FGrid Style="height: 100%;">
+            <FGColumn Wide="4" Style="padding-bottom: 0px;">
+                <FMenu Vertical Secondary Pointing Fluid DefaultSelectedKey="2" Style="height: 100%;" OnSelectedItem="@(item => item.Key.ValueSet("v11"))">
+                    @*<FMenuItem Key="1" Link>
+                        <FInput TValue="string" Placeholder="固定量值" Value="@(SharedVariants.GetValue<string>("value"))" OnValueChange="@(value => value.ValueSet("value"))" />
+                    </FMenuItem>*@
+                    <FMenuItem Key="2" Link>环境变量</FMenuItem>
+                    <FMenuItem Key="3" Link>设备变量</FMenuItem>
+                </FMenu>
+            </FGColumn>
+            <FGColumn Wide="12">
+                @if (SharedVariants.GetValue<string>("v11") == "2")
+                {
+                    <FLabelGroup>
+                        <FLabel Link OnClick="@(() => "newTime".ValueSet("value"))">newTime</FLabel>
+                    </FLabelGroup>
+                }
+                else if (SharedVariants.GetValue<string>("v11") == "3")
+                {
+                    <FSearch Fluid Placeholder="搜索设备" />
+                    <FDivider />
+                }
+            </FGColumn>
+        </FGrid>
+    </FContent>
+</FModal>
+
+@code{
+    FModal selectedVariableModal;
+
+    [Inject]
+    private ACFModalService _modalService { get; set; }
+
+    /// <summary>
+    /// 处理选择变量
+    /// </summary>
+    /// <returns></returns>
+    private async Task HandleSelectedVariable()
+    {
+        await selectedVariableModal.ShowAsync();
+    }
+}

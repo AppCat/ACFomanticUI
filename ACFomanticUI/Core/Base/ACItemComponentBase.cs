@@ -11,7 +11,7 @@ namespace ACUI.FomanticUI
     /// <summary>
     /// 项目基础
     /// </summary>
-    public abstract class ACItemComponentBase : ACItemComponentBase<IFItemList, IFItem>, IFItem
+    public abstract class ACItemComponentBase : ACItemComponentBase<IFItemList, IFItem, string>, IFItem
     {
 
     }

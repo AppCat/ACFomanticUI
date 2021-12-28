@@ -1,8 +1,57 @@
 ﻿@page "/dropdown"
 
 
-<FDropdown DefaultSelectedKey="1" Selection>
-    <FDropdownOption Key="1" Value="一号"/>
-    <FDropdownOption Key="2" Value="二号"/>
-    <FDropdownOption Key="3" Value="三号"/>
+<FDropdown DefaultSelectedKey="3" Selection>
+    <FDropdownOption Key="1" Value="一号" />
+    <FDropdownOption Key="2" Value="二号" />
+    <FDropdownOption Key="3" Value="三号" />
 </FDropdown>
+
+<FDivider />
+
+<FDropdown DefaultSelectedKey="3" Selection SelectedKeys="@(new[] { "2" })">
+    <FDropdownOption Key="1" Value="一号" />
+    <FDropdownOption Key="2" Value="二号" />
+    <FDropdownOption Key="3" Value="三号" />
+</FDropdown>
+
+<FDivider />
+
+<FDropdown Floating Button DefaultSelectedKey="3" Clearable="false" Icon="@(null)">
+    <FDropdownOption Key="1" Value="一号" />
+    <FDropdownOption Key="2" Value="二号" />
+    <FDropdownOption Key="3">
+        <ValueTemplate>
+            <div class="ui vertical menu">
+                <div class="ui dropdown item">
+                    Categories
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a class="item">Electronics</a>
+                        <a class="item">Automotive</a>
+                        <a class="item">Home</a>
+                    </div>
+                </div>
+            </div>
+        </ValueTemplate>
+    </FDropdownOption>
+</FDropdown>
+
+<FDivider />
+
+@{ 
+    var attributes = new Dictionary<string, object>()
+    {
+        { "bind-SelectedKeys", TypeEnums }
+    };
+}
+<FEnumDropdown TEnum="TypeEnum" Selection DefaultSelectedKey="TypeEnum.Two" Attributes="@attributes"/>
+
+@code{
+    protected TypeEnum[] TypeEnums { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+}

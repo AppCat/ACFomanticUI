@@ -57,27 +57,27 @@ namespace ACUI.FomanticUI
                 ;
 
             TBodyStyleMapper.Clear()
-            .Get(() => TBodyConfig?.Style)
+            .Get(() => TBodyConfig?.AsStyle)
             ;
 
             TBodyClassMapper.Clear()
-            .Get(() => TBodyConfig?.Class)
+            .Get(() => TBodyConfig?.AsClass)
             ;
 
             TFootStyleMapper.Clear()
-            .Get(() => TFootConfig?.Style)
+            .Get(() => TFootConfig?.AsStyle)
             ;
 
             TFootClassMapper.Clear()
-            .Get(() => TFootConfig?.Class)
+            .Get(() => TFootConfig?.AsClass)
             ;
 
             THeadStyleMapper.Clear()
-            .Get(() => THeadConfig?.Style)
+            .Get(() => THeadConfig?.AsStyle)
             ;
 
             THeadClassMapper.Clear()
-            .Get(() => THeadConfig?.Class)
+            .Get(() => THeadConfig?.AsClass)
             ;
 
         }

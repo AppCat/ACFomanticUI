@@ -30,30 +30,47 @@ namespace ACUI.FomanticUI
         protected FMTemplateSettings TemplateSettings { get; set; } = new FMTemplateSettings();
 
         /// <summary>
+        /// 
+        /// </summary>
+        protected FModalSettings Settings { get; set; } = new FModalSettings();
+
+        /// <summary>
         /// 初始化
         /// </summary>
         protected override void OnInitialized()
         {
             if (ModalService.OnShowModal == null)
             {
-                ModalService.OnShowModal = HandleOnShowModal;
+                ModalService.OnShowModal = HandleOnShowModal; 
             }
         }
 
         /// <summary>
         /// 处理显示模态
         /// </summary>
-        /// <param name="templateSettings"></param>
+        /// <param name="tuple"></param>
         /// <returns></returns>
-        protected async Task HandleOnShowModal(FMTemplateSettings templateSettings)
+        protected async Task HandleOnShowModal((FModalSettings settings, FMTemplateSettings templateSettings) tuple)
         {
-            if (templateSettings == null)
+            if (tuple.templateSettings == null)
                 return;
-            TemplateSettings = templateSettings;
+            TemplateSettings = tuple.templateSettings;
+            Settings = tuple.settings ?? new FModalSettings();
+            await Modal.SettingsAsync(Settings);
             await InvokeStateHasChangedAsync();
-            //StateHasChanged();
             await Modal.ShowAsync();
-            StateHasChanged();
+        }
+
+        /// <summary>
+        /// 隐藏后
+        /// </summary>
+        /// <returns></returns>
+        protected async Task HandleHiddenAsync()
+        {
+            //TemplateSettings = null;
+            //await InvokeStateHasChangedAsync();
+            TemplateSettings = new FMTemplateSettings();
+            await InvokeStateHasChangedAsync();
         }
 
         ///// <summary>

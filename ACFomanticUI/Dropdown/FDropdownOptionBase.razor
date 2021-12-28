@@ -1,5 +1,6 @@
 ﻿@namespace ACUI.FomanticUI
-@inherits ACOverlayItemComponentBase
+@typeparam TKey
+@inherits ACOverlayItemComponentBase<TKey>
 
 <CascadingValue Value="this" IsFixed>
     <div class="@ClassMapper.Result"
@@ -14,7 +15,7 @@
             @Value
             @if (Active)
             {
-                <FIcon Colored="FColored.Black" Size="FSize.Mini" Icon="check circle" Floated="FFloated.Right" />
+                <FIcon Colored="FColored.Black" Size="FSize.Mini" Set="check circle" Floated="FFloated.Right" />
             }
         }
         else

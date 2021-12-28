@@ -79,7 +79,7 @@ namespace ACUI.FomanticUI
         /// 如果模态应居中对齐
         /// If modal should be center aligned
         /// </summary>
-        public bool Centered { get; set; } = false;
+        public bool Centered { get; set; } = true;
 
         /// <summary>
         /// 模糊
@@ -111,14 +111,20 @@ namespace ACUI.FomanticUI
         /// <summary>
         /// 过度
         /// </summary>
-        //public object Transition { get; set; }
+        public object Transition { get; set; } = new
+        {
+            showMethod   = "zoom",
+            showDuration = 50,
+            hideMethod   = "zoom",
+            hideDuration = 10,
+        };
 
         /// <summary>
         /// 动画的持续时间
         /// 动画的持续时间。当通过转换设置提供单独的隐藏/显示持续时间值时，该值将被忽略
         /// Duration of animation. The value will be ignored when individual hide/show duration values are provided via the transition setting
         /// </summary>
-        public int Duration { get; set; } = 200;
+        public int Duration { get; set; } = 50;
 
         /// <summary>
         /// 动画排队

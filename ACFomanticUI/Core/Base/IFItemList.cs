@@ -9,7 +9,7 @@ namespace ACUI.FomanticUI
     /// <summary>
     /// 项目列表
     /// </summary>
-    public interface IFItemList : IFItemList<IFItem>
+    public interface IFItemList : IFItemList<IFItem, string>
     {
 
     }

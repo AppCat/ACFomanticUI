@@ -46,37 +46,37 @@ namespace ACUI.FomanticUI
 
             ContentClassMapper.Clear()
             .Add("content")
-            .Get(() => ContentConfig?.Style)
+            .Get(() => ContentConfig?.AsStyle)
             ;
 
             ContentStyleMapper.Clear()
-            .Get(() => ContentConfig?.Class)
+            .Get(() => ContentConfig?.AsClass)
             ;
 
             HeaderClassMapper.Clear()
             .Add("header")
-            .Get(() => HeaderConfig?.Style)
+            .Get(() => HeaderConfig?.AsStyle)
             ;
 
             HeaderStyleMapper.Clear()
-            .Get(() => HeaderConfig?.Class)
+            .Get(() => HeaderConfig?.AsClass)
             ;
 
             MessageClassMapper.Clear()
-            .Get(() => MessageConfig?.Style)
+            .Get(() => MessageConfig?.AsStyle)
             ;
 
             MessageStyleMapper.Clear()
-            .Get(() => MessageConfig?.Class)
+            .Get(() => MessageConfig?.AsClass)
             ;
 
             MessageListClassMapper.Clear()
             .Add("list")
-            .Get(() => MessageListConfig?.Style)
+            .Get(() => MessageListConfig?.AsStyle)
             ;
 
             MessageListStyleMapper.Clear()
-            .Get(() => MessageListConfig?.Class)
+            .Get(() => MessageListConfig?.AsClass)
             ;
         }
 
@@ -124,7 +124,7 @@ namespace ACUI.FomanticUI
 
         /// <summary>
         /// 内容配置
-        /// </summary>
+        /// </summary> 
         [Parameter]
         public ACComponentConfig ContentConfig { get; set; }
 

@@ -1,0 +1,28 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ComponentBase
+
+<CascadingValue Value="this" IsFixed="@true">
+    @if (UseWay == FTabItemUseWay.Empty)
+    {
+        return;
+    }
+    else if (UseWay == FTabItemUseWay.Tab)
+    {
+        <FItem Link OnClick="HandleActive" Class="@TitleClassMapper.Result" Style="@TitleStyleMapper.Result"  Disabled="@Disabled" Attributes="@TitleConfig?.Attributes">
+            @if (TitleConfig?.Template == null)
+            {
+                @(Title ?? Key ?? string.Empty)
+            }
+            else
+            {
+                @TitleConfig.Template
+            }
+        </FItem>
+    }
+    else if(ActiveKey == Key && UseWay == FTabItemUseWay.Page)
+    {
+        <FSegment Disabled="@Disabled" Loading="@(Loading && ActiveKey == Key)" Class="@ContentClassMapper.Result" Style="@ContentStyleMapper.Result" Attributes="@ContentConfig?.Attributes">
+            @ChildContent
+        </FSegment>
+    }
+</CascadingValue>

@@ -40,7 +40,8 @@ namespace ACUI.FomanticUI
                 .If(nameof(Transparent).ToLowerInvariant(), () => Transparent)
                 .If(nameof(Inverted).ToLowerInvariant(), () => Inverted)
                 .GetIf(() => $"{(IconLeft ? "left " : string.Empty)}icon", () => Icon || IconLeft)
-                .GetIf(() => $"{(LabeledRight ? "right " : string.Empty)}labeled", () => Labeled)
+                .GetIf(() => $"labeled", () => Labeled)
+                .GetIf(() => $"right labeled", () => LabeledRight)
                 .GetIf(() => Size.ToClass(), () => Size != null)
                 .Add(_suffix)
                 ;
@@ -217,7 +218,7 @@ namespace ACUI.FomanticUI
         /// <returns></returns>
         protected async Task OnChangeAsync(ChangeEventArgs args)
         {
-            var value = args.Value.ToString();
+            var value = args.Value != null ? args.Value.ToString() : string.Empty;
             if (Max != null && value.Length > Max)
             {
                 value = new string(value.Take((int)Max).ToArray());
@@ -241,20 +242,24 @@ namespace ACUI.FomanticUI
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        protected async Task OnkeyupAsync(KeyboardEventArgs args)
+        protected async Task OnKeyupAsync(KeyboardEventArgs args)
         {
-            if (QuickResponse)
-            {
-                await OnChangeAsync(new ChangeEventArgs
-                {
-                    //Value = await JsInvokeAsync<string>("ac.getInputValue", InputElement, _inputValue)
-                    //Value = await InputElement.Val<TValue>()
-                    Value = Value
-                });
-            }
             if (args != null && args.Key == "Enter")
             {
                 await OnEnter.InvokeAsync(args);
+            }
+        }
+
+        /// <summary>
+        /// 输入
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        protected async Task OnInputAsync(ChangeEventArgs args)
+        {
+            if (QuickResponse)
+            {
+                await OnChangeAsync(args);
             }
         }
 

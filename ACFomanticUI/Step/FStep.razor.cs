@@ -34,20 +34,20 @@ namespace ACUI.FomanticUI
                 ;
 
             TitleStyleMapper.Clear()
-            .Get(() => TitleConfig?.Style)
+            .Get(() => TitleConfig?.AsStyle)
             ;
 
             TitleClassMapper.Clear()
             .Add("title")
-            .Get(() => TitleConfig?.Class)
+            .Get(() => TitleConfig?.AsClass)
             ;
 
             DescriptionStyleMapper.Clear()
-            .Get(() => DescriptionConfig?.Style)
+            .Get(() => DescriptionConfig?.AsStyle)
             ;
 
             DescriptionClassMapper.Clear()
-            .Get(() => DescriptionConfig?.Class)
+            .Get(() => DescriptionConfig?.AsClass)
             ;
         }
 

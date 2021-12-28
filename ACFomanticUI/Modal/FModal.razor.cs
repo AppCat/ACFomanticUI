@@ -53,7 +53,7 @@ namespace ACUI.FomanticUI
         /// <summary>
         /// 模板
         /// </summary>
-        private FModal _template { get; set; }
+        private FModal Template { get; set; }
 
         #region Parameter  
 
@@ -151,6 +151,157 @@ namespace ACUI.FomanticUI
         [Parameter]
         public EventCallback OnHidden { get; set; }
 
+        #endregion
+
+        #region SDLC
+
+        private FModalSettings _settings;
+        private Func<Task<bool>> _onDeny;
+        private Func<Task<bool>> _onHide;
+        private Func<Task<bool>> _onApprove;
+        private bool alreadyEvent;
+        //private FMTemplateSettings _templateSettings;
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <returns></returns>
+        protected override async Task OnInitializedAsync()
+        {
+            await SetSettings();
+        }
+
+        /// <summary>
+        /// 属性设置
+        /// </summary>
+        /// <returns></returns>
+        protected override async Task OnParametersSetAsync()
+        {
+            await SetSettings();
+
+            //if (_templateSettings != TemplateSettings)
+            //{
+            //    _templateSettings = TemplateSettings;
+            //    await ModalJS.Set(this);
+            //}
+
+            //if (OnDeny != null && !OnDenyDic.ContainsKey(Id))
+            //{
+            //    OnDenyDic.TryAdd(Id, OnDeny);
+            //}
+
+            if (OnDeny != _onDeny)
+            {
+                OnDenyDic.Remove(Id);
+                _onDeny = OnDeny;
+                if (OnDeny != null)
+                {
+                    OnDenyDic.TryAdd(Id, OnDeny);
+                }
+            }
+            if (OnHide != _onHide)
+            {
+                OnHideDic.Remove(Id);
+                _onDeny = _onHide;
+                if(OnHide != null)
+                {
+                    OnHideDic.TryAdd(Id, OnHide);
+                }
+            }
+            if (OnApprove != _onApprove)
+            {
+                OnApproveDic.Remove(Id);
+                _onDeny = _onApprove;
+                if (OnApprove != null)
+                {
+                    OnApproveDic.TryAdd(Id, OnApprove);
+                }
+            }
+
+            if ((OnShow.HasDelegate || OnVisible.HasDelegate || OnHidden.HasDelegate) && !alreadyEvent)
+            {
+                alreadyEvent = true;
+                ModalCallback += HandleCallback;
+            }
+        }
+
+        /// <summary>
+        /// 设置
+        /// </summary>
+        /// <returns></returns>
+        protected async Task SetSettings()
+        {
+            if (_settings != Settings)
+            {
+                _settings = Settings;
+                //await ModalJS.Settings(this);
+                await SettingsAsync(_settings);
+            }
+        }
+
+        /// <summary>
+        /// 释放
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected override void Dispose(bool disposing)
+        {
+            if (!disposing || IsDisposed) return;
+
+            OnDenyDic.Remove(Id);
+            OnHideDic.Remove(Id);
+            OnApproveDic.Remove(Id);
+
+            if (alreadyEvent)
+            {
+                ModalCallback -= HandleCallback;
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 设置
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        public async Task SettingsAsync(FModalSettings settings = null)
+        {
+            if (Template != null)
+            {
+                await Template.SettingsAsync(settings);
+            }
+            else
+            {
+                if (settings != Settings)
+                {
+                    _settings = settings;
+                    Settings = settings;
+                    await SettingsAsync(settings);
+                }
+                else
+                {
+                    await ModalJS.Settings(this, settings);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 显示
+        /// </summary>
+        /// <returns></returns>
+        public async Task ShowAsync()
+        {
+            if(Template != null)
+            {
+                await Template.ShowAsync();
+            }
+            else
+            {
+                await ModalJS.ShowAsync(this);
+            }
+        }
+
+
         /// <summary>
         /// 处理回调
         /// </summary>
@@ -171,94 +322,6 @@ namespace ACUI.FomanticUI
             }
         }
 
-        #endregion
-
-        #region SDLC
-
-        private FModalSettings _settings;
-        private Func<Task<bool>> _onDeny;
-        private Func<Task<bool>> _onHide;
-        private Func<Task<bool>> _onApprove;
-        //private FMTemplateSettings _templateSettings;
-
-        /// <summary>
-        /// 属性设置
-        /// </summary>
-        /// <returns></returns>
-        protected override async Task OnParametersSetAsync()
-        {
-            if (_settings != Settings)
-            {
-                _settings = Settings;
-                await ModalJS.Set(this);
-            }
-            //if (_templateSettings != TemplateSettings)
-            //{
-            //    _templateSettings = TemplateSettings;
-            //    await ModalJS.Set(this);
-            //}
-
-            //if (OnDeny != null && !OnDenyDic.ContainsKey(Id))
-            //{
-            //    OnDenyDic.TryAdd(Id, OnDeny);
-            //}
-
-            if(OnDeny != _onDeny)
-            {
-                OnDenyDic.Remove(Id);
-                _onDeny = OnDeny;
-                OnDenyDic.TryAdd(Id, OnDeny);
-            }
-            if (OnHide != _onHide)
-            {
-                OnHideDic.Remove(Id);
-                _onDeny = _onHide;
-                OnHideDic.TryAdd(Id, OnHide);
-            }
-            if (OnApprove != _onApprove)
-            {
-                OnApproveDic.Remove(Id);
-                _onDeny = _onApprove;
-                OnApproveDic.TryAdd(Id, OnApprove);
-            }
-
-            if (OnShow.HasDelegate || OnVisible.HasDelegate || OnHidden.HasDelegate)
-            {
-                ModalCallback += HandleCallback;
-            }
-        }
-
-        /// <summary>
-        /// 释放
-        /// </summary>
-        /// <param name="disposing"></param>
-        protected override void Dispose(bool disposing)
-        {
-            OnDenyDic.Remove(Id);
-            OnHideDic.Remove(Id);
-            OnApproveDic.Remove(Id);
-
-            ModalCallback -= HandleCallback;
-        }
-
-        #endregion
-
-        /// <summary>
-        /// 显示
-        /// </summary>
-        /// <returns></returns>
-        public async Task ShowAsync()
-        {
-            if(_template != null)
-            {
-                await _template.ShowAsync();
-            }
-            else
-            {
-                await ModalJS.ShowAsync(this);
-            }
-        }
-
         #region JSInvokable
 
         /// <summary>
@@ -275,7 +338,6 @@ namespace ACUI.FomanticUI
         /// 
         /// </summary>
         protected static IDictionary<string, Func<Task<bool>>> OnApproveDic { get; } = new Dictionary<string, Func<Task<bool>>>();
-
 
         /// <summary>
         /// 模态回调 点击

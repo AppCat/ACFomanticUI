@@ -12,12 +12,12 @@ namespace ACUI
     public interface IACComponentConfig
     {
         /// <summary>
-        /// 显示部分样式
+        /// 样式
         /// </summary>
         string Style { get; set; }
 
         /// <summary>
-        /// 显示部分类
+        /// 类
         /// </summary>
         string Class { get; set; }
 

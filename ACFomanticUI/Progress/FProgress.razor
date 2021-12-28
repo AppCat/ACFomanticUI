@@ -1,0 +1,30 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACContentComponentBase
+
+<CascadingValue Value="this" IsFixed>
+    <div class="@ClassMapper.Result"
+         style="@StyleMapper.Result"
+         data-percent="@(_percent * 100)"
+         id="@Id"
+         @attributes="@Attributes">
+        <div class="@BarClassMapper.Result" style="@BarStyleMapper.Result" id="@($"{Id}_bar")" @attributes="@BarConfig?.Attributes">
+            @if (Progress)
+            {
+                <div class="progress">@($"{_percent * 100}%")</div>
+            }
+        </div>
+        @if (LabelContent != null || !string.IsNullOrEmpty(Label))
+        {
+            <div class="@LabelClassMapper.Result" style="@LabelStyleMapper.Result" id="@($"{Id}_label")" @attributes="@LabelConfig?.Attributes">
+                @if (LabelContent != null)
+                {
+                    @LabelContent(_percent)
+                }
+                else if (!string.IsNullOrEmpty(Label))
+                {
+                    @Label
+                }
+            </div>
+        }
+    </div>
+</CascadingValue>

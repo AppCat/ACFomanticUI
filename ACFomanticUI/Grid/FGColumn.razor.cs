@@ -24,6 +24,7 @@ namespace ACUI.FomanticUI
         protected override void OnSetClass(Mapper classMapper)
         {
             classMapper.Clear()
+                .If("stretched", () => Stretched)
                 .GetIf(() => Floated.ToClass(), () => Floated != null)
                 .GetIf(() => Colored.ToClass(), () => Colored != null)
                 .GetIf(() => $"{Wide.ToClass()} wide", () => Wide != null)
@@ -37,6 +38,14 @@ namespace ACUI.FomanticUI
         }
 
         #region Parameter        
+
+        /// <summary>
+        /// 拉伸
+        /// 行可以扩展其内容以占据整个列的高度
+        /// A row can stretch its contents to take up the entire column height
+        /// </summary>
+        [Parameter]
+        public bool Stretched { get; set; }
 
         /// <summary>
         /// 列宽

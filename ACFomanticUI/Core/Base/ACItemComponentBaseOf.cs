@@ -13,9 +13,10 @@ namespace ACUI.FomanticUI
     /// </summary>
     /// <typeparam name="TList"></typeparam>
     /// <typeparam name="TItem"></typeparam>
-    public abstract class ACItemComponentBase<TList, TItem> : ACContentComponentBase, IFItem
-        where TList : class, IFItemList<TItem>
-        where TItem : class, IFItem
+    /// <typeparam name="TKey"></typeparam>
+    public abstract class ACItemComponentBase<TList, TItem, TKey> : ACContentComponentBase, IFItem<TKey>
+        where TList : class, IFItemList<TItem, TKey>
+        where TItem : class, IFItem<TKey>
     {
         /// <summary>
         /// 设置类
@@ -51,7 +52,7 @@ namespace ACUI.FomanticUI
         /// <summary>
         /// 母体
         /// </summary>
-        [CascadingParameter]
+        [CascadingParameter(Name = "ItemList")]
         protected TList ItemList { get; set; }
 
         ///// <summary>
@@ -73,7 +74,7 @@ namespace ACUI.FomanticUI
         /// 键
         /// </summary>
         [Parameter]
-        public virtual string Key { get; set; }
+        public virtual TKey Key { get; set; }
 
         /// <summary>
         /// 附加
@@ -112,7 +113,7 @@ namespace ACUI.FomanticUI
         protected override void OnParametersSet()
         {
             base.OnParametersSet();
-            ItemList.AddItem(this as TItem);
+            ItemList?.AddItem(this as TItem);
         }
 
         #endregion

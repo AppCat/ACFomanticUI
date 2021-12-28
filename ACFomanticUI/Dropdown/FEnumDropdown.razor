@@ -1,0 +1,121 @@
+﻿@namespace ACUI.FomanticUI
+@typeparam TEnum
+@inherits DropdownBase<TEnum>
+
+<CascadingValue Value="this" IsFixed>
+    <CascadingValue Value="this" Name="ItemList" IsFixed>
+        <div class="@ClassMapper.Result"
+             style="@StyleMapper.Result"
+             id="@Id"
+             tabindex="@Tabindex"
+             @attributes="@Attributes"
+             @onclick="@HandleDropdownOnClickAsync"
+             @onkeyup="@HandleDropdownOnKeyupAsync"
+             @onblur="@HandleOnblurAsync"
+             @onkeyup:stopPropagation
+             @onkeydown:stopPropagation
+             @onkeypress:stopPropagation>
+
+            @if (Selection)
+            {
+                <input type="hidden"
+                       @onkeyup:stopPropagation
+                       @onkeydown:stopPropagation
+                       @onkeypress:stopPropagation
+                       value="@(IsSelected() ? SelectedKeys[0] : string.Empty)">
+            }
+            @if (!Inline)
+            {
+                @IconRF
+                if (Clearable && !Button && IsSelected())
+                {
+                    <FIcon Set="remove" OnClick="HandleClearableAsync" ClickStopPropagation />
+                }
+            }
+            @if (Search && !Multiple)
+            {
+                @SearchRF
+            }
+            @if (Multiple && IsSelected() && !Inherent)
+            {
+                foreach (var key in SelectedKeys)
+                {
+                    var item = Items[key];
+                    <a class="ui label transition visible" style="-webkit-user-select: none; -moz-user-select: none;" @onclick:stopPropagation>
+                        @if (item.ValueTemplate == null)
+                        {
+                            @item.Value
+                        }
+                        else
+                        {
+                            @item.ValueTemplate(item)
+                        }
+                        <FIcon @key="key" Set="@("delete")" OnClick="@(async () => await SelectedItemAsync(item))" ClickStopPropagation />
+                    </a>
+                }
+            }
+            else
+            {
+                <div class="@TextClassMapper.Result"
+                     style="@TextStyleMapper.Result"
+                     id="@($"{Id}_text")">
+                    @if (IsSelected() && !Inherent)
+                    {
+                        var key = SelectedKeys[^1] ?? default;
+                        if (Items.TryGetValue(key, out IFOverlayItem<TEnum> item))
+                        {
+                            @if (item.ValueTemplate == null)
+                            {
+                                @item.Value
+                            }
+                            else
+                            {
+                                @item.ValueTemplate(item)
+                            }
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(Placeholder))
+                    {
+                        @Placeholder
+                    }
+                </div>
+            }
+            @if (Inline)
+            {
+                @IconRF
+            }
+            @if (Search && Multiple)
+            {
+                @SearchRF
+            }
+            <CascadingValue Value="@SelectedKeys" Name="SelectedKeys">
+                <CascadingValue Value="@FilteredKeys" Name="FilteredKeys">
+                    <CascadingValue Value="@FocusItem" Name="FocusItem">
+                        <div class="@FrameClassMapper.Result"
+                             style="@FrameStyleMapper.Result"
+                             id="@($"{Id}_frame")"
+                             @onclick:stopPropagation>
+                            @if (SelectLimit)
+                            {
+                                <div class="message">@($"Max {MaxMultiple} selections.")</div>
+                            }
+                            //else if (!string.IsNullOrEmpty(Filtrate) && !Items.Values.Any(item => item.Value.Contains(Filtrate)))
+                            else if (NoResults)
+                            {
+                                <div class="message">@($"No results found.")</div>
+                            }
+                            else
+                            {
+                                @*@ChildContent*@
+                                foreach (var kv in GetEnumPairs())
+                                {
+                                    <FEnumDropdownOption TEnum="TEnum" Key="@kv.Key" Value="@kv.Value" />
+                                }
+                            }
+                        </div>
+                    </CascadingValue>
+                </CascadingValue>
+            </CascadingValue>
+        </div>
+    </CascadingValue>
+</CascadingValue>

@@ -63,8 +63,8 @@ namespace ACUI.FomanticUI
                     builder.AddAttribute(seq++, nameof(config.Size), config.Size);
                     builder.AddAttribute(seq++, nameof(config.Emphasis), config.Emphasis);
                     builder.AddAttribute(seq++, nameof(config.Content), config.Content);
-                    builder.AddAttribute(seq++, nameof(config.Style), config.Style);
-                    builder.AddAttribute(seq++, nameof(config.Class), config.Class);
+                    builder.AddAttribute(seq++, nameof(config.AsStyle), config.AsStyle);
+                    builder.AddAttribute(seq++, nameof(config.AsClass), config.AsClass);
                     if (config.Attributes != null)
                         builder.AddAttribute(seq++, nameof(config.Attributes), config.Attributes);
                     builder.CloseComponent();

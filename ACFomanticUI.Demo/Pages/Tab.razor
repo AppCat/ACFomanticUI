@@ -1,0 +1,91 @@
+﻿@page "/tab"
+
+<FTab ActiveKey="2">
+    <FTabItem Key="1">
+        1
+    </FTabItem>
+    <FTabItem Key="2">
+        2
+    </FTabItem>
+    <FTabItem Key="3">
+        3
+    </FTabItem>
+</FTab>
+
+<FDivider />
+
+<FTab ActiveKey="2" TabAttached="FAttached.Bottom">
+    <FTabItem Key="1">
+        1
+    </FTabItem>
+    <FTabItem Key="2">
+        2
+    </FTabItem>
+    <FTabItem Key="3">
+        3
+    </FTabItem>
+</FTab>
+
+<FDivider />
+
+<FTab ActiveKey="2" TabAttached="FAttached.Left">
+    <FTabItem Key="1">
+        1
+    </FTabItem>
+    <FTabItem Key="2">
+        2
+    </FTabItem>
+    <FTabItem Key="3">
+        3
+    </FTabItem>
+</FTab>
+
+<FDivider />
+
+<FTab ActiveKey="2" TabAttached="FAttached.Right">
+    <FTabItem Key="1">
+        1
+    </FTabItem>
+    <FTabItem Key="2">
+        2
+    </FTabItem>
+    <FTabItem Key="3">
+        3
+    </FTabItem>
+</FTab>
+
+<FDivider />
+
+<FTab ActiveKey="2" TabAttached="FAttached.Top" Pointing>
+    <FTabItem Key="1">
+        1
+    </FTabItem>
+    <FTabItem Key="2">
+        2
+    </FTabItem>
+    <FTabItem Key="3">
+        3
+    </FTabItem>
+</FTab>
+
+<FDivider />
+
+<FTab ActiveKey="2" TabAttached="FAttached.Top" Secondary>
+    <FTabItem Key="1" ContentConfig="@ACComponentConfig.Empty.AddClass("basic").AddStyle("padding: 0px;")">
+        1
+    </FTabItem>
+    <FTabItem Key="2" ContentConfig="@ACComponentConfig.Empty.AddClass("basic").AddStyle("padding: 0px;")">
+        2
+    </FTabItem>
+    <FTabItem Key="3" ContentConfig="@(new ACComponentConfig 
+                                       {
+                                           Class = "basic",
+                                           Style = "padding: 0px;"
+                                       }.AddStyle("background-color: red;"))">
+        3
+    </FTabItem>
+</FTab>
+
+<FDivider />
+
+<FButton Content="刷新" OnClick="@(() => {})" />

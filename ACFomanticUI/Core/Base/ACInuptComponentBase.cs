@@ -106,7 +106,7 @@ namespace ACUI.FomanticUI
         public virtual void Reset()
         {
             Value = FirstValue;
-            ValueChanged.InvokeAsync(Value).Wait();
+            //ValueChanged.InvokeAsync(Value).Wait();
             StateHasChanged();
         }
 

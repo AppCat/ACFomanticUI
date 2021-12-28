@@ -30,6 +30,7 @@ namespace ACUI.FomanticUI.Extensions
         /// <returns></returns>
         public static KeyValuePair<string, string>[] GetEnumDisplayNames(this Type enumType)
         {
+            enumType = Nullable.GetUnderlyingType(enumType) ?? enumType;
             return enumType.GetFieldDisplays().Select(kv => KeyValuePair.Create(kv.Key.Name, kv.Value?.Name ?? kv.Key.Name)).ToArray();
         }
     }

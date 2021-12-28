@@ -173,7 +173,7 @@ namespace ACUI.FomanticUI
             {
                 await OnValueChange.InvokeAsync(value);
             }
-            await JsInvokeAsync("ac.setInputValue", _input.InputElement, Value);
+            //await JsInvokeAsync("ac.setInputValue", _input.InputElement, Value);
             StateHasChanged();
         }
 
@@ -257,7 +257,7 @@ namespace ACUI.FomanticUI
             Loading = false;
             await LoadingChanged.InvokeAsync(Loading);
             if (!VisibleResults)
-                Show();
+                await Show();
             else
                 StateHasChanged();
             if (olb != Value)
@@ -298,10 +298,13 @@ namespace ACUI.FomanticUI
                 await OnSelectedResultKeyChange.InvokeAsync(SelectedResultKey);
                 await OnSelectedResult.InvokeAsync(result);
             }
+            var url = result.Url;
             if (isClick)
+            {
                 await OnClickResult.InvokeAsync(result);
-            Hide();
-            if (!StopNavigate && !string.IsNullOrEmpty(result.Url))
+            }
+            await Hide();
+            if (!StopNavigate && !string.IsNullOrEmpty(url))
             {
                 NavigationManager.NavigateTo(result.Url);
             }
@@ -322,25 +325,25 @@ namespace ACUI.FomanticUI
         /// <summary>
         /// 显示
         /// </summary>
-        public void Show()
+        public async Task Show()
         {
             if (VisibleResults)
                 return;
             VisibleResults = true;
             StateHasChanged();
-            OnVisibleResult.InvokeAsync(VisibleResults).Wait();
+            await OnVisibleResult.InvokeAsync(VisibleResults);
         }
 
         /// <summary>
         /// 隐藏
         /// </summary>
-        public void Hide()
+        public async Task Hide()
         {
             if (!VisibleResults)
                 return;
             VisibleResults = false;
             StateHasChanged();
-            OnVisibleResult.InvokeAsync(VisibleResults).Wait();
+            await OnVisibleResult.InvokeAsync(VisibleResults);
         }
 
         /// <summary>
@@ -369,10 +372,7 @@ namespace ACUI.FomanticUI
                 return;
             if (!VisibleResults)
                 return;
-            InvokeAsync(() =>
-            {
-                Hide();
-            });
+            InvokeAsync(() => Hide());
         }
     }
 }

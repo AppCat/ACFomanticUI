@@ -39,6 +39,7 @@ namespace ACUI.FomanticUI
                 .If(nameof(Circular).ToLowerInvariant(), () => Circular)
                 .If(nameof(Empty).ToLowerInvariant(), () => Empty)
                 .If(nameof(Basic).ToLowerInvariant(), () => Basic)
+                .If(nameof(Icon).ToLowerInvariant(), () => Icon)
                 .GetIf(() => Pointing.ToClass(), () => Pointing != null)
                 .GetIf(() => Corner.ToClass(), () => Corner != null)
                 .GetIf(() => $"{Attached.ToClass()} attached", () => Attached != null)
@@ -49,6 +50,13 @@ namespace ACUI.FomanticUI
         }
 
         #region Parameter        
+
+        /// <summary>
+        /// 标签可以包含一个图标
+        /// A label can include an icon
+        /// </summary>
+        [Parameter]
+        public bool Icon { get; set; }
 
         /// <summary>
         /// 图像

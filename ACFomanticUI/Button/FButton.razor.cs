@@ -54,21 +54,21 @@ namespace ACUI.FomanticUI
                 ;
 
             HiddenStyleMapper.Clear()
-            .Get(() => HiddenConfig?.Style)
+            .Get(() => HiddenConfig?.AsStyle)
             ;
 
             HiddenClassMapper.Clear()
             .Add("hidden content")
-            .Get(() => HiddenConfig?.Class)
+            .Get(() => HiddenConfig?.AsClass)
             ;
 
             VisibleStyleMapper.Clear()
-            .Get(() => VisibleConfig?.Style)
+            .Get(() => VisibleConfig?.AsStyle)
             ;
 
             VisibleClassMapper.Clear()
             .Add("visible content")
-            .Get(() => VisibleConfig?.Class)
+            .Get(() => VisibleConfig?.AsClass)
             ;
         }
 

@@ -1,0 +1,93 @@
+﻿@namespace ACUI.FomanticUI
+@inherits ACContentComponentBase
+
+<CascadingValue Value="this" IsFixed>
+    <CascadingValue Name="UseWay" Value="FTabItemUseWay.Empty" IsFixed>
+        @ChildContent
+    </CascadingValue>
+    <CascadingValue Name="Tab_Loading" Value="Loading">
+        <CascadingValue Name="Tab_ActiveKey" Value="ActiveKey">
+            <CascadingValue Name="Tab_Attached" Value="TabAttached.Value">
+                <CascadingValue Name="Tab_SecondaryOrPointing" Value="@(Secondary || Pointing)">
+
+                    @*<div class="@ClassMapper.Result"
+                     style="@StyleMapper.Result"
+                     id="@Id"
+                     @attributes="@Attributes">
+                    <CascadingValue Name="UseWay" Value="FTabItemUseWay.Tab" IsFixed>
+                        @ChildContent
+                    </CascadingValue>
+                </div>
+
+                <CascadingValue Name="UseWay" Value="FTabItemUseWay.Page" IsFixed>
+                    @ChildContent
+                </CascadingValue>*@
+
+                    @if (TabAttached?.Value == FAttached.Bottom)
+                    {
+                        @Page()
+                        @Tab()
+                    }
+                    else if (TabAttached?.Value == FAttached.Left)
+                    {
+                        <FGrid>
+                            <FGColumn Wide="4">@Tab()</FGColumn>
+                            <FGColumn Wide="12" Stretched>@Page()</FGColumn>
+                        </FGrid>
+                    }
+                    else if (TabAttached?.Value == FAttached.Right)
+                    {
+                        <FGrid>
+                            <FGColumn Wide="12" Stretched>@Page()</FGColumn>
+                            <FGColumn Wide="4">@Tab()</FGColumn>
+                        </FGrid>
+                    }
+                    else
+                    {
+                        @Tab()
+                        @Page()
+                    }
+
+                </CascadingValue>
+            </CascadingValue>
+        </CascadingValue>
+    </CascadingValue>
+</CascadingValue>
+
+@code{
+
+    /// <summary>
+    /// 页
+    /// </summary>
+    /// <returns></returns>
+    private RenderFragment Page()
+    {
+        return
+        @<CascadingValue Name="UseWay" Value="FTabItemUseWay.Page" IsFixed>
+            @ChildContent
+        </CascadingValue>;
+    }
+
+    /// <summary>
+    /// 选项卡
+    /// </summary>
+    /// <returns></returns>
+    private RenderFragment Tab()
+    {
+        return
+        @<div class="@ClassMapper.Result"
+              style="@StyleMapper.Result"
+              id="@Id"
+              @attributes="@Attributes">
+            <CascadingValue Name="UseWay" Value="FTabItemUseWay.Tab" IsFixed>
+                @ChildContent
+            </CascadingValue>
+            @if(RightMenuContent != null)
+            {
+                 <div class="right menu">
+                    @RightMenuContent
+                </div>
+            }
+        </div>;
+    }
+}

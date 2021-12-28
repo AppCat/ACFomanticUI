@@ -43,7 +43,7 @@ namespace ACUI.FomanticUI
                 .If(nameof(Divided).ToLowerInvariant(), () => Divided)
                 .If(nameof(Celled).ToLowerInvariant(), () => Celled)
                 .If(nameof(Bulleted).ToLowerInvariant(), () => Bulleted)
-                .If("middle aligned", () => Middle)
+                .If("middle aligned", () => Middle)     
                 .GetIf(() => Size.ToClass(), () => Size != null)
                 .Add(_suffix)
                 ;

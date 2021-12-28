@@ -11,7 +11,7 @@ namespace ACUI.FomanticUI
     /// <summary>
     /// 
     /// </summary>
-    public class ACListComponentBase : ACListComponentBase<IFItem>, IFItemList
+    public class ACListComponentBase : ACListComponentBase<IFItem, string>, IFItemList
     {
 
     }

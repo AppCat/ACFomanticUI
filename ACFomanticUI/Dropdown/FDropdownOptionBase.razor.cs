@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+﻿using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +8,10 @@ using System.Threading.Tasks;
 namespace ACUI.FomanticUI
 {
     /// <summary>
-    /// 下拉框选项
+    /// 下拉框选项基础
     /// </summary>
-    public partial class FDropdownOption : ACOverlayItemComponentBase
+    /// <typeparam name="TKey"></typeparam>
+    public abstract partial class FDropdownOptionBase<TKey> : ACOverlayItemComponentBase<TKey>
     {
         /// <summary>
         /// 前缀
@@ -41,7 +41,7 @@ namespace ACUI.FomanticUI
         /// 点击异步
         /// </summary>
         /// <returns></returns>
-        private async Task OnClickAsync(MouseEventArgs args)
+        protected async Task OnClickAsync(MouseEventArgs args)
         {
             await OnClick.InvokeAsync(args);
             await ItemList?.SelectedItemAsync(this, true);
@@ -51,7 +51,7 @@ namespace ACUI.FomanticUI
         /// 鼠标移到项目之上
         /// </summary>
         /// <returns></returns>
-        private async Task OnMouseoverAsync()
+        protected async Task OnMouseoverAsync()
         {
             await ItemList?.FocusItemAsync(this);
         }

@@ -30,7 +30,8 @@ namespace ACUI.FomanticUI
                 .Add(_prefix)
                 .If(nameof(Inline).ToLowerInvariant(), () => Inline)
                 .If(nameof(Grouped).ToLowerInvariant(), () => Grouped)
-                .If("equal width", () => Disabled)
+                .If(nameof(Disabled).ToLowerInvariant(), () => Disabled)
+                .If("equal width", () => EqualWidth)
                 .GetIf(() => FieldCount.ToClass(), () => FieldCount != null)
                 ;
         }

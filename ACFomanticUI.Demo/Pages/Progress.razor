@@ -1,0 +1,18 @@
+﻿@page "/progress"
+
+<FProgress MaxValue="100" CurrentValue="@_currentValue" />
+
+<FDivider />
+
+<div class="ui icon buttons">
+    <div class="decrement ui basic red button icon" @onclick="@(() => _currentValue--)">
+        <i class="minus icon"></i>
+    </div>
+    <div class="increment ui basic green button icon" @onclick="@(() => _currentValue++)">
+        <i class="plus icon"></i>
+    </div>
+</div>
+
+@code {
+    private uint? _currentValue = 0;
+}

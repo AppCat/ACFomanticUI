@@ -1,12 +1,39 @@
 ﻿@namespace ACUI.FomanticUI
 @inherits ACContentComponentBase
 
-<CascadingValue Value="this" IsFixed="@true">
-    <div class="@ClassMapper.Result"
-         style="@StyleMapper.Result"
-         id="@Id"
-         @attributes="@Attributes"
-         @onclick:stopPropagation>
-        @ChildContent
-    </div>
-</CascadingValue>
+@if (TemplateSettings != null)
+{
+    var attribute = new Dictionary<string, object>
+    {
+        { "OnVisible", EventCallback.Factory.Create(this, async () => await TemplateSettings.OnVisible.InvokeAsync())},
+        { "OnShow", EventCallback.Factory.Create(this, async () => await TemplateSettings.OnShow.InvokeAsync())},
+        { "OnChange", EventCallback.Factory.Create(this, async () => await TemplateSettings.OnChange.InvokeAsync())},
+        { "OnHide", EventCallback.Factory.Create(this, async () => await TemplateSettings.OnHide.InvokeAsync())},
+        { "OnHidden", EventCallback.Factory.Create(this, async () => await TemplateSettings.OnHidden.InvokeAsync())},
+    };
+
+    <FSidebar @ref="@Template"
+              Class="@TemplateSettings.Class"
+              Style="@TemplateSettings.Style"
+              Inverted="@TemplateSettings.Inverted"
+              Direction="@TemplateSettings.Direction"
+              Width="@TemplateSettings.Width"
+              @attributes="attribute">
+        @if(TemplateSettings.ContentTemplate != null)
+        {
+            @TemplateSettings.ContentTemplate(TemplateSettings.Tag);
+        }
+    </FSidebar> 
+}
+else
+{
+    <CascadingValue Value="this" IsFixed="@true">
+        <div class="@ClassMapper.Result"
+             style="@StyleMapper.Result"
+             id="@Id"
+             @attributes="@Attributes"
+             @onclick:stopPropagation>
+            @ChildContent
+        </div>
+    </CascadingValue>
+}

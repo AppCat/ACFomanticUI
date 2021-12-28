@@ -9,8 +9,8 @@ namespace ACUI.FomanticUI
     /// <summary>
     /// 项目列表
     /// </summary>
-    public interface IFItemList<TItem>
-        where TItem : class, IFItem
+    public interface IFItemList<TItem, TKey>
+        where TItem : class, IFItem<TKey>
     {
         /// <summary>
         /// 添加项目
